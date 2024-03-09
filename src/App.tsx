@@ -1,8 +1,10 @@
+import Router from "shared/Router";
+
 function App() {
   return (
-    <div>
-      <h1>StudyBuddy</h1>
-    </div>
+    <>
+      <Router />
+    </>
   );
 }
 
