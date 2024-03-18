@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Logo from "../assets/Logo.png";
 import Icon_home from "../assets/home.png";
 import Icon_date from "../assets/date.png";
@@ -11,15 +11,18 @@ const Sidebar: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Navigation>
-      <NavLogo><img src={Logo} alt="Logo" /></NavLogo>
-      <NavMenu>
-        <NavItem onClick={() => navigate('/home')}><img src={Icon_home} alt="Home" /></NavItem>
-        <NavItem onClick={() => navigate('/calendar')}><img src={Icon_date} alt="Date" /></NavItem>
-        <NavItem onClick={() => navigate('/group')}><img src={Icon_group} alt="Group" /></NavItem>
-        <NavItem onClick={() => navigate('/setting')}><img src={Icon_setting} alt="Setting" /></NavItem>
-      </NavMenu>
-    </Navigation>
+    <>
+      <Navigation>
+        <NavLogo><img src={Logo} alt="Logo" /></NavLogo>
+        <NavMenu>
+          <NavItem onClick={() => navigate('/home')}><img src={Icon_home} alt="Home" /></NavItem>
+          <NavItem onClick={() => navigate('/calendar')}><img src={Icon_date} alt="Date" /></NavItem>
+          <NavItem onClick={() => navigate('/group')}><img src={Icon_group} alt="Group" /></NavItem>
+          <NavItem onClick={() => navigate('/setting')}><img src={Icon_setting} alt="Setting" /></NavItem>
+        </NavMenu>
+      </Navigation>
+      <Outlet />
+    </>
   );
 };
 

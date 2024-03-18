@@ -14,6 +14,7 @@ import {
   StudyRoomSetting,
   StudyRoomFinish,
 } from "../pages";
+import Sidebar from "./Sidebar";
 
 const Router = () => {
   return (
@@ -22,12 +23,17 @@ const Router = () => {
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/join" element={<Join />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/group" element={<Group />} />
-        <Route path="/group/:groupId" element={<GroupMain />} />
-        <Route path="/group/:groupId/:memberId" element={<MemberCalendar />} />
-        <Route path="/calendar" element={<Calendar />} />
-        <Route path="/setting" element={<Setting />} />
+        
+        {/* 사이드바가 보이는 페이지 */}
+        <Route element={<Sidebar />}> 
+          <Route path="/home" element={<Home />} />
+          <Route path="/group" element={<Group />} />
+          <Route path="/group/:groupId" element={<GroupMain />} />
+          <Route path="/group/:groupId/:memberId" element={<MemberCalendar />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/setting" element={<Setting />} />
+        </Route>
+
         <Route path="/room/:rommId" element={<StudyRoom />} />
         <Route path="/room/:roomId" element={<StudyRoomPomodoro />} />
         <Route path="/room" element={<StudyRoomSetting />} />
