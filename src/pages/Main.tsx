@@ -27,7 +27,7 @@ const Main = () => {
 
 const Wrapper = styled.div`
   display: flex;
-  background: linear-gradient(180deg, #FFDA58 0%, #FFDA58 8%, #FFFFFF 20%);
+  background: linear-gradient(180deg, #FFDA58 0%, #FFDA58 5%, #FFFFFF 16%);
   height: 100vh;
   justify-content: center;
   align-items: center;
