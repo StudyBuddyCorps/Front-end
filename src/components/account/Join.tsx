@@ -86,13 +86,12 @@ const Wrapper = styled.div`
   height: 79vh;
   display: flex;
   flex-direction: column;
-  // border: none;
+  border: none;
   border-radius: 0 0 15px 15px;
   background-color: #FFFFFF;
   padding: 0 5vw;
   box-sizing: border-box;
   justify-content: space-between;
-  border: 1px solid #CDCDCD;
 `;
 
 const JoinForm = styled.form`

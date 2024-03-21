@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   Main,
-  Login,
-  Join,
+  Account,
   Home,
   Group,
   GroupMain,
@@ -21,8 +20,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/join" element={<Join />} />
+        <Route path="/account" element={<Account />} />
         
         {/* 사이드바가 보이는 페이지 */}
         <Route element={<Sidebar />}> 
