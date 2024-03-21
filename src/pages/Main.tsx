@@ -19,7 +19,7 @@ const Main = () => {
           <span>삐삐가 공부에 집중할 수 있게</span><br />
           <span>잔소리를 해줘요!</span>
         </Text>
-        <Button to='/login'><img src={Icon_Play} alt="start button" />공부하기</Button>
+        <Button to='/account'><img src={Icon_Play} alt="start button" />공부하기</Button>
       </LSection>
     </Wrapper>
   );
@@ -29,6 +29,7 @@ const Wrapper = styled.div`
   display: flex;
   background: linear-gradient(180deg, #FFDA58 0%, #FFDA58 5%, #FFFFFF 16%);
   height: 100vh;
+  width: 100vw;
   justify-content: center;
   align-items: center;
   gap: 68px;

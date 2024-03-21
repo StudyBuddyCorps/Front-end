@@ -1,7 +1,6 @@
 import Main from "./Main";
+import Account from "./Account";
 import Home from "./Home";
-import Login from "./Login";
-import Join from "./Join";
 import Group from "./Group";
 import GroupMain from "./GroupMain";
 import Calendar from "./Calender";
@@ -15,8 +14,7 @@ import StudyRoomFinish from "./StudyRoomFinish";
 export {
   Main,
   Home,
-  Login,
-  Join,
+  Account,
   Group,
   GroupMain,
   Calendar,
