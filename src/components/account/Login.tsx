@@ -11,6 +11,7 @@ interface LoginProps {
 }
 
 function Login({onSubmit}: LoginProps) {
+  const [showPwd, setShowPwd] = useState(false);
   const [form, setForm] = useState({
     email: '',
     password: ''
@@ -37,6 +38,11 @@ function Login({onSubmit}: LoginProps) {
 
   // input 값이 다 입력되어 있는지 체크
   const isFormValid = email !== '' && password !== '';
+
+  // 눈 아이콘 클릭 시 비밀번호가 보임
+  const handleTogglePwdVisibility = () => {
+    setShowPwd(prevState => !prevState);
+  };
   
   return (
     <Wrapper>
@@ -59,13 +65,13 @@ function Login({onSubmit}: LoginProps) {
           <InputContainer>
             <Img src={Lock} alt='password' />
             <Input
-              type='password'
+              type={showPwd ? 'text' : 'password'}
               name='password'
               placeholder='비밀번호를 입력해주세요'
               value={password}
               onChange={onChange}
             />
-            <ViewImg src={UnView} alt="Hidde View" />
+            <ViewImg src={UnView} alt="Hidde View" onClick={handleTogglePwdVisibility}/>
           </InputContainer>          
         </div>      
         <Button type='submit' enabled={isFormValid}>로그인</Button>
