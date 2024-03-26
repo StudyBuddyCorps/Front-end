@@ -12,6 +12,8 @@ interface JoinProps {
 }
 
 const Join = ({onSubmit}: JoinProps) => {
+  const [showPwd, setShowPwd] = useState(false);
+   const [showConfirmPwd, setShowConfirmPwd] = useState(false);
   const [ form, setForm ] = useState({
     name: '',
     email: '',
@@ -43,6 +45,14 @@ const Join = ({onSubmit}: JoinProps) => {
   // input 값이 다 입력되어 있는지 체크
   const isFormValid = name !== '' && email !== '' && password !== '' && confirmPwd !== '';
   
+  // 눈 아이콘 클릭 시 비밀번호가 보임
+  const handleTogglePwdVisibility = () => {
+    setShowPwd(prevState => !prevState);
+  };
+  const handleToggleConfirmPdVisibility = () => {
+    setShowConfirmPwd(prevState => !prevState);
+  };
+
   return (
     <Wrapper>
       <JoinForm onSubmit={handleSubmit}>
@@ -77,24 +87,24 @@ const Join = ({onSubmit}: JoinProps) => {
           <InputContainer>
             <Img src={Lock} alt='password' />
             <Input
-              type='password'
+              type={showPwd ? 'text' : 'password'}
               name="password"
               placeholder='영문자, 숫자, 특수문자 포함 최소 8~25자'
               value={password}
               onChange={onChange}
             />
-            <ViewImg src={UnView} alt="Hidde View" />
+            <ViewImg src={UnView} alt="Hidde View" onClick={handleTogglePwdVisibility} />
           </InputContainer>   
           <InputContainer>
             <Img src={Lock} alt='password' />
             <Input
-              type='password'
+              type={showConfirmPwd ? 'text' : 'password'}
               name="confirmPwd"
               placeholder='비밀번호 확인'
               value={confirmPwd}
               onChange={onChange}
             />
-            <ViewImg src={UnView} alt="Hidde View" />
+            <ViewImg src={UnView} alt="Hidde View" onClick={handleToggleConfirmPdVisibility} />
           </InputContainer>       
         </div>      
         <Button type="submit" enabled={isFormValid}>회원가입</Button>
