@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Message from "../../assets/message.png";
 import Lock from "../../assets/lock.png";
 import Kakao from "../../assets/kakao.png";
@@ -34,6 +34,9 @@ function Login({onSubmit}: LoginProps) {
       password: "",
     });
   };
+
+  // input 값이 다 입력되어 있는지 체크
+  const isFormValid = email !== '' && password !== '';
   
   return (
     <Wrapper>
@@ -65,7 +68,7 @@ function Login({onSubmit}: LoginProps) {
             <ViewImg src={UnView} alt="Hidde View" />
           </InputContainer>          
         </div>      
-        <Button type='submit'>로그인</Button>
+        <Button type='submit' enabled={isFormValid}>로그인</Button>
       </LoginForm>
       <Other>
         <Text>또는 다음으로 로그인</Text>
@@ -95,7 +98,7 @@ const Wrapper = styled.div`
   padding: 0 5vw;
   box-sizing: border-box;
   gap: 4.5vh;
-  
+
   @media (max-height: 808px) {
     height: 500px;
     gap: 30px;
@@ -147,16 +150,23 @@ const ViewImg = styled.img`
   transform: translateY(-50%);
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ enabled: boolean}>`
   height: 52px;
   border: none;
   border-radius: 10px;
-  background-color: #2A3F5F;
+  background-color: #ECECEC;
   color: #FFFFFF;
   font-size: 20px;
   font-weight: 600;
-  cursor: pointer;
-`;
+  cursor: not-allowed;
+  ${props => 
+    props.enabled &&
+    css`
+      background-color: #2A3F5F;
+      cursor: pointer;
+    `
+  }
+ `;
 
 const Other = styled.div`
   display: flex;
