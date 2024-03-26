@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 import Message from "../../assets/message.png";
 import Lock from "../../assets/lock.png";
@@ -7,29 +7,47 @@ import Google from "../../assets/google.png";
 import UnView from "../../assets/hideView.png";
 
 interface LoginProps {
-  onLogin: (email: string, password: string) => void;
+  onSubmit: (form: {email: string, password: string}) => void;
 }
 
-const Login = () => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+function Login({onSubmit}: LoginProps) {
+  const [form, setForm] = useState({
+    email: '',
+    password: ''
+  });
 
-  // const handleLogin = () => {
-  //   onLogin(email, password);
-  // }
+  const { email, password } = form;
+
+  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value, 
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(form);
+    setForm({
+      email: "",
+      password: "",
+    });
+  };
   
   return (
     <Wrapper>
-      <LoginForm>
+      <LoginForm onSubmit={handleSubmit}>
         <div>
           <LoginLabel>이메일</LoginLabel>
           <InputContainer>
             <Img src={Message} alt="email" />
             <Input 
               type="email"
+              name='email'
               placeholder="이메일을 입력해주세요"
               value={email}
-              // onChange={(e) => setEmail(e.target.value)}
+              onChange={onChange}
             />
           </InputContainer>          
         </div>
@@ -39,14 +57,15 @@ const Login = () => {
             <Img src={Lock} alt='password' />
             <Input
               type='password'
+              name=''
               placeholder='비밀번호를 입력해주세요'
               value={password}
-              // onChange={(e) => setPassword(e.target.value)}
+              onChange={onChange}
             />
             <ViewImg src={UnView} alt="Hidde View" />
           </InputContainer>          
         </div>      
-        <Button>로그인</Button>
+        <Button type='submit'>로그인</Button>
       </LoginForm>
       <Other>
         <Text>또는 다음으로 로그인</Text>
@@ -75,7 +94,12 @@ const Wrapper = styled.div`
   background-color: #FFFFFF;
   padding: 0 5vw;
   box-sizing: border-box;
-  gap: 4.7vh;
+  gap: 4.5vh;
+
+  @media (max-height: 808px) {
+    height: 500px;
+    gap: 30px;
+  }
 `;
 
 const LoginForm = styled.form`

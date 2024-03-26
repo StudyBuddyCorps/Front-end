@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Message from "../../assets/message.png";
 import Lock from "../../assets/lock.png";
@@ -8,25 +8,52 @@ import UnView from "../../assets/hideView.png";
 import Profile from "../../assets/profile.png";
 
 interface JoinProps {
-  onLogin: (name: string, email: string, password: string) => void;
+  onSubmit: (form: {name: string, email: string, password: string, confirmPwd: string}) => void;
 }
 
-const Join = () => {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+const Join = ({onSubmit}: JoinProps) => {
+  const [ form, setForm ] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPwd: ''
+  });
+
+  const { name, email, password, confirmPwd} = form;
+
+  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(form);
+    setForm({
+      name: '',
+      email: '',
+      password: '',
+      confirmPwd: '',
+    });
+  };
+
   
   return (
     <Wrapper>
-      <JoinForm>
+      <JoinForm onSubmit={handleSubmit}>
         <div>
           <JoinLabel>이름</JoinLabel>
           <InputContainer>
             <Img src={Profile} alt="name" />
             <Input 
               type="text"
+              name="name"
               placeholder="이름을 입력해주세요"
               value={name}
+              onChange={onChange}
             />
           </InputContainer>          
         </div>
@@ -36,8 +63,10 @@ const Join = () => {
             <Img src={Message} alt="email" />
             <Input 
               type="email"
+              name="email"
               placeholder="이메일을 입력해주세요"
               value={email}
+              onChange={onChange}
             />
           </InputContainer>          
         </div>
@@ -47,8 +76,10 @@ const Join = () => {
             <Img src={Lock} alt='password' />
             <Input
               type='password'
+              name="password"
               placeholder='영문자, 숫자, 특수문자 포함 최소 8~25자'
               value={password}
+              onChange={onChange}
             />
             <ViewImg src={UnView} alt="Hidde View" />
           </InputContainer>   
@@ -56,13 +87,15 @@ const Join = () => {
             <Img src={Lock} alt='password' />
             <Input
               type='password'
+              name="confirmPwd"
               placeholder='비밀번호 확인'
-              value={password}
+              value={confirmPwd}
+              onChange={onChange}
             />
             <ViewImg src={UnView} alt="Hidde View" />
           </InputContainer>       
         </div>      
-        <Button>회원가입</Button>
+        <Button type="submit">회원가입</Button>
       </JoinForm>
       <Other>
         <Text>또는 다음으로 로그인</Text>
@@ -92,6 +125,10 @@ const Wrapper = styled.div`
   padding: 0 5vw;
   box-sizing: border-box;
   justify-content: space-between;
+
+  @media (max-height: 808px) {
+    height: 580px;
+  }
 `;
 
 const JoinForm = styled.form`
@@ -99,6 +136,11 @@ const JoinForm = styled.form`
   flex-direction: column;
   gap: 5vh;
   margin-top: 6vh;
+
+  @media (max-height: 808px) {
+    gap: 20px;
+    margin-top: 30px;
+  }
 `;
 
 const JoinLabel = styled.label`
