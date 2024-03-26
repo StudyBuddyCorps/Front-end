@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Message from "../../assets/message.png";
 import Lock from "../../assets/lock.png";
 import Kakao from "../../assets/kakao.png";
@@ -39,6 +39,9 @@ const Join = ({onSubmit}: JoinProps) => {
       confirmPwd: '',
     });
   };
+
+  // input 값이 다 입력되어 있는지 체크
+  const isFormValid = name !== '' && email !== '' && password !== '' && confirmPwd !== '';
 
   
   return (
@@ -95,7 +98,7 @@ const Join = ({onSubmit}: JoinProps) => {
             <ViewImg src={UnView} alt="Hidde View" />
           </InputContainer>       
         </div>      
-        <Button type="submit">회원가입</Button>
+        <Button type="submit" enabled={isFormValid}>회원가입</Button>
       </JoinForm>
       <Other>
         <Text>또는 다음으로 로그인</Text>
@@ -181,15 +184,23 @@ const ViewImg = styled.img`
   transform: translateY(-50%);
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ enabled: boolean}>`
   height: 52px;
   border: none;
   border-radius: 10px;
-  background-color: #2A3F5F;
+  background-color: #ECECEC;
   color: #FFFFFF;
   font-size: 20px;
   font-weight: 600;
-  cursor: pointer;
+  cursor: not-allowed;
+
+  ${props => 
+    props.enabled &&
+    css`
+      background-color: #2A3F5F;
+      cursor: pointer;
+    `
+  }
 `;
 
 const Other = styled.div`
