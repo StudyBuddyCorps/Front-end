@@ -7,6 +7,12 @@ import AccountImg from '../assets/account.png';
 
 const Account: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('로그인');
+  const onLoginSubmit = (form: {email: string; password: string}) => {
+    console.log(form);
+  }
+  const onJoinSubmit = (form: {name: string, email: string, password: string, confirmPwd: string}) => {
+    console.log(form);
+  }
 
   const handleTabSelect = (tab: string) => {
     setSelectedTab(tab);
@@ -27,7 +33,7 @@ const Account: React.FC = () => {
           selectedTab={selectedTab}
           onSelectTab={handleTabSelect}
         />
-        {selectedTab === '로그인' ? <Login /> : <Join />}
+        {selectedTab === '로그인' ? <Login onSubmit={onLoginSubmit}/> : <Join onSubmit={onJoinSubmit}/>}
       </div>
     </Wrapper>
   );
