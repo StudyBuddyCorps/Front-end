@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled, { css } from "styled-components";
 import Message from "../../assets/message.png";
 import Lock from "../../assets/lock.png";
 import Kakao from "../../assets/kakao.png";
@@ -7,29 +7,56 @@ import Google from "../../assets/google.png";
 import UnView from "../../assets/hideView.png";
 
 interface LoginProps {
-  onLogin: (email: string, password: string) => void;
+  onSubmit: (form: {email: string, password: string}) => void;
 }
 
-const Login = () => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+function Login({onSubmit}: LoginProps) {
+  const [showPwd, setShowPwd] = useState(false);
+  const [form, setForm] = useState({
+    email: '',
+    password: ''
+  });
 
-  // const handleLogin = () => {
-  //   onLogin(email, password);
-  // }
+  const { email, password } = form;
+
+  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value, 
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(form);
+    setForm({
+      email: "",
+      password: "",
+    });
+  };
+
+  // input 값이 다 입력되어 있는지 체크
+  const isFormValid = email !== '' && password !== '';
   
+  // 눈 아이콘 클릭 시 비밀번호가 보임
+  const handleTogglePwdVisibility = () => {
+    setShowPwd(prevState => !prevState);
+  };
+
   return (
     <Wrapper>
-      <LoginForm>
+      <LoginForm onSubmit={handleSubmit}>
         <div>
           <LoginLabel>이메일</LoginLabel>
           <InputContainer>
             <Img src={Message} alt="email" />
             <Input 
               type="email"
+              name='email'
               placeholder="이메일을 입력해주세요"
               value={email}
-              // onChange={(e) => setEmail(e.target.value)}
+              onChange={onChange}
             />
           </InputContainer>          
         </div>
@@ -38,15 +65,16 @@ const Login = () => {
           <InputContainer>
             <Img src={Lock} alt='password' />
             <Input
-              type='password'
+              type={showPwd ? 'text' : 'password'}
+              name='password'
               placeholder='비밀번호를 입력해주세요'
               value={password}
-              // onChange={(e) => setPassword(e.target.value)}
+              onChange={onChange}
             />
-            <ViewImg src={UnView} alt="Hidde View" />
+            <ViewImg src={UnView} alt="Hidde View" onClick={handleTogglePwdVisibility} />
           </InputContainer>          
         </div>      
-        <Button>로그인</Button>
+        <Button type='submit' enabled={isFormValid}>로그인</Button>
       </LoginForm>
       <Other>
         <Text>또는 다음으로 로그인</Text>
@@ -75,7 +103,12 @@ const Wrapper = styled.div`
   background-color: #FFFFFF;
   padding: 0 5vw;
   box-sizing: border-box;
-  gap: 4.7vh;
+  gap: 4.5vh;
+
+  @media (max-height: 808px) {
+    height: 500px;
+    gap: 30px;
+   }
 `;
 
 const LoginForm = styled.form`
@@ -123,16 +156,23 @@ const ViewImg = styled.img`
   transform: translateY(-50%);
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ enabled: boolean}>`
   height: 52px;
   border: none;
   border-radius: 10px;
-  background-color: #2A3F5F;
+  background-color: #ECECEC;
   color: #FFFFFF;
   font-size: 20px;
   font-weight: 600;
-  cursor: pointer;
-`;
+  cursor: not-allowed;
+  ${props => 
+    props.enabled &&
+    css`
+      background-color: #2A3F5F;
+      cursor: pointer;
+    `
+  }
+ `;
 
 const Other = styled.div`
   display: flex;

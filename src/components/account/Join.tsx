@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import styled, { css } from "styled-components";
 import Message from "../../assets/message.png";
 import Lock from "../../assets/lock.png";
 import Kakao from "../../assets/kakao.png";
@@ -8,25 +8,64 @@ import UnView from "../../assets/hideView.png";
 import Profile from "../../assets/profile.png";
 
 interface JoinProps {
-  onLogin: (name: string, email: string, password: string) => void;
+  onSubmit: (form: {name: string, email: string, password: string, confirmPwd: string}) => void;
 }
 
-const Join = () => {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+const Join = ({onSubmit}: JoinProps) => {
+  const [showPwd, setShowPwd] = useState(false);
+   const [showConfirmPwd, setShowConfirmPwd] = useState(false);
+  const [ form, setForm ] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPwd: ''
+  });
+
+  const { name, email, password, confirmPwd} = form;
+
+  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(form);
+    setForm({
+      name: '',
+      email: '',
+      password: '',
+      confirmPwd: '',
+    });
+  };
+
+  // input 값이 다 입력되어 있는지 체크
+  const isFormValid = name !== '' && email !== '' && password !== '' && confirmPwd !== '';
   
+  // 눈 아이콘 클릭 시 비밀번호가 보임
+  const handleTogglePwdVisibility = () => {
+    setShowPwd(prevState => !prevState);
+  };
+  const handleToggleConfirmPdVisibility = () => {
+    setShowConfirmPwd(prevState => !prevState);
+  };
+
   return (
     <Wrapper>
-      <JoinForm>
+      <JoinForm onSubmit={handleSubmit}>
         <div>
           <JoinLabel>이름</JoinLabel>
           <InputContainer>
             <Img src={Profile} alt="name" />
             <Input 
               type="text"
+              name="name"
               placeholder="이름을 입력해주세요"
               value={name}
+              onChange={onChange}
             />
           </InputContainer>          
         </div>
@@ -36,8 +75,10 @@ const Join = () => {
             <Img src={Message} alt="email" />
             <Input 
               type="email"
+              name="email"
               placeholder="이메일을 입력해주세요"
               value={email}
+              onChange={onChange}
             />
           </InputContainer>          
         </div>
@@ -46,23 +87,27 @@ const Join = () => {
           <InputContainer>
             <Img src={Lock} alt='password' />
             <Input
-              type='password'
+              type={showPwd ? 'text' : 'password'}
+              name="password"
               placeholder='영문자, 숫자, 특수문자 포함 최소 8~25자'
               value={password}
+              onChange={onChange}
             />
-            <ViewImg src={UnView} alt="Hidde View" />
+            <ViewImg src={UnView} alt="Hidde View" onClick={handleTogglePwdVisibility} />
           </InputContainer>   
           <InputContainer>
             <Img src={Lock} alt='password' />
             <Input
-              type='password'
+              type={showConfirmPwd ? 'text' : 'password'}
+              name="confirmPwd"
               placeholder='비밀번호 확인'
-              value={password}
+              value={confirmPwd}
+              onChange={onChange}
             />
-            <ViewImg src={UnView} alt="Hidde View" />
+            <ViewImg src={UnView} alt="Hidde View" onClick={handleToggleConfirmPdVisibility} />
           </InputContainer>       
         </div>      
-        <Button>회원가입</Button>
+        <Button type="submit" enabled={isFormValid}>회원가입</Button>
       </JoinForm>
       <Other>
         <Text>또는 다음으로 로그인</Text>
@@ -92,6 +137,10 @@ const Wrapper = styled.div`
   padding: 0 5vw;
   box-sizing: border-box;
   justify-content: space-between;
+
+  @media (max-height: 808px) {
+    height: 580px;
+  }
 `;
 
 const JoinForm = styled.form`
@@ -99,6 +148,11 @@ const JoinForm = styled.form`
   flex-direction: column;
   gap: 5vh;
   margin-top: 6vh;
+
+  @media (max-height: 808px) {
+    gap: 20px;
+    margin-top: 30px;
+  }
 `;
 
 const JoinLabel = styled.label`
@@ -139,15 +193,22 @@ const ViewImg = styled.img`
   transform: translateY(-50%);
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ enabled: boolean}>`
   height: 52px;
   border: none;
   border-radius: 10px;
-  background-color: #2A3F5F;
+  background-color: #ECECEC;
   color: #FFFFFF;
   font-size: 20px;
   font-weight: 600;
-  cursor: pointer;
+  cursor: not-allowed;
+  ${props => 
+    props.enabled &&
+    css`
+      background-color: #2A3F5F;
+      cursor: pointer;
+    `
+  }
 `;
 
 const Other = styled.div`
