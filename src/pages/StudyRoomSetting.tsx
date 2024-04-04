@@ -20,7 +20,7 @@ const StudyRoomSetting: React.FC = () => {
         onSelectTab={handleTabSelect}
       />
 
-      {selectedTab === '1. 스터디룸 타입' ? <StudyType /> : selectedTab === '2. 스터디 메이트' ? <StudyMate /> : <DefaultSetting />}
+      {selectedTab === '1. 스터디룸 타입' ? <StudyType setSelectedTab={setSelectedTab} /> : selectedTab === '2. 스터디 메이트' ? <StudyMate /> : <DefaultSetting />}
     </Wrapper>
   );
 };
