@@ -1,7 +1,23 @@
-const StudyMate = () => {
+import React, { useState } from "react";
+import styled from "styled-components";
+import CharacterList from "./CharacterList";
+
+const StudyMate: React.FC = () => {
   return (
-    <div>스터디룸 설정 2 - 스터디 메이트</div>
+    <Wrapper>
+      <CharacterList />
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  width: 55vw;
+  height: 88vh;
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 0 15px 15px 0;
+  padding: 84px 7%;
+  box-sizing: border-box;
+`;
 
 export default StudyMate;
