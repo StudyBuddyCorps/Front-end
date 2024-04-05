@@ -85,7 +85,7 @@ const RSection = styled.div`
 
 const Title = styled.div`
   font-size: 36px;
-  font-weight: 500;
+  font-weight: 600;
   margin: 10px 0;
 `;
 
@@ -104,9 +104,12 @@ const Study = styled.div`
   display: flex;
   height: 41vh;
   background-color: #F5F5F5;
-  padding: 22px 14.5vw 22px 43px;
+  padding: 22px 43px;
   box-sizing: border-box;
-  justify-content: space-between;
+  gap: 15vw;
+  @media (min-width: 1280px) {
+    gap: 22vw;
+  }
 `;
 
 const SDiv = styled.div`
@@ -159,8 +162,9 @@ const TotalStudyTime = styled.div`
 
 const Percent = styled.div`
   display: flex;
-  justify-content: space-around;
   align-items: center;
+  justify-content: center;
+  gap: 2.5vw;
 `;
 
 const GoalStudyTime = styled.div`
