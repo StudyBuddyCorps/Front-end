@@ -1,16 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface RadioProps {
   handleClickAdmin: (id: string) => void;
-  click: boolean;
+  selected: boolean;
   text: string;
   id: string;
 }
 
-const Radio: React.FC<RadioProps> = ({ handleClickAdmin, click, text, id }) => {
-  console.log('id->', id);
-
+const Radio: React.FC<RadioProps> = ({ handleClickAdmin, selected, text, id }) => {
   return (
     <ButtonBox>
       <AdminText>
@@ -18,13 +16,13 @@ const Radio: React.FC<RadioProps> = ({ handleClickAdmin, click, text, id }) => {
           onClick={() => handleClickAdmin(id)}
           alt="nomalImg"
           src={require('../../assets/normal_radio.png')}
-          show={click}
+          selected={selected}
         />
         <ChangedImg
           onClick={() => handleClickAdmin(id)}
           alt="changedImg"
           src={require('../../assets/change_radio.png')}
-          show={click}
+          selected={selected}
         />
         {text}
       </AdminText>
@@ -55,10 +53,20 @@ const ChangeImg = styled.img`
   background-color: white;
 `;
 
-const NomalImg = styled(ChangeImg)<{ show: boolean }>`
-  display: ${({ show }) => (show ? 'none' : 'block')};
+const sharedImgStyles = css`
+  display: none;
 `;
 
-const ChangedImg = styled(ChangeImg)<{ show: boolean }>`
-  display: ${({ show }) => (show ? 'block' : 'none')};
+const NomalImg = styled(ChangeImg)<{ selected: boolean }>`
+  ${sharedImgStyles}
+  ${({ selected }) => !selected && css`
+    display: block;
+  `}
+`;
+
+const ChangedImg = styled(ChangeImg)<{ selected: boolean }>`
+  ${sharedImgStyles}
+  ${({ selected }) => selected && css`
+    display: block;
+  `}
 `;

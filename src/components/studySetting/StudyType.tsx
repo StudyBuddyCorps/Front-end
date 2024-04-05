@@ -12,6 +12,7 @@ const StudyType: React.FC<StudyTypeProps> = ({ setSelectedTab }) => {
 
   const handleClickButton = (buttonName: string) => {
     setInputStatus(buttonName);
+    console.log('Selected ID:', buttonName);
   };
 
   const handleNextButtonClick = () => {
@@ -23,7 +24,7 @@ const StudyType: React.FC<StudyTypeProps> = ({ setSelectedTab }) => {
       <Container>
         <Radio
           handleClickAdmin={handleClickButton}
-          click={inputStatus === '기본'}
+          selected={inputStatus === '기본'}
           text="기본"
           id="기본"
         />
@@ -43,7 +44,7 @@ const StudyType: React.FC<StudyTypeProps> = ({ setSelectedTab }) => {
       <Container>
         <Radio
           handleClickAdmin={handleClickButton}
-          click={inputStatus === '뽀모도로'}
+          selected={inputStatus === '뽀모도로'}
           text="뽀모도로"
           id="뽀모도로"
         />
