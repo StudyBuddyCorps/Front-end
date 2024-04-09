@@ -4,36 +4,38 @@ import Preview from "./Preivew";
 import UploadImg from "./UploadImg";
 import OptionItem from "./OptionItem";
 import { Character } from "./Character";
+import { Voice } from "./Voice";
 import ImgBox from "../../assets/Img_box.png";
 
+{/* 임시 character 임시 더미 데이터 */}
+const characterData: Character[] = [
+  { id: 1, name: 'noti', img: require('../../assets/Noti.png'), large_img: require('../../assets/Noti2.png') },
+  { id: 2, name: 'woman', img: require('../../assets/avatar_woman.png'), large_img: require('../../assets/avatar_woman.png') },
+];
+
 const CharacterList: React.FC = () => {
-  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(characterData[0]);
 
-  {/* 캐릭터 선택 임시 데이터 */}
-  const characterData: Character[] = [
-    { id: 1, name: 'noti', small_img: require('../../assets/Noti.png'), large_img: require('../../assets/Noti2.png')},
-    { id: 2, name: 'woman', small_img: require('../../assets/avatar_woman.png'), large_img: require('../../assets/avatar_woman.png')},
-  ];
-
-  const handleCharacterClick = (character: Character) => { 
-    setSelectedCharacter(character);
-    console.log('Selected Character ID:', character.id);
+  const handleCharacterClick = (item: Character | Voice) => {
+    if ('large_img' in item) {
+      const character = item as Character;
+      setSelectedCharacter(prevCharacter => (prevCharacter && prevCharacter.id === character.id) ? null : character);
+      console.log('Selected Character ID:', character.id);
+    }
   };
 
   const handleSelectImgBoxClick = () => {
-    setSelectedCharacter(null); // 이미 선택된 캐릭터 취소
+    setSelectedCharacter(null);
   };
 
   return (
     <Wrapper>
-      {/* 스터디 메이트 프리뷰 */}
       {selectedCharacter ? <Preview item={selectedCharacter} /> : <UploadImg />}
-      
+
       <div>
         <Title>캐릭터 선택 <span>*</span></Title>
 
         <List>
-          {/* 스터디 메이트 캐릭터 선택 */}
           {characterData.map(character => (
             <OptionItem
               key={character.id}
@@ -41,24 +43,23 @@ const CharacterList: React.FC = () => {
               onClick={handleCharacterClick}
               selected={selectedCharacter !== null && selectedCharacter.id === character.id}
             />
-          ))}  
+          ))}
 
-          <SelectImgBox 
+          <SelectImgBox
             selected={selectedCharacter === null}
             onClick={handleSelectImgBoxClick}
           >
             <img src={ImgBox} alt="select your image" />
-          </SelectImgBox>      
-        </List>        
+          </SelectImgBox>
+        </List>
       </div>
     </Wrapper>
-  )
+  );
 };
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: -webkit-fill-available;
   gap: 40px;
 `;
 

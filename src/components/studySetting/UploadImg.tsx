@@ -70,7 +70,7 @@ function UploadImg() {
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 50%;
+  height: calc(30vw* 0.7);
   background-color: #303237;
   border: none;
   border-radius: 5px;

@@ -2,6 +2,6 @@
 export interface Character {
   id: number;
   name: string;
-  small_img: string;
+  img: string;
   large_img: string;
 }
