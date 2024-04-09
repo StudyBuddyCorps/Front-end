@@ -17,7 +17,7 @@ const Preview: React.FC<PreviewProps> = ({ item }) => {
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 50%;
+  height: calc(30vw* 0.7);
   background-color: #303237;
   border: none;
   border-radius: 5px;
