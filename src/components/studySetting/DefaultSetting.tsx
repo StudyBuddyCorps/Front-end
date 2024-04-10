@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import Switch from "../../assets/Switch.png";
 import UnSwitch from "../../assets/unSwitch.png";
 
@@ -12,6 +13,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab }) => {
   const [defaultRoomSetting, setDefaultRoomSetting] = useState<boolean>(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (cameraPermission) {
@@ -75,7 +77,8 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab }) => {
   };
   
   const handleNextButtonClick = () => {
-    setSelectedTab('3. 디폴트 설정');
+    console.log("디폴트 설정: ", defaultRoomSetting);
+    navigate('/room/:roomId');
   };
 
   return (
@@ -204,6 +207,7 @@ const Button = styled.button`
   font-weight: 600;
   border: none;
   border-radius: 10px;
+  cursor: pointer;
 `;
 
 export default DefaultSetting;
