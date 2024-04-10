@@ -22,7 +22,7 @@ const StudyRoomSetting: React.FC = () => {
 
       {selectedTab === '1. 스터디룸 타입' ? <StudyType setSelectedTab={setSelectedTab} /> 
       : selectedTab === '2. 스터디 메이트' ? <StudyMate setSelectedTab={setSelectedTab} /> 
-      : <DefaultSetting />}
+      : <DefaultSetting setSelectedTab={setSelectedTab} />}
 
     </Wrapper>
   );
