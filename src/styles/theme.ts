@@ -16,8 +16,19 @@ const colors = {
   background2: "#303237",
 };
 
+const fonts = {
+  extraBold: "Inter ExtraBold",
+  bold: "Inter Bold",
+  semiBold: "Inter SemiBold",
+  regular: "Inter Regular",
+  medium: "Inter Medium",
+  light: "Inter Light",
+};
+
 export type Colors = typeof colors;
+export type Fonts = typeof fonts;
 
 const Color: DefaultTheme = {
   colors,
+  fonts,
 };
