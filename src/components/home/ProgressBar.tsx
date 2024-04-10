@@ -20,7 +20,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
 
 const Wrapper = styled.div`
   position: relative;
-  width: 830px;
+  width: 65vw;
   height: 28px;
   background-color: #FFFFFF;
   border: 1px solid #CDCDCD;
