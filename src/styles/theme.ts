@@ -28,7 +28,9 @@ const fonts = {
 export type Colors = typeof colors;
 export type Fonts = typeof fonts;
 
-const Color: DefaultTheme = {
+const theme: DefaultTheme = {
   colors,
   fonts,
 };
+
+export default theme;
