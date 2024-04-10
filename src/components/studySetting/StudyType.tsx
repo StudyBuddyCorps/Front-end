@@ -63,13 +63,14 @@ const StudyType: React.FC<StudyTypeProps> = ({ setSelectedTab }) => {
       </Container>
 
       {/* 버튼 클릭 시 스터디 메이트 탭으로 이동하는 버튼 */}
-      <Button onClick={handleNextButtonClick}>다음</Button>
+      <BtnDiv>
+        <Button onClick={handleNextButtonClick}>다음</Button>
+      </BtnDiv>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  position: relative;
   width: 55vw;
   height: 88vh;
   background-color: #FFFFFF;
@@ -77,6 +78,15 @@ const Wrapper = styled.div`
   border-radius: 0 15px 15px 0;
   padding: 84px 100px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: scroll;
+  scrollbar-width: none; /* Firefox 용 스크롤 바 숨김 */
+  -ms-overflow-style: ne; /* IE 및 Edge 용 스크롤 바 숨김 */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome 및 Safari 용 스크롤 바 숨김 */
+  }
 `;
 
 const Container = styled.div`
@@ -89,7 +99,12 @@ const Describe = styled.div`
   font-weight: 500;
   margin-left: 10px;
   gap: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 10px;no
+`;
+
+const BtnDiv = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const Button = styled.button`
@@ -101,9 +116,7 @@ const Button = styled.button`
   font-weight: 600;
   border: none;
   border-radius: 10px;
-  position: absolute;
-  right: 100px;
-  bottom: 80px;
+  cursor: pointer;
 `;
 
 export default StudyType;
