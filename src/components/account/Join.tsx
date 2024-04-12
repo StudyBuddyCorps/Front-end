@@ -13,7 +13,7 @@ interface JoinProps {
 
 const Join = ({onSubmit}: JoinProps) => {
   const [showPwd, setShowPwd] = useState(false);
-  const [showConfirmPwd, setShowConfirmPwd] = useState(false);
+   const [showConfirmPwd, setShowConfirmPwd] = useState(false);
   const [ form, setForm ] = useState({
     name: '',
     email: '',
@@ -44,7 +44,7 @@ const Join = ({onSubmit}: JoinProps) => {
 
   // input 값이 다 입력되어 있는지 체크
   const isFormValid = name !== '' && email !== '' && password !== '' && confirmPwd !== '';
-
+  
   // 눈 아이콘 클릭 시 비밀번호가 보임
   const handleTogglePwdVisibility = () => {
     setShowPwd(prevState => !prevState);
@@ -52,7 +52,7 @@ const Join = ({onSubmit}: JoinProps) => {
   const handleToggleConfirmPdVisibility = () => {
     setShowConfirmPwd(prevState => !prevState);
   };
-  
+
   return (
     <Wrapper>
       <JoinForm onSubmit={handleSubmit}>
@@ -202,7 +202,6 @@ const Button = styled.button<{ enabled: boolean}>`
   font-size: 20px;
   font-weight: 600;
   cursor: not-allowed;
-
   ${props => 
     props.enabled &&
     css`

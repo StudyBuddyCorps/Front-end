@@ -38,12 +38,20 @@ function Login({onSubmit}: LoginProps) {
 
   // input 값이 다 입력되어 있는지 체크
   const isFormValid = email !== '' && password !== '';
+<<<<<<< HEAD
 
   // 눈 아이콘 클릭 시 비밀번호가 보임
   const handleTogglePwdVisibility = () => {
     setShowPwd(prevState => !prevState);
   };
+=======
+>>>>>>> 95e4373ffb2ba4b0431da0f08dfbd786b92929b2
   
+  // 눈 아이콘 클릭 시 비밀번호가 보임
+  const handleTogglePwdVisibility = () => {
+    setShowPwd(prevState => !prevState);
+  };
+
   return (
     <Wrapper>
       <LoginForm onSubmit={handleSubmit}>
@@ -71,7 +79,11 @@ function Login({onSubmit}: LoginProps) {
               value={password}
               onChange={onChange}
             />
+<<<<<<< HEAD
             <ViewImg src={UnView} alt="Hidde View" onClick={handleTogglePwdVisibility}/>
+=======
+            <ViewImg src={UnView} alt="Hidde View" onClick={handleTogglePwdVisibility} />
+>>>>>>> 95e4373ffb2ba4b0431da0f08dfbd786b92929b2
           </InputContainer>          
         </div>      
         <Button type='submit' enabled={isFormValid}>로그인</Button>
@@ -108,7 +120,11 @@ const Wrapper = styled.div`
   @media (max-height: 808px) {
     height: 500px;
     gap: 30px;
+<<<<<<< HEAD
   }
+=======
+   }
+>>>>>>> 95e4373ffb2ba4b0431da0f08dfbd786b92929b2
 `;
 
 const LoginForm = styled.form`
@@ -165,7 +181,10 @@ const Button = styled.button<{ enabled: boolean}>`
   font-size: 20px;
   font-weight: 600;
   cursor: not-allowed;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 95e4373ffb2ba4b0431da0f08dfbd786b92929b2
   ${props => 
     props.enabled &&
     css`
@@ -173,7 +192,11 @@ const Button = styled.button<{ enabled: boolean}>`
       cursor: pointer;
     `
   }
+<<<<<<< HEAD
 `;
+=======
+ `;
+>>>>>>> 95e4373ffb2ba4b0431da0f08dfbd786b92929b2
 
 const Other = styled.div`
   display: flex;
