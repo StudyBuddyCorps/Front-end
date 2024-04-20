@@ -1,16 +1,16 @@
 import React from "react";
 import Router from "shared/Router";
-import { ThemeProvider } from "styled-components";
+import { ChakraProvider } from "@chakra-ui/react";
 import GlobalStyle from "styles/GlobalStyle";
 import theme from "styles/theme";
 
 function App() {
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <ChakraProvider theme={theme}>
         <GlobalStyle />
         <Router />
-      </ThemeProvider>
+      </ChakraProvider>
     </>
   );
 }
