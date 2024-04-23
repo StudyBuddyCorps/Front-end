@@ -1,34 +1,40 @@
 import { createGlobalStyle } from "styled-components";
+import InterExtraBold from "styles/fonts/InterExtraBold.ttf";
+import InterBold from "styles/fonts/InterBold.ttf";
+import InterSemiBold from "styles/fonts/InterSemiBold.ttf";
+import InterMedium from "styles/fonts/InterMedium.ttf";
+import InterRegular from "styles/fonts/InterRegular.ttf";
+import InterLight from "styles/fonts/InterLight.ttf";
 
 const GlobalStyle = createGlobalStyle`
   @font-face{
-    font-family: 'Inter SemiBold';
-    src : url(./styles/fonts/Inter-SemiBold.ttf) format('truetype');
+    font-family: 'InterSemiBold';
+    src : url(${InterSemiBold}) format('truetype');
   }
 
   @font-face{
-    font-family: 'Inter Medium';
-    src : url(./styles/fonts/Inter-Medium.ttf) format('truetype');
+    font-family: 'InterMedium';
+    src : url(${InterMedium}) format('truetype');
   }
 
   @font-face{
-    font-family: 'Inter Regular';
-    src : url(./styles/fonts/Inter-Regular.ttf) format('truetype');
+    font-family: 'InterRegular';
+    src : url(${InterRegular}) format('truetype');
   }
 
   @font-face{
-    font-family: 'Inter Light';
-    src : url(./styles/fonts/Inter-Light.ttf) format('truetype');
+    font-family: 'InterLight';
+    src : url(${InterLight}) format('truetype');
   }
 
   @font-face{
-    font-family: 'Inter Bold';
-    src : url(./styles/fonts/Inter-Bold.ttf) format('truetype');
+    font-family: 'InterBold';
+    src : url(${InterBold}) format('truetype');
   }
  
   @font-face{
-    font-family: 'Inter ExtraBold';
-    src : url(./styles/fonts/Inter-ExtraBold.ttf) format('truetype');
+    font-family: 'InterExtraBold';
+    src : url(${InterExtraBold}) format('truetype');
   }
   
   body {

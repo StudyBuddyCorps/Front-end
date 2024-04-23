@@ -6,6 +6,5 @@ import { Colors, Fonts } from "./theme";
 declare module "styled-components" {
   export interface DefaultTheme {
     colors: Colors;
-    fonts: Fonts;
   }
 }
