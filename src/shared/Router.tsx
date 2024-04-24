@@ -13,7 +13,7 @@ import {
   StudyRoomSetting,
   StudyRoomFinish,
 } from "../pages";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "./Sidebar";
 
 const Router = () => {
   return (
