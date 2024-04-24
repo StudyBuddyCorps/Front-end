@@ -1,10 +1,10 @@
 import { createGlobalStyle } from "styled-components";
-import InterExtraBold from "styles/fonts/InterExtraBold.ttf";
-import InterBold from "styles/fonts/InterBold.ttf";
-import InterSemiBold from "styles/fonts/InterSemiBold.ttf";
-import InterMedium from "styles/fonts/InterMedium.ttf";
-import InterRegular from "styles/fonts/InterRegular.ttf";
-import InterLight from "styles/fonts/InterLight.ttf";
+import InterExtraBold from "../assets/fonts/InterExtraBold.ttf";
+import InterBold from "../assets/fonts/InterBold.ttf";
+import InterSemiBold from "../assets/fonts/InterSemiBold.ttf";
+import InterMedium from "../assets/fonts/InterMedium.ttf";
+import InterRegular from "../assets/fonts/InterRegular.ttf";
+import InterLight from "../assets/fonts/InterLight.ttf";
 
 const GlobalStyle = createGlobalStyle`
   @font-face{
