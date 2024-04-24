@@ -13,12 +13,22 @@ const Sidebar: React.FC = () => {
   return (
     <>
       <Navigation>
-        <NavLogo><img src={Logo} alt="Logo" /></NavLogo>
+        <NavLogo>
+          <img src={Logo} alt="Logo" />
+        </NavLogo>
         <NavMenu>
-          <NavItem onClick={() => navigate('/home')}><img src={Icon_home} alt="Home" /></NavItem>
-          <NavItem onClick={() => navigate('/calendar')}><img src={Icon_date} alt="Date" /></NavItem>
-          <NavItem onClick={() => navigate('/group')}><img src={Icon_group} alt="Group" /></NavItem>
-          <NavItem onClick={() => navigate('/setting')}><img src={Icon_setting} alt="Setting" /></NavItem>
+          <NavItem onClick={() => navigate("/home")}>
+            <img src={Icon_home} alt="Home" />
+          </NavItem>
+          <NavItem onClick={() => navigate("/calendar")}>
+            <img src={Icon_date} alt="Date" />
+          </NavItem>
+          <NavItem onClick={() => navigate("/group")}>
+            <img src={Icon_group} alt="Group" />
+          </NavItem>
+          <NavItem onClick={() => navigate("/setting")}>
+            <img src={Icon_setting} alt="Setting" />
+          </NavItem>
         </NavMenu>
       </Navigation>
       <Outlet />
@@ -27,11 +37,14 @@ const Sidebar: React.FC = () => {
 };
 
 const Navigation = styled.nav`
-  width: 100px;
-  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
   display: flex;
   flex-direction: column;
-  background-color: #212E42;
+  background-color: #212e42;
   padding: 30px 18px;
   box-sizing: border-box;
   border-radius: 0 5px 5px 0;
@@ -40,7 +53,6 @@ const Navigation = styled.nav`
 const NavLogo = styled.div`
   margin: 0 auto;
 `;
-
 
 const NavMenu = styled.ul`
   list-style: none;
