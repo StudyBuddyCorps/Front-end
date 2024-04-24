@@ -1,6 +1,13 @@
+import Header from "shared/Header";
+import Layout from "shared/Layout";
+import GroupList from "components/group/GroupList";
+
 const Group = () => {
   return (
-    <div>그룹의 리스트 페이지</div>
+    <Layout>
+      <Header title="Group"></Header>
+      <GroupList></GroupList>
+    </Layout>
   );
 };
 
