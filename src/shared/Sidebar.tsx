@@ -38,9 +38,8 @@ const Sidebar: React.FC = () => {
 
 const Navigation = styled.nav`
   position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
+  width: 100px;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
