@@ -27,7 +27,7 @@ const Home: React.FC = () => {
   return (
     <Layout>
       <Header
-        title="HOME"
+        title="Home"
         dis="운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라"
       >
         <Profile src={Avatar} alt="Profile" />
