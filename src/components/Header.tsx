@@ -1,30 +1,34 @@
-import styled, { ThemeProvider } from "styled-components";
-import theme from "styles/theme";
+import { ReactNode } from "react";
+import styled from "styled-components";
 
 interface HeaderProps {
   title: string;
   dis?: string; // 선택적으로 전달
+  children?: ReactNode;
 }
 
 const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
   return (
-    <ThemeProvider theme={theme}>
-      <Container>
+    <Container>
+      <LeftS>
         <Title>{props.title}</Title>
         <Phrase>{props.dis}</Phrase>
-      </Container>
-    </ThemeProvider>
+      </LeftS>
+      <RightS>{props.children}</RightS>
+    </Container>
   );
 };
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   width: calc(100vw - 100px);
   padding: 35px 43px;
   box-sizing: border-box;
-  background-color: green;
 `;
+
+const LeftS = styled.div``;
+const RightS = styled.div``;
 
 const Title = styled.div`
   font-family: InterExtraBold;
@@ -35,7 +39,7 @@ const Phrase = styled.div`
   font-family: InterExtraBold;
   font-weight: 600;
   font-size: 20px;
-  color: ${(props) => props.theme.colors.subMain};
+  color: ${({ theme }) => theme.colors.subMain};
 `;
 
 export default Header;
