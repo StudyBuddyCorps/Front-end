@@ -13,6 +13,16 @@ import NotoSansRegular from "../assets/fonts/NotoSansRegular.ttf";
 import NotoSansLight from "../assets/fonts/NotoSansLight.ttf";
 
 const GlobalStyle = createGlobalStyle`
+@font-face{
+  font-family: 'InterExtraBold';
+  src : url(${InterExtraBold}) format('truetype');
+}
+
+@font-face{
+  font-family: 'InterBold';
+  src : url(${InterBold}) format('truetype');
+}
+
   @font-face{
     font-family: 'InterSemiBold';
     src : url(${InterSemiBold}) format('truetype');
