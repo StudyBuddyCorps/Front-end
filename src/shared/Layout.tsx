@@ -1,5 +1,4 @@
 import React from "react";
-import Sidebar from "./Sidebar";
 import styled from "styled-components";
 
 interface LayoutProps {
@@ -9,7 +8,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <LayoutContainer>
-      <Sidebar></Sidebar>
       <main>{children}</main>
     </LayoutContainer>
   );
