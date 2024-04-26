@@ -14,9 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 };
 
 const LayoutContainer = styled.div`
-  position: absolute;
-  right: 0;
-
+  margin: 0 0 0 100px;
   main {
     display: flex;
     flex-direction: column;
