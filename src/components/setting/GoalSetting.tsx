@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import SelectBox from "./SelectBox";
 import { OptionData } from "./OptionData";
+import { useState } from "react";
 
 const hours: OptionData[] = [
   { key: '1', value: '1' },
@@ -32,19 +33,41 @@ const minutes: OptionData[] = [
 ];
 
 const GoalSetting: React.FC = () => {
+  const [totalTime, setTotalTime] = useState<number>(0);
+  const [selectedHour, setSelectedHour] = useState<string>('0');
+  const [selectedMinute, setSelectedMinute] = useState<string>('0');
+
+  const handleSave = () => {
+    const total = parseInt(selectedHour) * 60 + parseInt(selectedMinute); // 시간을 분으로 변환 후 합산
+    setTotalTime(total);
+    console.log("총 공부시간:", total);
+  };
+
+  const handleHourChange = (value: string) => {
+    setSelectedHour(value);
+  };
+
+  const handleMinuteChange = (value: string) => {
+    setSelectedMinute(value);
+  };
   return (
     <Wrapper>
-      <Title>하루 총 공부시간</Title>
-      <Bottom>
-        <Container>
-          <SelectBox optionData={hours} />
-          <span>시간</span>        
-        </Container>
-        <Container>
-          <SelectBox optionData={minutes} />
-          <span>분</span>        
-        </Container>        
-      </Bottom>
+      <LContainer>
+        <Title>하루 총 공부시간</Title>
+        <Bottom>
+          <Container>
+            <SelectBox optionData={hours} onChange={handleHourChange} />
+            <span>시간</span>        
+          </Container>
+          <Container>
+            <SelectBox optionData={minutes} onChange={handleMinuteChange} />
+            <span>분</span>        
+          </Container>        
+        </Bottom>        
+      </LContainer>
+      <RContainer>
+        <SaveBtn onClick={handleSave}>저장</SaveBtn>
+      </RContainer>
     </Wrapper>
   );
 };
@@ -55,6 +78,14 @@ const Wrapper = styled.div`
   margin: 43px;
   padding: 45px;
   box-sizing: border-box;  
+  display: flex;
+  justify-content: space-between;
+`;
+
+const LContainer = styled.div`
+`;
+
+const RContainer = styled.div`
 `;
 
 const Title = styled.div`
@@ -73,6 +104,18 @@ const Container = styled.div`
   align-items: flex-end;
   font-size: 18px;
   gap: 10px;
+`;
+
+const SaveBtn = styled.button`
+  width: 150px;
+  height: 54px;
+  color: #FFFFFF;
+  background-color: #586FC5;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
 `;
 
 export default GoalSetting;

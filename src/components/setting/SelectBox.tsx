@@ -6,13 +6,19 @@ interface OptionData {
   value: string;
 }
 
-const SelectBox: React.FC<{ optionData: OptionData[] }> = ({ optionData }) => {
+interface SelectBoxProps {
+  optionData: OptionData[];
+  onChange: (value: string) => void;
+}
+
+const SelectBox: React.FC<SelectBoxProps> = ({ optionData, onChange }) => {
   const [currentValue, setCurrentValue] = useState(optionData[0]?.value);
   const [showOptions, setShowOptions] = useState(false);
 
   const handleOnChangeSelectValue = (value: string) => {
     setCurrentValue(value);
     setShowOptions(false);
+    onChange(value);  // onChange 콜백 호출
   };
 
   return (
