@@ -5,6 +5,7 @@ const colors = {
   main: "#FFDA58",
   subMain: "#586FC5",
   highlight: "#FF007A",
+  pink: "#FF007A80",
   green: "#1497A9",
   white00: "#ECECEC",
   white01: "#F5F5F5",
