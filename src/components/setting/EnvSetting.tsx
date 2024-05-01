@@ -1,9 +1,13 @@
 import styled from "styled-components";
 import EnvPhrase from "./EnvPhrase";
+import EnvRoomType from "./EvnRoomType";
 
 const EnvSetting = () => {
   return (
     <Wrapper>
+      <Conatiner>
+        <EnvRoomType />
+      </Conatiner>
       <EnvPhrase />
     </Wrapper>
   );
@@ -16,5 +20,13 @@ const Wrapper = styled.div`
   gap: 20px;
 `;
 
+const Conatiner = styled.div`
+  border: 2px solid ${({ theme }) => (theme.colors.white01)};
+  border-radius: 5px;
+  padding: 65px 45px;
+  box-sizing: content-box;
+  display: flex;
+  justify-content: space-between;
+`;
 
 export default EnvSetting;

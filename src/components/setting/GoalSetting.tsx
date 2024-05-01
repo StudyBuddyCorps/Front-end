@@ -110,7 +110,7 @@ const SaveBtn = styled.button`
   width: 150px;
   height: 54px;
   color: #FFFFFF;
-  background-color: #586FC5;
+  background-color: ${({ theme }) => (theme.colors.subMain )};
   font-size: 20px;
   font-weight: 600;
   border: none;
