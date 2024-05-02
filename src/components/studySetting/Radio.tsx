@@ -6,12 +6,14 @@ interface RadioProps {
   selected: boolean;
   text: string;
   id: string;
+  fontSize?: string;
+  fontFamily?: string;
 }
 
-const Radio: React.FC<RadioProps> = ({ handleClickAdmin, selected, text, id }) => {
+const Radio: React.FC<RadioProps> = ({ handleClickAdmin, selected, text, id, fontSize, fontFamily }) => {
   return (
     <ButtonBox>
-      <AdminText>
+      <AdminText fontSize={fontSize}>
         <NomalImg
           onClick={() => handleClickAdmin(id)}
           alt="nomalImg"
@@ -35,15 +37,16 @@ export default Radio;
 const ButtonBox = styled.div`
   display: flex;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
-const AdminText = styled.div`
+const AdminText = styled.div<{ fontSize?: string, fontFamily?: string }>`
   display: flex;
   align-items: center;
   margin-right: 30px;
   font-weight: 600;
-  font-size: 24px;
+  font-size: ${(props) => props.fontSize || '20px'};
+  font-family: ${(props) => props.fontFamily || 'NotoSansMedium'}
 `;
 
 const ChangeImg = styled.img`

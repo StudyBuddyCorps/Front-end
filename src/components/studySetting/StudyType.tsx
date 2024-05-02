@@ -27,6 +27,8 @@ const StudyType: React.FC<StudyTypeProps> = ({ setSelectedTab }) => {
           selected={inputStatus === '기본'}
           text="기본"
           id="기본"
+          fontSize="24px"
+          fontFamily="NotoSansSemiBold"
         />
         <Describe>
           <img src={Done} alt="done" />
@@ -47,6 +49,8 @@ const StudyType: React.FC<StudyTypeProps> = ({ setSelectedTab }) => {
           selected={inputStatus === '뽀모도로'}
           text="뽀모도로"
           id="뽀모도로"
+          fontSize="24px"
+          fontFamily="NotoSansSemiBold"
         />
         <Describe>
           <img src={Done} alt="done" />
@@ -99,7 +103,8 @@ const Describe = styled.div`
   font-weight: 500;
   margin-left: 10px;
   gap: 5px;
-  margin-bottom: 10px;no
+  margin-bottom: 10px;
+  margin-top: 20px;
 `;
 
 const BtnDiv = styled.div`
