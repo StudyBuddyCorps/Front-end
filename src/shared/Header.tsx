@@ -36,7 +36,7 @@ const Title = styled.div`
 `;
 
 const Phrase = styled.div`
-  font-family: InterExtraBold;
+  font-family: NotoSansLight;
   font-weight: 600;
   font-size: 20px;
   color: ${({ theme }) => theme.colors.subMain};

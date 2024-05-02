@@ -40,7 +40,7 @@ const ItemBox = styled.div`
   padding-left: 30px;
   font-family: InterMedium, NotoSansMedium;
   font-size: 15px;
-  font-color: #222222;
+  color: #222222;
   border-bottom: 2px solid #cdcdcd;
 
   .c {
