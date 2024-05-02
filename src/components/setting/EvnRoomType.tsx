@@ -35,7 +35,6 @@ const EnvRoomType = () => {
 const Wrapper = styled.div``;
 
 const RadioDiv = styled.div`
- margin-left: 20px;
 `;
 
 const Title = styled.div`
