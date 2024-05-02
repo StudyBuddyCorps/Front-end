@@ -4,10 +4,9 @@ import styled from "styled-components";
 import Avatar from "../assets/avatar_woman.png";
 import Btn_Enter from "../assets/btn_entrance.png";
 import Btn_Create from "../assets/btn_create.png";
-import Flag from "../assets/flag.png";
-import ProgressBar from "components/home/ProgressBar";
 import Header from "shared/Header";
 import Layout from "shared/Layout";
+import Time from "shared/Time";
 
 const Home: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
@@ -52,17 +51,11 @@ const Home: React.FC = () => {
       </Study>
 
       {/* 오늘의 총 공부 시간 */}
-      <Time>
-        <TTile>
-          <img src={Flag} alt="today's study time" />
-          <span>오늘의 총 공부 시간</span>
-        </TTile>
-        <TotalStudyTime>03:30:01</TotalStudyTime>
-        <Percent>
-          <ProgressBar progress={progress} />
-          <GoalStudyTime>06:00:00</GoalStudyTime>
-        </Percent>
-      </Time>
+      <Time
+        title="오늘의 총 공부 시간"
+        totalTime="03 : 30 : 01"
+        goalTime="06 : 00 : 00"
+      ></Time>
     </Layout>
   );
 };
@@ -106,43 +99,4 @@ const StyleLink = styled(Link)`
   text-decoration: none;
   margin-bottom: 10px;
 `;
-
-const Time = styled.div`
-  height: 38vh;
-  padding: 50px 43px 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-`;
-
-const TTile = styled.div`
-  display: flex;
-  gap: 15px;
-  font-size: 24px;
-  font-weight: 600;
-  align-items: center;
-`;
-
-const TotalStudyTime = styled.div`
-  display: flex;
-  font-size: 48px;
-  font-weight: 500;
-  justify-content: center;
-  margin-bottom: 10px;
-`;
-
-const Percent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2.5vw;
-`;
-
-const GoalStudyTime = styled.div`
-  font-size: 36px;
-  font-weight: 400;
-  color: #cdcdcd;
-`;
-
 export default Home;
