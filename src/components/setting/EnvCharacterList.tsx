@@ -48,7 +48,7 @@ const EnvCharacterList: React.FC = () => {
 
   return (
     <Wrapper>
-      <Title>캐릭터 선택<span>*</span></Title>
+      <Title>캐릭터 선택 <span>*</span></Title>
       <Container>
         <CharacterPreview item={selectedCharacter} />
         <List>
