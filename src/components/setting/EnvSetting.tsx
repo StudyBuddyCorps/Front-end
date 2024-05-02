@@ -3,6 +3,7 @@ import EnvPhrase from "./EnvPhrase";
 import EnvRoomType from "./EvnRoomType";
 import EnvCharacterList from "./EnvCharacterList";
 import VoiceList from "components/studySetting/VoiceList";
+import EnvGPTType from "./EnvGPTType";
 
 const EnvSetting = () => {
   return (
@@ -11,6 +12,7 @@ const EnvSetting = () => {
         <EnvRoomType />
         <EnvCharacterList />
         <VoiceList />
+        <EnvGPTType />
       </Conatiner>
       <EnvPhrase />
     </Wrapper>
