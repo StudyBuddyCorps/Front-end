@@ -37,7 +37,7 @@ export default Radio;
 const ButtonBox = styled.div`
   display: flex;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const AdminText = styled.div<{ fontSize?: string, fontFamily?: string }>`

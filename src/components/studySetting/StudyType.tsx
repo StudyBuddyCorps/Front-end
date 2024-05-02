@@ -103,7 +103,8 @@ const Describe = styled.div`
   font-weight: 500;
   margin-left: 10px;
   gap: 5px;
-  margin-bottom: 10px;no
+  margin-bottom: 10px;
+  margin-top: 20px;
 `;
 
 const BtnDiv = styled.div`
