@@ -6,13 +6,22 @@ import VoiceList from "components/studySetting/VoiceList";
 import EnvGPTType from "./EnvGPTType";
 
 const EnvSetting = () => {
+  const handleSave = () => {
+
+  };
+
   return (
     <Wrapper>
       <Conatiner>
-        <EnvRoomType />
-        <EnvCharacterList />
-        <VoiceList />
-        <EnvGPTType />
+        <Left>
+          <EnvRoomType />
+          <EnvCharacterList />
+          <VoiceList />
+          <EnvGPTType />          
+        </Left>
+        <Right>
+          <SaveBtn onClick={handleSave}>저장</SaveBtn>
+        </Right>
       </Conatiner>
       <EnvPhrase />
     </Wrapper>
@@ -32,8 +41,26 @@ const Conatiner = styled.div`
   padding: 65px 45px;
   box-sizing: content-box;
   display: flex;
+  justify-content: space-between;
+`;
+
+const Left = styled.div`
+  display: flex;
   flex-direction: column;
   gap: 50px;
+`;
+const Right = styled.div``;
+
+const SaveBtn = styled.button`
+  width: 150px;
+  height: 54px;
+  color: #FFFFFF;
+  background-color: ${({ theme }) => (theme.colors.subMain )};
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
 `;
 
 export default EnvSetting;
