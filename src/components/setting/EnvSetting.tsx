@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import EnvPhrase from "./EnvPhrase";
 import EnvRoomType from "./EvnRoomType";
+import EnvCharacterList from "./EnvCharacterList";
+import VoiceList from "components/studySetting/VoiceList";
 
 const EnvSetting = () => {
   return (
     <Wrapper>
       <Conatiner>
         <EnvRoomType />
+        <EnvCharacterList />
+        <VoiceList />
       </Conatiner>
       <EnvPhrase />
     </Wrapper>
@@ -26,7 +30,8 @@ const Conatiner = styled.div`
   padding: 65px 45px;
   box-sizing: content-box;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 50px;
 `;
 
 export default EnvSetting;

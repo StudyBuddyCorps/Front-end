@@ -41,7 +41,7 @@ const RadioDiv = styled.div`
 const Title = styled.div`
   font-size: 20px;
   font-family: 'NotoSansSemiBold';
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   
   span {
     color: #FF0000;
