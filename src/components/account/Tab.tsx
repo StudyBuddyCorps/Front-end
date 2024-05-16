@@ -26,7 +26,7 @@ const Tab: React.FC<TabProps> = ({ tabs, selectedTab, onSelectTab }: TabProps) =
 
 const Wrapper = styled.div`
   display: flex;
-  width: 36vw;
+  width: 35vw;
   height: 50px;
   border: none;
   border-radius: 15px 15px 0 0;
