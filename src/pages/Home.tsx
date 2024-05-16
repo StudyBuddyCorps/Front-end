@@ -74,9 +74,9 @@ const Profile = styled.img`
 
 const Study = styled.div`
   display: flex;
-  height: 41vh;
+  min-height: 41vh;
   background-color: #f5f5f5;
-  padding: 22px 43px;
+  padding: 43px;
   box-sizing: border-box;
   gap: 15vw;
   @media (min-width: 1280px) {

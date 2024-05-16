@@ -33,6 +33,7 @@ const RightS = styled.div``;
 const Title = styled.div`
   font-family: InterExtraBold;
   font-size: 36px;
+  margin-bottom: 20px;
 `;
 
 const Phrase = styled.div`
