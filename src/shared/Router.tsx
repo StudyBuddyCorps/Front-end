@@ -12,6 +12,7 @@ import {
   StudyRoomPomodoro,
   StudyRoomSetting,
   StudyRoomFinish,
+  ResetPwd,
 } from "../pages";
 import Sidebar from "./Sidebar";
 
@@ -21,6 +22,7 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/account" element={<Account />} />
+        <Route path="account/reset/password" element={<ResetPwd />} />
 
         {/* 사이드바가 보이는 페이지 */}
         <Route element={<Sidebar />}>
