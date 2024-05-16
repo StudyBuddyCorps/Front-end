@@ -76,7 +76,7 @@ const StudyMate = styled.span`
 
 const Img = styled.img`
   width: 520px;
-  height: 394;
+  height: 394px;
 `;
 
 export default Account;
