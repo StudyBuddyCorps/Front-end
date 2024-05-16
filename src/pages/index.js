@@ -10,6 +10,7 @@ import StudyRoom from "./StudyRoom";
 import StudyRoomPomodoro from "./StudyRoomPomodoro";
 import StudyRoomSetting from "./StudyRoomSetting";
 import StudyRoomFinish from "./StudyRoomFinish";
+import ResetPwd from "./ResetPwd";
 
 export {
   Main,
@@ -24,4 +25,5 @@ export {
   StudyRoomPomodoro,
   StudyRoomSetting,
   StudyRoomFinish,
+  ResetPwd,
 };
