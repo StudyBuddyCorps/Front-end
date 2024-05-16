@@ -3,6 +3,7 @@ import styled from "styled-components";
 import SettingTab from "components/studySetting/SettingTab";
 import StudyType from "components/studySetting/StudyType";
 import StudyMate from "components/studySetting/StudyMate";
+import StudyHelper from "components/studySetting/StudyHelper";
 import DefaultSetting from "components/studySetting/DefaultSetting";
 
 const StudyRoomSetting: React.FC = () => {
@@ -15,13 +16,14 @@ const StudyRoomSetting: React.FC = () => {
   return (
     <Wrapper>
       <SettingTab
-        tabs={['1. 스터디룸 타입', '2. 스터디 메이트', '3. 디폴트 설정']}
+        tabs={['1. 스터디룸 타입', '2. 스터디 메이트', '3. 스터디 도우미', '4. 디폴트 설정']}
         selectedTab={selectedTab}
         onSelectTab={handleTabSelect}
       />
 
       {selectedTab === '1. 스터디룸 타입' ? <StudyType setSelectedTab={setSelectedTab} /> 
       : selectedTab === '2. 스터디 메이트' ? <StudyMate setSelectedTab={setSelectedTab} /> 
+      : selectedTab === '3. 스터디 도우미' ? <StudyHelper setSelectedTab={setSelectedTab} />
       : <DefaultSetting setSelectedTab={setSelectedTab} />}
 
     </Wrapper>

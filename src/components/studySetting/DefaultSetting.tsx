@@ -73,7 +73,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab }) => {
   };
 
   const handlePrevButtonClick = () => {
-    setSelectedTab('2. 스터디 메이트');
+    setSelectedTab('3. 스터디 도우미');
   };
   
   const handleNextButtonClick = () => {
