@@ -38,14 +38,14 @@ const Home: React.FC = () => {
         <SDiv>
           <STitle>스터디룸 입장</STitle>
           <SText>미리 설정한 스터디룸에서 공부를 시작하세요.</SText>
-          <StyleLink to="/room">
+          <StyleLink to="/room/:roomId">
             <img src={Btn_Enter} alt="Enter the StudyRoom" />
           </StyleLink>
         </SDiv>
         <SDiv>
           <STitle>스터디룸 생성</STitle>
           <SText>새로운 스터디룸을 만들어보세요.</SText>
-          <StyleLink to="/room/:roomId">
+          <StyleLink to="/room">
             <img src={Btn_Create} alt="Create a new StudyRoom" />
           </StyleLink>
         </SDiv>
