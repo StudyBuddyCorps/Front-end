@@ -40,12 +40,18 @@ const Guideline: React.FC = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  position: absolute;
+  z-index: 100;
   height: 100%;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.background2};
   justify-content: space-between;
   padding: 200px 50px 80px;
   box-sizing: border-box;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `;
 
 const Container = styled.div`
