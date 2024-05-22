@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Avatar from "../../assets/avatar_woman.png";
-import Camera from "../../assets/camera.png";
+import Avatar from "../../assets/images/avatar_woman.png";
+import Camera from "../../assets/images/camera.png";
 import React, { useState, ChangeEvent } from "react";
 
 const EditProfile = () => {

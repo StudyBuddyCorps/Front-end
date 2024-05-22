@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import Rock from "../assets/rock.png";
-import UnView from "../assets/hideView.png";
-import View from "../assets/notHideView.png";
+import Rock from "../assets/images/rock.png";
+import UnView from "../assets/images/hideView.png";
+import View from "../assets/images/notHideView.png";
 
 const ResetPwd = () => {
   const [showPwd, setShowPwd] = useState(false);

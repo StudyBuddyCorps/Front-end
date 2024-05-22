@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import MainImg from "../assets/main.png";
-import Icon_Play from "../assets/play.png";
+import MainImg from "../assets/images/main.png";
+import Icon_Play from "../assets/images/play.png";
 
 const Main = () => {
   return (

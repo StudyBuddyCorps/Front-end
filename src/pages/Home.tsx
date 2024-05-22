@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Avatar from "../assets/avatar_woman.png";
-import Btn_Enter from "../assets/btn_entrance.png";
-import Btn_Create from "../assets/btn_create.png";
+import Avatar from "../assets/images/avatar_woman.png";
+import Btn_Enter from "../assets/images/btn_entrance.png";
+import Btn_Create from "../assets/images/btn_create.png";
 import Header from "shared/Header";
 import Layout from "shared/Layout";
 import Time from "shared/Time";

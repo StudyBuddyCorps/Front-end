@@ -4,13 +4,13 @@ import SoundPreview from "./SoundPreview";
 import OptionItem from "./OptionItem";
 import { Voice } from "./Voice";
 import { Character } from "./Character";
-import Mute from "../../assets/sound_mute.png";
+import Mute from "../../assets/images/sound_mute.png";
 
 {/* 목소리 선택 임시 더미 데이터 */}
 const voiceData: Voice[] = [
-  { id: 1, name: 'man', img: require('../../assets/sound_man.png'), audio: require('../../assets/audio/Winner.mp3')},
-  { id: 2, name: 'woman', img: require('../../assets/sound_woman.png'), audio: require('../../assets/audio/Winner.mp3')},
-  { id: 3, name: 'boy', img: require('../../assets/sound_boy.png'), audio: require('../../assets/audio/Winner.mp3')}
+  { id: 1, name: 'man', img: require('../../assets/images/sound_man.png'), audio: require('../../assets/audio/Winner.mp3')},
+  { id: 2, name: 'woman', img: require('../../assets/images/sound_woman.png'), audio: require('../../assets/audio/Winner.mp3')},
+  { id: 3, name: 'boy', img: require('../../assets/images/sound_boy.png'), audio: require('../../assets/audio/Winner.mp3')}
 ];
 
 const VoiceList: React.FC = () => {
@@ -79,7 +79,7 @@ const VoiceList: React.FC = () => {
             key={voice.id}
             item={voice}
             onClick={handleVoiceClick}
-            selected={selectedVoice !== null && selectedVoice.id == voice.id}
+            selected={selectedVoice !== null && selectedVoice.id === voice.id}
           />
         ))}    
 

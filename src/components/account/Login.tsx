@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled, { css } from "styled-components";
-import Message from "../../assets/message.png";
-import Lock from "../../assets/lock.png";
-import Kakao from "../../assets/kakao.png";
-import Google from "../../assets/google.png";
-import UnView from "../../assets/hideView.png";
-import View from "../../assets/notHideView.png";
+import Message from "../../assets/images/message.png";
+import Lock from "../../assets/images/lock.png";
+import Kakao from "../../assets/images/kakao.png";
+import Google from "../../assets/images/google.png";
+import UnView from "../../assets/images/hideView.png";
+import View from "../../assets/images/notHideView.png";
 
 interface LoginProps {
   onSubmit: (form: {email: string, password: string}) => void;

@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
-import Logo from "../assets/Logo.png";
-import Icon_home from "../assets/home.png";
-import Icon_date from "../assets/date.png";
-import Icon_group from "../assets/group.png";
-import Icon_setting from "../assets/setting.png";
+import Logo from "../assets/images/Logo.png";
+import Icon_home from "../assets/images/home.png";
+import Icon_date from "../assets/images/date.png";
+import Icon_group from "../assets/images/group.png";
+import Icon_setting from "../assets/images/setting.png";
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();

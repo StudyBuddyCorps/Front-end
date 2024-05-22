@@ -17,13 +17,13 @@ const Radio: React.FC<RadioProps> = ({ handleClickAdmin, selected, text, id, fon
         <NomalImg
           onClick={() => handleClickAdmin(id)}
           alt="nomalImg"
-          src={require('../../assets/normal_radio.png')}
+          src={require('../../assets/images/normal_radio.png')}
           selected={selected}
         />
         <ChangedImg
           onClick={() => handleClickAdmin(id)}
           alt="changedImg"
-          src={require('../../assets/change_radio.png')}
+          src={require('../../assets/images/change_radio.png')}
           selected={selected}
         />
         {text}

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import Header from "shared/Header";
 import Layout from "shared/Layout";
 import Tab from "components/setting/Tab";

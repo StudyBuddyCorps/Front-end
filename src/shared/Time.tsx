@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ProgressBar from "components/home/ProgressBar";
-import Flag from "../assets/flag.png";
+import Flag from "../assets/images/flag.png";
 
 interface TimeProps {
   title: string;
