@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Login from 'components/account/Login';
 import Join from 'components/account/Join';
 import Tab from 'components/account/Tab';
-import AccountImg from '../assets/account.png';
+import AccountImg from '../assets/images/account.png';
 
 const Account: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('로그인');

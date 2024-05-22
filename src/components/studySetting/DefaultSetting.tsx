@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import Switch from "../../assets/Switch.png";
-import UnSwitch from "../../assets/unSwitch.png";
+import Switch from "../../assets/images/Switch.png";
+import UnSwitch from "../../assets/images/unSwitch.png";
 
 interface DefaultSettingProps {
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;

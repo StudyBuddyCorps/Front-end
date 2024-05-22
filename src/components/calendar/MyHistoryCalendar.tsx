@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { subMonths, format } from "date-fns";
 import useCalendar from "hooks/useCalendar";
 import Day from "./Day";
-import Prev from "../../assets/prev_icon.png";
-import Next from "../../assets/next_icon.png";
+import Prev from "../../assets/images/prev_icon.png";
+import Next from "../../assets/images/next_icon.png";
 
 const DAY_LIST = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import Arrow_Btn from "../../assets/arrow_right.png";
+import Arrow_Btn from "../../assets/images/arrow_right.png";
 import Badge from "components/group/Badge";
 
 interface GroupListporps {
