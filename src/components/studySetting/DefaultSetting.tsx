@@ -6,9 +6,10 @@ import UnSwitch from "../../assets/images/unSwitch.png";
 
 interface DefaultSettingProps {
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab }) => {
+const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoading }) => {
   const [cameraPermission, setCameraPermission] = useState<boolean>(false);
   const [defaultRoomSetting, setDefaultRoomSetting] = useState<boolean>(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -78,7 +79,11 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab }) => {
   
   const handleNextButtonClick = () => {
     console.log("디폴트 설정: ", defaultRoomSetting);
-    navigate('/room/:roomId');
+    setLoading(true);
+    setTimeout(() => {    // 임의의 로딩시간 설정
+      setLoading(false);
+      navigate('/room/:roomId');
+    }, 6000);
   };
 
   return (
@@ -124,7 +129,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab }) => {
 
       <Buttons>
         <Button onClick={handlePrevButtonClick}>이전</Button>
-        <Button onClick={handleNextButtonClick}>다음</Button>
+        <Button onClick={handleNextButtonClick} disabled={!cameraPermission}>다음</Button>
       </Buttons>
     </Wrapper>
   );
