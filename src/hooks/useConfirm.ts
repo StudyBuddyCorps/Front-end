@@ -2,7 +2,7 @@ import { useState } from "react";
 
 type ConfirmAction = () => void;
 
-const useModal = () => {
+const useConfirm = () => {
   const [isConfirmVisible, setIsConfirmVisible] = useState<boolean>(false);
   const [confirmMessage, setConfirmMessage] = useState<string>('');
   const [confirmAction, setConfirmAction] = useState<ConfirmAction | null>(null);
@@ -31,4 +31,4 @@ const useModal = () => {
   };
 };
 
-export default useModal;
+export default useConfirm;

@@ -10,7 +10,7 @@ interface ModalProps {
   onCancel: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ children, confirmText, cancelText, onConfirm, onCancel}) => {
+const ConfirmModal: React.FC<ModalProps> = ({ children, confirmText, cancelText, onConfirm, onCancel}) => {
   const modalRef: RefObject<HTMLDivElement> = useRef(null);
 
   return ReactDOM.createPortal(
@@ -82,4 +82,4 @@ const Button = styled.button<{ color: string }>`
   }
 `;
 
-export default Modal;
+export default ConfirmModal;
