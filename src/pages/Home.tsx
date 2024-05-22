@@ -8,10 +8,13 @@ import Header from "shared/Header";
 import Layout from "shared/Layout";
 import Time from "shared/Time";
 import Guideline from "components/common/GuideLine";
+import useModal from "hooks/useConfirm";
+import ConfirmModal from "components/common/ConfirmModal";
 
 const Home: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
   const [loading, setLoading] = useState(false);
+  const { isConfirmVisible, confirmMessage, showConfirm, handleConfirm, handleCancel } = useModal();
   const navigate = useNavigate();
 
   // 임의의 시간 간격으로 progress 값 증가
@@ -34,6 +37,15 @@ const Home: React.FC = () => {
     }, 6000);
   };
 
+  const handleProfileClick = () => {
+    showConfirm('로그아웃 하시겠습니까?', logout);
+  };
+
+  const logout = () => {
+    navigate('/');
+    console.log('로그아웃합니다.');
+  }
+
   return (
     <Layout>
       { loading ? (
@@ -44,7 +56,7 @@ const Home: React.FC = () => {
             title="Home"
             dis="운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라"
           >
-            <Profile src={Avatar} alt="Profile" />
+            <Profile src={Avatar} alt="Profile" onClick={handleProfileClick} />
           </Header>
 
           {/* 스터디룸 입장 및 생성 */}
@@ -73,6 +85,15 @@ const Home: React.FC = () => {
           ></Time>
         </>
       )}
+      {isConfirmVisible && (
+        <ConfirmModal
+          children={confirmMessage}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          confirmText="예"
+          cancelText="아니오"
+        />
+      )}
     </Layout>
   );
 };
@@ -80,6 +101,7 @@ const Home: React.FC = () => {
 const Profile = styled.img`
   width: 60px;
   height: 60px;
+  cursor: pointer;
 `;
 
 const Study = styled.div`
