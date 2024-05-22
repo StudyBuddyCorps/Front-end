@@ -83,7 +83,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
     setTimeout(() => {    // 임의의 로딩시간 설정
       setLoading(false);
       navigate('/room/:roomId');
-    }, 10000000);
+    }, 6000);
   };
 
   return (
@@ -129,7 +129,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
 
       <Buttons>
         <Button onClick={handlePrevButtonClick}>이전</Button>
-        <Button onClick={handleNextButtonClick}>다음</Button>
+        <Button onClick={handleNextButtonClick} disabled={!cameraPermission}>다음</Button>
       </Buttons>
     </Wrapper>
   );
