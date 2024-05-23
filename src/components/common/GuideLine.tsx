@@ -1,29 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import VideoPlayer from './VideoPlayer';
+
 
 const Guideline: React.FC = () => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  useEffect(() => {
-    async function setupCamera() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (error) {
-        console.error("Camera setup failed:", error);
-      }
-    }
-
-    setupCamera();
-  }, []);
-
   return (
     <Wrapper>
       <Container>
         <VideoContainer>
-        <VideoPlayer ref={videoRef} autoPlay />
+          <VideoPlayer />
           <Overlay>
             <Rectangle />
             <Circle />
@@ -62,15 +47,6 @@ const Container = styled.div`
 
 const VideoContainer = styled.div`
   position: relative;
-  width: 630px;
-  height: 400px;
-  overflow: hidden;
-  border: none;
-  border-radius: 5px;
-`;
-
-const VideoPlayer = styled.video`
-  width: 100%;
 `;
 
 const Overlay = styled.div`
@@ -83,19 +59,19 @@ const Overlay = styled.div`
 `;
 
 const Circle = styled.div`
-  width: 240px;
-  height: 240px;
+  width: 35%;
+  padding-bottom: 35%;
   border-radius: 50%;
   border: 2px solid ${({ theme }) => theme.colors.main};
   position: absolute;
   left: 50%;
   top: 20%;
-  transform: translate(-50%, -19%); // 네모 위로 위치 조정
+  transform: translate(-50%, 0); // 네모 위로 위치 조정
 `;
 
 const Rectangle = styled.div`
-  width: 300px;
-  height: 120px;
+  width: 70%;
+  height: 21%;
   border: 2px solid ${({ theme }) => theme.colors.main};
   position: absolute;
   bottom: 0;
