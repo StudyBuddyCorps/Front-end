@@ -5,12 +5,17 @@ import Noti from 'assets/images/Noti2.png';
 import Feedback from "components/studyRoom/Feedback";
 import Timer from "components/studyRoom/Timer";
 import Controls from "components/studyRoom/Controls";
+import Pause from "components/studyRoom/Pause";
 
 const StudyRoom: React.FC = () => {
   const [ time, setTime ] = useState(0);
   const [ paused, setPaused ] = useState(false);
   const [whiteNoise, setWhiteNoise] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [showResume, setShowResume] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(15 * 60);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -32,7 +37,36 @@ const StudyRoom: React.FC = () => {
     }
   }, [whiteNoise]);
 
-  const handlePause = () => setPaused(!paused);
+  useEffect(() => {
+    if (showResume) {
+      timeoutRef.current = setTimeout(() => {
+        window.location.href = '/studyroom/:roomId/finish';
+      }, 15 * 60 * 1000); // 15분 후 이동
+
+      intervalRef.current = setInterval(() => {
+        setRemainingTime((prev) => prev - 1);
+      }, 1000);
+    } else {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      setRemainingTime(15 * 60); // Reset remaining time
+    }
+  }, [showResume]);
+
+  const handlePause = () => {
+    setPaused(true);
+    setShowResume(true);
+  };
+
+  const handleResume = () => {
+    setPaused(false);
+    setShowResume(false);
+  };
+
   const handleStop = () => window.location.href = '/room/:roomId/result';
   const handleWhiteNoise = () => setWhiteNoise(!whiteNoise);
 
@@ -52,6 +86,7 @@ const StudyRoom: React.FC = () => {
         onWhiteNoise={handleWhiteNoise} 
       />
       <audio ref={audioRef} src={require('assets/audio/Winner.mp3')} loop />
+      {showResume && <Pause onResume={handleResume} remainingTime={remainingTime} />}
     </Wrapper>
   );
 };
