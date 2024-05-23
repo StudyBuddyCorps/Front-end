@@ -1,9 +1,13 @@
+import React, { useState } from "react";
 import styled from "styled-components";
 import VideoPlayer from "components/common/VideoPlayer";
 import Noti from 'assets/images/Noti2.png';
 import Feedback from "components/studyRoom/Feedback";
+import Timer from "components/studyRoom/Timer";
 
 const StudyRoom = () => {
+  const [ time, setTime ] = useState(100000);
+
   return (
     <Wrapper>
       <VideoContainer>
@@ -13,6 +17,7 @@ const StudyRoom = () => {
         <VideoPlayer />
       </VideoContainer>
       <Feedback />
+      <Timer time={time}/>
     </Wrapper>
   );
 };
