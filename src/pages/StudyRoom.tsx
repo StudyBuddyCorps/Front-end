@@ -40,7 +40,7 @@ const StudyRoom: React.FC = () => {
   useEffect(() => {
     if (showResume) {
       timeoutRef.current = setTimeout(() => {
-        window.location.href = '/studyroom/:roomId/finish';
+        window.location.href = '/studyroom/:roomId/result';
       }, 15 * 60 * 1000); // 15분 후 이동
 
       intervalRef.current = setInterval(() => {
