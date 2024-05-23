@@ -1,26 +1,31 @@
 import React from "react";
 import styled from "styled-components";
+import theme from "styles/theme";
 
 interface SettingTabProps {
- tabs: string[];
- selectedTab: string,
- onSelectTab: (tab: string) => void;
+  tabs: string[];
+  selectedTab: string;
+  onSelectTab: (tab: string) => void;
 }
 
-const SettingTab: React.FC<SettingTabProps> = ({ tabs, selectedTab, onSelectTab }: SettingTabProps) => {
- return (
-  <Wrapper>
-    {tabs.map((tab) => (
-      <TabButton
-        key={tab} 
-        onClick={() => onSelectTab(tab)}
-        $isSelected={tab === selectedTab}
-      >
-        {tab}
-      </TabButton>
-    ))}
-  </Wrapper>
- );
+const SettingTab: React.FC<SettingTabProps> = ({
+  tabs,
+  selectedTab,
+  onSelectTab,
+}: SettingTabProps) => {
+  return (
+    <Wrapper>
+      {tabs.map((tab) => (
+        <TabButton
+          key={tab}
+          onClick={() => onSelectTab(tab)}
+          $isSelected={tab === selectedTab}
+        >
+          {tab}
+        </TabButton>
+      ))}
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div`
@@ -30,18 +35,20 @@ const Wrapper = styled.div`
   align-items: flex-start;
   flex-direction: column;
   border-radius: 15px 0 0 15px;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
 `;
 
 const TabButton = styled.button<{ $isSelected: boolean }>`
   width: 100%;
-  background-color: ${({ $isSelected }) => ($isSelected ? '#FFFFFF' : '#F5F5F5')};
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? theme.colors.white02 : theme.colors.white01};
   border: none;
   cursor: pointer;
   border-radius: 15px 0 0 15px;
-  color: ${({ $isSelected }) => ($isSelected ? '#586FC5' : '#000000')};
+  color: ${({ $isSelected }) =>
+    $isSelected ? theme.colors.subMain : theme.colors.black02};
   font-size: 20px;
-  font-weight: 600;
+  font-family: NotoSansSemiBold;
   padding: 20px 26px;
   text-align: left;
 `;

@@ -5,8 +5,8 @@ import Avatar from "../assets/images/avatar_woman.png";
 import Btn_Enter from "../assets/images/btn_entrance.png";
 import Btn_Create from "../assets/images/btn_create.png";
 import Header from "shared/Header";
-import Layout from "shared/Layout";
-import Time from "shared/Time";
+import MainLayout from "components/common/Layout/MainLayout";
+import Time from "components/common/Time";
 import Guideline from "components/common/GuideLine";
 import useModal from "hooks/useConfirm";
 import ConfirmModal from "components/common/ConfirmModal";
@@ -14,41 +14,35 @@ import ConfirmModal from "components/common/ConfirmModal";
 const Home: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
   const [loading, setLoading] = useState(false);
-  const { isConfirmVisible, confirmMessage, showConfirm, handleConfirm, handleCancel } = useModal();
+  const {
+    isConfirmVisible,
+    confirmMessage,
+    showConfirm,
+    handleConfirm,
+    handleCancel,
+  } = useModal();
   const navigate = useNavigate();
-
-  // 임의의 시간 간격으로 progress 값 증가
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      if (progress < 100) {
-        setProgress((prevProgress) => prevProgress + 1);
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000); // 1초마다 증가
-    return () => clearInterval(interval);
-  }, [progress]);
 
   const handleButtonClick = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      navigate('/room/:roomId');
+      navigate("/room/:roomId");
     }, 6000);
   };
 
   const handleProfileClick = () => {
-    showConfirm('로그아웃 하시겠습니까?', logout);
+    showConfirm("로그아웃 하시겠습니까?", logout);
   };
 
   const logout = () => {
-    navigate('/');
-    console.log('로그아웃합니다.');
-  }
+    navigate("/");
+    console.log("로그아웃합니다.");
+  };
 
   return (
-    <Layout>
-      { loading ? (
+    <MainLayout>
+      {loading ? (
         <Guideline />
       ) : (
         <>
@@ -94,7 +88,7 @@ const Home: React.FC = () => {
           cancelText="아니오"
         />
       )}
-    </Layout>
+    </MainLayout>
   );
 };
 

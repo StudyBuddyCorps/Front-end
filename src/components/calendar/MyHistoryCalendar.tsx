@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { subMonths, format } from "date-fns";
 import useCalendar from "hooks/useCalendar";
 import Day from "./Day";
-import Prev from "../../assets/images/prev_icon.png";
-import Next from "../../assets/images/next_icon.png";
+import Prev from "../../assets/prev_icon.png";
+import Next from "../../assets/next_icon.png";
+import CheckIcon from "components/common/Icons/CheckIcon";
 
 const DAY_LIST = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -37,17 +38,15 @@ const MyHistoryCalendar = () => {
             <WeekT>{item}</WeekT>
           ))}
         </Week>
-        <Dayweek>
-          {c.map((item) => (
-            <Week>
-              {item.map((day) => (
-                <Day day={day}>
-                  <button></button>
-                </Day>
-              ))}
-            </Week>
-          ))}
-        </Dayweek>
+        {c.map((item) => (
+          <Week>
+            {item.map((day) => (
+              <Day day={day}>
+                <CheckIcon width="20" height="20"></CheckIcon>
+              </Day>
+            ))}
+          </Week>
+        ))}
       </ContentS>
     </Container>
   );
@@ -62,8 +61,8 @@ const TitleS = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: NotoSansSemiBold;
-  font-size: 24px;
+  font-family: NotoSansBold;
+  font-size: 30px;
 `;
 
 const ContentS = styled.div`
@@ -90,19 +89,11 @@ const Week = styled.div`
     /* grid의 첫 번째 열에 대해서만 빨간색 */
     color: red;
   }
+  margin: 10px 0px;
 `;
 
 const WeekT = styled.div`
   width: 70px;
   margin-bottom: 10px;
 `;
-
-const Dayweek = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  width: 70px;
-  margin: 10px 0px;
-`;
-
 export default MyHistoryCalendar;

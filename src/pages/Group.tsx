@@ -1,13 +1,13 @@
 import Header from "shared/Header";
-import Layout from "shared/Layout";
+import MainLayout from "components/common/Layout/MainLayout";
 import GroupList from "components/group/GroupList";
 
 const Group = () => {
   return (
-    <Layout>
+    <MainLayout>
       <Header title="Group"></Header>
       <GroupList></GroupList>
-    </Layout>
+    </MainLayout>
   );
 };
 

@@ -1,7 +1,6 @@
 import React from "react";
 import GroupListItem from "./GroupListItem";
 import { styled } from "styled-components";
-import theme from "styles/theme";
 
 const GroupList: React.FC = () => {
   // 아이템 리스트 예시
