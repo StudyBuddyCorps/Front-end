@@ -18,6 +18,7 @@ const Day: React.FC<DayProps> = (props: DayProps) => {
 const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 70px;
 `;
 

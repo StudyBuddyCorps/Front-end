@@ -14,19 +14,23 @@ const MyHistoryTime: React.FC<TimeProps> = (props: TimeProps) => {
       <ContentS>
         <TimeCard>
           <Title>
-            이번 달 <br /> 공부시간(h)
+            이번 달<br />
+            공부시간(h)
           </Title>
           <TimeHis>{props.monthTime}</TimeHis>
         </TimeCard>
         <TimeCard>
           <Title>
-            이번 주 <br /> 공부시간(h)
+            이번 주<br />
+            공부시간(h)
           </Title>
           <TimeHis>{props.monthTime}</TimeHis>
         </TimeCard>
         <TimeCard>
           <Title>
-            오늘 <br /> 공부시간(h)
+            오늘
+            <br />
+            공부시간(h)
           </Title>
           <TimeHis>{props.dayTime}</TimeHis>
         </TimeCard>
@@ -36,38 +40,43 @@ const MyHistoryTime: React.FC<TimeProps> = (props: TimeProps) => {
 };
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  background-color: #fdfdfd;
+  border-style: solid;
+  border-width: 2px;
+  border-color: ${({ theme }) => theme.colors.white01};
+  border-radius: 20px;
+  box-shadow: 4px 4px 20px #0000000d;
+  box-shadow: -4px -4px 20px #0000000d;
+  padding: 30px;
+  width: 20%
+  height: 100%;
 `;
 
 const TitleS = styled.div`
-  font-family: NotoSansSemiBold;
+  font-family: NotoSansBold;
   color: ${({ theme }) => theme.colors.black01};
-  font-size: 20px;
+  font-size: 30px;
 `;
 
 const ContentS = styled.div`
   display: flex;
   flex-direction: column;
-  width: 400px;
-  gap: 25px;
 `;
 
 const TimeCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 20px;
 `;
 
-const Title = styled.span`
+const Title = styled.div`
   font-family: NotoSansMedium;
-  text-aligns: center;
+  text-align: center;
   font-size: 20px;
 `;
 
-const TimeHis = styled.span`
+const TimeHis = styled.div`
   font-family: NotoSansLight;
   font-size: 50px;
   color: ${({ theme }) => theme.colors.highlight};

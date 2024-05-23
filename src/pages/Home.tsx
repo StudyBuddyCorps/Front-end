@@ -5,8 +5,8 @@ import Avatar from "../assets/avatar_woman.png";
 import Btn_Enter from "../assets/btn_entrance.png";
 import Btn_Create from "../assets/btn_create.png";
 import Header from "shared/Header";
-import Layout from "shared/Layout";
-import Time from "shared/Time";
+import MainLayout from "components/common/Layout/MainLayout";
+import Time from "components/common/Time";
 
 const Home: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
   }, [progress]);
 
   return (
-    <Layout>
+    <MainLayout>
       <Header
         title="Home"
         dis="운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라"
@@ -56,7 +56,7 @@ const Home: React.FC = () => {
         totalTime="03 : 30 : 01"
         goalTime="06 : 00 : 00"
       ></Time>
-    </Layout>
+    </MainLayout>
   );
 };
 
