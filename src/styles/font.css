@@ -39,11 +39,6 @@
 }
 
 @font-face {
-  font-family: "NotoSansSemiBold";
-  src: url("../assets/fonts/NotoSansSemiBold.ttf") format("truetype");
-}
-
-@font-face {
   font-family: "NotoSansMedium";
   src: url("../assets/fonts/NotoSansMedium.ttf") format("truetype");
 }
