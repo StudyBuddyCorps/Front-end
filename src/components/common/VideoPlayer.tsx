@@ -27,7 +27,7 @@ const VideoPlayer = () => {
 };
 
 const Container = styled.div`
-  width: 46vw;
+  width: 45vw;
   height: calc(40vw*0.7);
   overflow: hidden;
   border: none;

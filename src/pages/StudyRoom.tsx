@@ -35,7 +35,7 @@ const VideoContainer = styled.div`
 
 const BuddyContainer = styled.div`
   position: relative;
-  width: 46vw;
+  width: 45vw;
   height: calc(40vw*0.7);
   background-color: ${({ theme }) => theme.colors.background};
   border: none;
