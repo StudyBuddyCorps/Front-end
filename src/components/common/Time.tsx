@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ProgressBar from "components/home/ProgressBar";
-import Flag from "../assets/flag.png";
+import Flag from "assets/flag.png";
 
 interface TimeProps {
   title: string;
@@ -11,17 +11,6 @@ interface TimeProps {
 
 const Time: React.FC<TimeProps> = (props: TimeProps) => {
   const [progress, setProgress] = useState<number>(0);
-  // 임의의 시간 간격으로 progress 값 증가
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      if (progress < 100) {
-        setProgress((prevProgress) => prevProgress + 1);
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000); // 1초마다 증가
-    return () => clearInterval(interval);
-  }, [progress]);
 
   return (
     <Container>
@@ -31,7 +20,7 @@ const Time: React.FC<TimeProps> = (props: TimeProps) => {
       </Title>
       <TotalStudyTime>{props.totalTime}</TotalStudyTime>
       <Percent>
-        <ProgressBar progress={progress} />
+        <ProgressBar progress={88} />
         <GoalStudyTime>{props.goalTime}</GoalStudyTime>
       </Percent>
     </Container>
