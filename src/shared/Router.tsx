@@ -15,6 +15,7 @@ import {
   ResetPwd,
 } from "../pages";
 import Sidebar from "./Sidebar";
+import GroupGenerate from "pages/GroupGenerate";
 
 const Router = () => {
   return (
@@ -41,6 +42,7 @@ const Router = () => {
         <Route path="/room/:roomId" element={<StudyRoomPomodoro />} />
         <Route path="/room" element={<StudyRoomSetting />} />
         <Route path="/room/:roomId/result" element={<StudyRoomFinish />} />
+        <Route path="/newGroup" element={<GroupGenerate />} />
       </Routes>
     </BrowserRouter>
   );
