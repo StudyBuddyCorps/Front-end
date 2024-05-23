@@ -1,36 +1,28 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-
-interface OptionData {
-  key: string;
-  value: string;
-}
+import React, { useState } from "react";
+import styled from "styled-components";
 
 interface SelectBoxProps {
-  optionData: OptionData[];
-  onChange: (value: string) => void;
+  optionData: number[];
+  onChange: (value: number) => void;
 }
 
 const SelectBox: React.FC<SelectBoxProps> = ({ optionData, onChange }) => {
-  const [currentValue, setCurrentValue] = useState(optionData[0]?.value);
+  const [currentValue, setCurrentValue] = useState<number>();
   const [showOptions, setShowOptions] = useState(false);
 
-  const handleOnChangeSelectValue = (value: string) => {
+  const handleOnChangeSelectValue = (value: number) => {
     setCurrentValue(value);
     setShowOptions(false);
-    onChange(value);  // onChange 콜백 호출
+    onChange(value); // onChange 콜백 호출
   };
 
   return (
-    <SelectContainer onClick={() => setShowOptions((prev) => !prev)}>
+    <SelectContainer onClick={() => setShowOptions(!showOptions)}>
       <Label>{currentValue}</Label>
       <SelectOptions show={showOptions}>
         {optionData.map((data) => (
-          <Option
-            key={data.key}
-            onClick={() => handleOnChangeSelectValue(data.value)}
-          >
-            {data.value}
+          <Option key={data} onClick={() => handleOnChangeSelectValue(data)}>
+            {data}
           </Option>
         ))}
       </SelectOptions>
@@ -43,7 +35,7 @@ const SelectContainer = styled.div`
   width: 100px;
   height: 45px;
   border-radius: 5px;
-  background-color: ${({ theme }) => (theme.colors.white01)};
+  background-color: ${({ theme }) => theme.colors.white01};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   display: flex;
@@ -67,7 +59,7 @@ const SelectOptions = styled.ul<{ show: boolean }>`
   max-height: ${(props) => (props.show ? "none" : "0")};
   padding: 0;
   border-radius: 5px;
-  background-color: ${({ theme }) => (theme.colors.black01)};
+  background-color: ${({ theme }) => theme.colors.black01};
   color: #fefefe;
   text-align: right;
 `;
@@ -76,7 +68,7 @@ const Option = styled.li`
   padding: 4px 8px;
   transition: background-color 0.2s ease-in;
   &:hover {
-    background-color: ${({ theme }) => (theme.colors.background)};
+    background-color: ${({ theme }) => theme.colors.background};
   }
 `;
 
