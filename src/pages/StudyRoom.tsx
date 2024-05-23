@@ -79,12 +79,14 @@ const StudyRoom: React.FC = () => {
         <VideoPlayer />
       </VideoContainer>
       <Feedback />
-      <Timer time={time}/>
-      <Controls 
-        onPause={handlePause} 
-        onStop={handleStop} 
-        onWhiteNoise={handleWhiteNoise} 
-      />
+      <ControlContent>
+        <Timer time={time}/>
+        <Controls 
+          onPause={handlePause} 
+          onStop={handleStop} 
+          onWhiteNoise={handleWhiteNoise} 
+        />        
+      </ControlContent>
       <audio ref={audioRef} src={require('assets/audio/Winner.mp3')} loop />
       {showResume && <Pause onResume={handleResume} remainingTime={remainingTime} />}
     </Wrapper>
@@ -99,6 +101,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 100px 50px;
+  box-sizing: border-box;
+  justify-content: space-between;
 `;
 
 const VideoContainer = styled.div`
@@ -122,6 +126,13 @@ const BuddyImg = styled.img`
   left: 50%;
   transform: translate(-50%);
   width: 40vw;
+`;
+
+const ControlContent = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 export default StudyRoom;

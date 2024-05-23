@@ -32,7 +32,8 @@ const Controls: React.FC<ControlsProps> = ({ onPause, onStop, onWhiteNoise }) =>
 
 const Wrapper = styled.div`
   display: flex;
-  gap: 30px;
+  width: 300px;
+  justify-content: space-between;
 `;
 
 const ButtonContainer = styled.div`
