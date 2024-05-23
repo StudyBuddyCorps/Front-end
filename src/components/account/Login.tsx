@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import styled, { css } from "styled-components";
-import Message from "../../assets/message.png";
-import Lock from "../../assets/lock.png";
-import Kakao from "../../assets/kakao.png";
-import Google from "../../assets/google.png";
-import UnView from "../../assets/hideView.png";
+import Message from "../../assets/images/message.png";
+import Lock from "../../assets/images/lock.png";
+import Kakao from "../../assets/images/kakao.png";
+import Google from "../../assets/images/google.png";
+import UnView from "../../assets/images/hideView.png";
+import View from "../../assets/images/notHideView.png";
 
 interface LoginProps {
   onSubmit: (form: {email: string, password: string}) => void;
@@ -71,7 +72,11 @@ function Login({onSubmit}: LoginProps) {
               value={password}
               onChange={onChange}
             />
-            <ViewImg src={UnView} alt="Hidde View" onClick={handleTogglePwdVisibility}/>
+            <ViewImg 
+              src={ showPwd ? View : UnView } 
+              alt={ showPwd ? "Visible View" : "Hidde View" }
+              onClick={handleTogglePwdVisibility}
+            />
           </InputContainer>          
         </div>      
         <Button type='submit' enabled={isFormValid}>로그인</Button>
@@ -94,7 +99,7 @@ function Login({onSubmit}: LoginProps) {
 };
 
 const Wrapper = styled.div`
-  width: 36vw;
+  width: 35vw;
   height: 60vh;
   display: flex;
   flex-direction: column;

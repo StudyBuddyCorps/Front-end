@@ -13,7 +13,7 @@ const StudyMate: React.FC<StudyMateProps> = ({ setSelectedTab }) => {
   };
   
   const handleNextButtonClick = () => {
-    setSelectedTab('3. 디폴트 설정');
+    setSelectedTab('3. 스터디 도우미');
   };
 
   return (

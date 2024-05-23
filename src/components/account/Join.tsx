@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import Message from "../../assets/message.png";
-import Lock from "../../assets/lock.png";
-import Kakao from "../../assets/kakao.png";
-import Google from "../../assets/google.png";
-import UnView from "../../assets/hideView.png";
-import Profile from "../../assets/profile.png";
+import Message from "../../assets/images/message.png";
+import Lock from "../../assets/images/lock.png";
+import Kakao from "../../assets/images/kakao.png";
+import Google from "../../assets/images/google.png";
+import UnView from "../../assets/images/hideView.png";
+import View from "../../assets/images/notHideView.png";
+import Profile from "../../assets/images/profile.png";
 
 interface JoinProps {
   onSubmit: (form: {name: string, email: string, password: string, confirmPwd: string}) => void;
@@ -93,7 +94,11 @@ const Join = ({onSubmit}: JoinProps) => {
               value={password}
               onChange={onChange}
             />
-            <ViewImg src={UnView} alt="Hidde View" onClick={handleTogglePwdVisibility} />
+            <ViewImg 
+              src={ showPwd ? View : UnView }  
+              alt={ showPwd ? "View" : "Hidde View" }
+              onClick={handleTogglePwdVisibility} 
+            />
           </InputContainer>   
           <InputContainer>
             <Img src={Lock} alt='password' />
@@ -104,7 +109,11 @@ const Join = ({onSubmit}: JoinProps) => {
               value={confirmPwd}
               onChange={onChange}
             />
-            <ViewImg src={UnView} alt="Hidde View" onClick={handleToggleConfirmPdVisibility} />
+            <ViewImg 
+              src={ showConfirmPwd ? View : UnView } 
+              alt={ showConfirmPwd ? "View" : "Hidde View" }
+              onClick={handleToggleConfirmPdVisibility} 
+            />
           </InputContainer>       
         </div>      
         <Button type="submit" enabled={isFormValid}>회원가입</Button>
@@ -127,7 +136,7 @@ const Join = ({onSubmit}: JoinProps) => {
 };
 
 const Wrapper = styled.div`
-  width: 36vw;
+  width: 35vw;
   height: 79vh;
   display: flex;
   flex-direction: column;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Radio from "./Radio";
-import Done from "../../assets/Done.png"
+import Done from "../../assets/images/Done.png"
 
 interface StudyTypeProps {
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;

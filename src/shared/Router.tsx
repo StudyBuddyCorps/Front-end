@@ -12,8 +12,10 @@ import {
   StudyRoomPomodoro,
   StudyRoomSetting,
   StudyRoomFinish,
+  ResetPwd,
 } from "../pages";
 import Sidebar from "./Sidebar";
+import GroupGenerate from "pages/GroupGenerate";
 
 const Router = () => {
   return (
@@ -21,6 +23,7 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/account" element={<Account />} />
+        <Route path="account/reset/password" element={<ResetPwd />} />
 
         {/* 사이드바가 보이는 페이지 */}
         <Route element={<Sidebar />}>
@@ -39,6 +42,7 @@ const Router = () => {
         <Route path="/room/:roomId" element={<StudyRoomPomodoro />} />
         <Route path="/room" element={<StudyRoomSetting />} />
         <Route path="/room/:roomId/result" element={<StudyRoomFinish />} />
+        <Route path="/newGroup" element={<GroupGenerate />} />
       </Routes>
     </BrowserRouter>
   );

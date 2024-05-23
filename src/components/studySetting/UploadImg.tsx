@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Upload from "../../assets/upload.png";
+import Upload from "../../assets/images/upload.png";
 
 
 function UploadImg() {
