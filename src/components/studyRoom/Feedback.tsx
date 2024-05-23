@@ -16,7 +16,7 @@ const Feedback: React.FC = () => {
 const Container = styled.div`
   display: flex;
   gap: 20px;
-  width: 90%;
+  width: calc(100vw - 100px);
   height: fit-content;
   background-color: transparent;
 `;

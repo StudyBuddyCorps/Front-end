@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import VideoPlayer from "components/common/VideoPlayer";
 import Noti from 'assets/images/Noti2.png';
+import Feedback from "components/studyRoom/Feedback";
 
 const StudyRoom = () => {
   return (
@@ -11,6 +12,7 @@ const StudyRoom = () => {
         </BuddyContainer>
         <VideoPlayer />
       </VideoContainer>
+      <Feedback />
     </Wrapper>
   );
 };
