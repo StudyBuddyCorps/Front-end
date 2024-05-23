@@ -1,12 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import VideoPlayer from "components/common/VideoPlayer";
 import Noti from 'assets/images/Noti2.png';
 import Feedback from "components/studyRoom/Feedback";
 import Timer from "components/studyRoom/Timer";
+import Controls from "components/studyRoom/Controls";
 
-const StudyRoom = () => {
-  const [ time, setTime ] = useState(100000);
+const StudyRoom: React.FC = () => {
+  const [ time, setTime ] = useState(0);
+  const [ paused, setPaused ] = useState(false);
+  const [whiteNoise, setWhiteNoise] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (!paused) {
+      timer = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [paused]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      if (whiteNoise) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [whiteNoise]);
+
+  const handlePause = () => setPaused(!paused);
+  const handleStop = () => window.location.href = '/room/:roomId/result';
+  const handleWhiteNoise = () => setWhiteNoise(!whiteNoise);
 
   return (
     <Wrapper>
@@ -18,6 +46,12 @@ const StudyRoom = () => {
       </VideoContainer>
       <Feedback />
       <Timer time={time}/>
+      <Controls 
+        onPause={handlePause} 
+        onStop={handleStop} 
+        onWhiteNoise={handleWhiteNoise} 
+      />
+      <audio ref={audioRef} src={require('assets/audio/Winner.mp3')} loop />
     </Wrapper>
   );
 };
