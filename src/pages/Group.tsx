@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 import Header from "shared/Header";
 import MainLayout from "components/common/Layout/MainLayout";
 import GroupList from "components/group/GroupList";
-import IconInputField from "components/common/IconInputField";
 import Button from "components/common/Button";
 import { styled } from "styled-components";
+import SearchField from "components/common/SearchField";
 
 const Group = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Group = () => {
   return (
     <MainLayout>
       <Header title="Group">
-        <IconInputField placeHolder="Search Group Name" />
+        <SearchField placeHolder="Search Group Name" width="25vw" />
         <Button width="150px" onClick={handleGenerateGroup}>
           그룹 생성
         </Button>

@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 
 interface HeaderProps {
+  imgSrc?: string; // 선택적으로 전달
   title: string;
   dis?: string; // 선택적으로 전달
   children?: ReactNode;
@@ -31,7 +32,7 @@ const LeftS = styled.div``;
 const RightS = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 40px;
+  gap: 30px;
 `;
 
 const Title = styled.div`

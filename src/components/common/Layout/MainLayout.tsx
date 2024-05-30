@@ -10,7 +10,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 };
 
 const LayoutContainer = styled.div`
-  margin: 0 0 0 100px;
+  margin: 0 0 50px 100px;
   display: flex;
   flex-direction: column;
   height: 100vh;

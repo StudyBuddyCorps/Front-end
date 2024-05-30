@@ -2,7 +2,7 @@ import styled from "styled-components";
 import theme from "styles/theme";
 
 type TextFieldProps = {
-  width: string;
+  width?: string;
   height?: string;
 };
 

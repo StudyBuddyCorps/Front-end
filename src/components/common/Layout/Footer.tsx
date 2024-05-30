@@ -14,6 +14,7 @@ const FooterContainer = styled.div`
   height: 100%;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 `;
 
 export default Footer;

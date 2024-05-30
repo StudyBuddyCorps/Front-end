@@ -5,24 +5,26 @@ import Time from "components/common/Time";
 import MyHistoryCalendar from "components/calendar/MyHistoryCalendar";
 import MyHistoryTime from "components/calendar/MyHistroyTime";
 import Footer from "components/common/Layout/Footer";
+import Button from "components/common/Button";
+import MemberField from "components/group/MemberField";
 
 const GroupMain = () => {
   return (
     <MainLayout>
-      <Header
-        title="불쌍한 4학년 모임"
-        dis="사학년이 아니라 사(死)학년"
-      ></Header>
+      <Header title="불쌍한 4학년 모임" dis="사학년이 아니라 사(死)학년">
+        <Button width="150px" onClick={() => {}}>
+          그룹 설정
+        </Button>
+        <Button width="150px" onClick={() => {}}>
+          멤버 추가
+        </Button>
+      </Header>
       <MainContent>
         <div className="left">
           <MyHistoryCalendar></MyHistoryCalendar>
         </div>
         <div className="right">
-          <MyHistoryTime
-            dayTime="00 : 02 : 02"
-            weekTime="00 : 02 : 02"
-            monthTime="15 : 01 : 02"
-          ></MyHistoryTime>
+          <MemberField></MemberField>
         </div>
       </MainContent>
       <Footer>
