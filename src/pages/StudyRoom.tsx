@@ -6,6 +6,8 @@ import Feedback from "components/studyRoom/Feedback";
 import Timer from "components/studyRoom/Timer";
 import Controls from "components/studyRoom/Controls";
 import Pause from "components/studyRoom/Pause";
+import Chat from "components/studyRoom/Chat";
+import ChatImg from "assets/images/chat.png";
 
 const StudyRoom: React.FC = () => {
   const [ time, setTime ] = useState(0);
@@ -16,6 +18,7 @@ const StudyRoom: React.FC = () => {
   const [remainingTime, setRemainingTime] = useState(15 * 60);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -69,24 +72,38 @@ const StudyRoom: React.FC = () => {
 
   const handleStop = () => window.location.href = '/room/:roomId/result';
   const handleWhiteNoise = () => setWhiteNoise(!whiteNoise);
+  const toggleChat = () => setShowChat(!showChat);
 
   return (
     <Wrapper>
-      <VideoContainer>
-        <BuddyContainer>
-          <BuddyImg src={Noti} alt="Buddy image" />
-        </BuddyContainer>
-        <VideoPlayer />
-      </VideoContainer>
-      <Feedback />
-      <ControlContent>
-        <Timer time={time}/>
-        <Controls 
-          onPause={handlePause} 
-          onStop={handleStop} 
-          onWhiteNoise={handleWhiteNoise} 
-        />        
-      </ControlContent>
+      <MainContent showChat={showChat}>
+        <VideoContainer>
+          <BuddyContainer>
+            <BuddyImg src={Noti} alt="Buddy image" />
+          </BuddyContainer>
+          <StyledVideoPlayer>
+            <VideoPlayer />
+          </StyledVideoPlayer>
+        </VideoContainer>
+        <Feedback showChat={showChat} />
+        <ControlContent>
+          <div></div>
+          <CenterDiv>
+            <Timer time={time} />
+            <Controls
+              onPause={handlePause}
+              onStop={handleStop}
+              onWhiteNoise={handleWhiteNoise}
+            />          
+          </CenterDiv>
+          {showChat ? <div></div> : (
+            <ChatIconContainer onClick={toggleChat}>
+              <ChatIcon src={ChatImg} alt="Chat Icon" />
+            </ChatIconContainer>
+          )}
+        </ControlContent>
+      </MainContent>
+      <Chat showChat={showChat} toggleChat={toggleChat} />
       <audio ref={audioRef} src={require('assets/audio/Winner.mp3')} loop />
       {showResume && <Pause onResume={handleResume} remainingTime={remainingTime} />}
     </Wrapper>
@@ -98,11 +115,17 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.background2};
   width: 100vw;
   height: 100vh;
-  flex-direction: column;
-  align-items: center;
   padding: 100px 50px;
   box-sizing: border-box;
+`;
+
+const MainContent = styled.div<{ showChat: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: space-between;
+  transition: width 0.3s ease;
+  width: ${({ showChat }) => (showChat ? 'calc(100% - 320px)' : '100%')};
 `;
 
 const VideoContainer = styled.div`
@@ -113,8 +136,7 @@ const VideoContainer = styled.div`
 
 const BuddyContainer = styled.div`
   position: relative;
-  width: 45vw;
-  height: calc(40vw*0.7);
+  width: 49%;
   background-color: ${({ theme }) => theme.colors.background};
   border: none;
   border-radius: 5px;
@@ -126,13 +148,35 @@ const BuddyImg = styled.img`
   left: 50%;
   transform: translate(-50%);
   width: 40vw;
+  width: 80%;
+`;
+
+const StyledVideoPlayer = styled.div`
+  width: 49%;
+  transition: width 0.3s ease;
 `;
 
 const ControlContent = styled.div`
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+const CenterDiv = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const ChatIconContainer = styled.div`
+  cursor: pointer;
+`;
+
+const ChatIcon = styled.img`
+  width: 50px;
+  height: 50px;
 `;
 
 export default StudyRoom;

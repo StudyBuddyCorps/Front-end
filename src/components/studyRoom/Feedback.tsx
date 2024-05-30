@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from "styled-components";
 
-const Feedback: React.FC = () => {
+interface FeedbackProps {
+  showChat: boolean;
+}
+
+const Feedback: React.FC<FeedbackProps> = ({ showChat }) => {
   return (
-    <Container>
+    <Container showChat={showChat}>
       <PinkBar />
       <Contents>
         <Message>자면 안돼!</Message>
@@ -13,10 +17,10 @@ const Feedback: React.FC = () => {
   );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ showChat: boolean }>`
   display: flex;
   gap: 20px;
-  width: calc(100vw - 100px);
+  width: ${({ showChat }) => (showChat ? '100%' : 'calc(100vw - 100px)')};
   height: fit-content;
   background-color: transparent;
 `;
@@ -31,7 +35,7 @@ const PinkBar = styled.div`
 const Contents = styled.div`
   display: flex;
   align-items: center;
-  width: -webkit-fill-available;
+  width:  calc(100% - 34px); ;
   background-color: rgb(24, 29, 36, 0.5);
   color: ${({ theme }) => theme.colors.white02};
   padding: 0 36px;
