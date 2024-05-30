@@ -131,6 +131,7 @@ const MainContent = styled.div<{ showChat: boolean }>`
 const VideoContainer = styled.div`
   display: flex;
   width: 100%;
+  height: 50%;
   justify-content: space-between;
 `;
 
@@ -153,6 +154,7 @@ const BuddyImg = styled.img`
 
 const StyledVideoPlayer = styled.div`
   width: 49%;
+  overflow: hidden;
   transition: width 0.3s ease;
 `;
 
