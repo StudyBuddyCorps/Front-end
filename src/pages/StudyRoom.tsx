@@ -141,6 +141,7 @@ const BuddyContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
   border: none;
   border-radius: 5px;
+  overflow: hidden;
 `;
 
 const BuddyImg = styled.img`
@@ -149,7 +150,7 @@ const BuddyImg = styled.img`
   left: 50%;
   transform: translate(-50%);
   width: 40vw;
-  width: 80%;
+  width: 78%;
 `;
 
 const StyledVideoPlayer = styled.div`

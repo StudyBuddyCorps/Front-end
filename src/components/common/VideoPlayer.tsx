@@ -27,7 +27,7 @@ const VideoPlayer = () => {
 };
 
 const Container = styled.div`
-  overflow: hidden;
+  height: 100%;
   border: none;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.colors.background};

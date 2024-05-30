@@ -48,6 +48,7 @@ const Container = styled.div`
 const VideoContainer = styled.div`
   position: relative;
   width: 45vw;
+  height: calc(39vw*0.7);
 `;
 
 const Overlay = styled.div`
@@ -60,13 +61,13 @@ const Overlay = styled.div`
 `;
 
 const Circle = styled.div`
-  width: 34%;
-  padding-bottom: 34%;
+  width: 36%;
+  padding-bottom: 36%;
   border-radius: 50%;
   border: 2px solid ${({ theme }) => theme.colors.main};
   position: absolute;
   left: 50%;
-  top: 10%;
+  top: 18%;
   transform: translate(-50%, 0); // 네모 위로 위치 조정
 `;
 
