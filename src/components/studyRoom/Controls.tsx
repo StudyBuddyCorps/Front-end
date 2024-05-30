@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Stop from 'assets/images/Stop.png';
 import Finish from 'assets/images/Finish.png';
 import HeadPhone from 'assets/images/Headphones.png';
-import { on } from "events";
 
 interface ControlsProps {
   onPause: () => void;
