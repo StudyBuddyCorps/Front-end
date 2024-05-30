@@ -5,9 +5,30 @@ type ButtonProps = {
   width?: string;
   height?: string;
   backgroundColor?: string;
+  onClick: () => void;
+  children: React.ReactNode;
 };
 
-export const Button = styled.button<ButtonProps>`
+const Button = ({
+  width,
+  height,
+  backgroundColor,
+  onClick,
+  children,
+}: ButtonProps) => {
+  return (
+    <ButtonStyle
+      width={width}
+      height={height}
+      backgroundColor={backgroundColor}
+      onClick={onClick}
+    >
+      {children}
+    </ButtonStyle>
+  );
+};
+
+const ButtonStyle = styled.button<ButtonProps>`
   width: ${(props) => props.width};
   height: ${(props) => props.height || "50px"};
   color: ${({ theme }) => theme.colors.white02};
@@ -19,26 +40,4 @@ export const Button = styled.button<ButtonProps>`
   cursor: pointer;
 `;
 
-type EnableButtonProps = {
-  width?: string;
-  height?: string;
-  enabled: boolean;
-};
-
-export const EnableButton = styled.button<EnableButtonProps>`
-  width: ${(props) => props.width || "auto"};
-  height: ${(props) => props.height || "52px"};
-  border: none;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.colors.grey};
-  color: ${({ theme }) => theme.colors.white02};
-  font-size: 20px;
-  font-family: NotoSansBold;
-  cursor: not-allowed;
-  ${(props) =>
-    props.enabled &&
-    css`
-      background-color: #2a3f5f;
-      cursor: pointer;
-    `}
-`;
+export default Button;

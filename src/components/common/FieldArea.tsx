@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 interface FieldAreaProps {
   title: string;
-  desc: string;
-  children: React.ReactNode;
+  desc?: string;
+  children?: React.ReactNode;
 }
 
 const FieldArea: React.FC<FieldAreaProps> = ({

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import theme from "styles/theme";
 
 type TextFieldProps = {
   width: string;
@@ -7,8 +8,8 @@ type TextFieldProps = {
 
 export const TextField = styled.input<TextFieldProps>`
   all: unset;
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
+  width: ${(props) => props.width || "100%"};
+  height: ${(props) => props.height || "50%"};
   border-radius: 5px;
   border: none;
   padding: 0px 15px;
@@ -27,14 +28,15 @@ export const TextField = styled.input<TextFieldProps>`
 type InputFieldProps = {
   width?: string;
   height?: string;
+  borderColor?: string;
 };
 
 export const InputField = styled.input<InputFieldProps>`
   all: unset;
-  width: ${(props) => props.width};
+  width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height || "53px"};
   border-radius: 5px;
-  border: 2px solid ${({ theme }) => theme.colors.grey};
+  border: 2px solid ${(props) => props.borderColor || theme.colors.grey};
   box-sizing: border-box;
   padding: 0px 15px;
   background-color: ${({ theme }) => theme.colors.white02};

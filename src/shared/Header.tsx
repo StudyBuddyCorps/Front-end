@@ -28,12 +28,15 @@ const Container = styled.div`
 `;
 
 const LeftS = styled.div``;
-const RightS = styled.div``;
+const RightS = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 40px;
+`;
 
 const Title = styled.div`
-  font-family: InterExtraBold;
+  font-family: NotoSansExtraBold;
   font-size: 36px;
-  margin-bottom: 20px;
 `;
 
 const Phrase = styled.div`

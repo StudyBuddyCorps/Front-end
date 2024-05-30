@@ -1,9 +1,10 @@
 type CheckIconProps = {
   width?: string;
   height: string;
+  color: string;
 };
 
-const CheckIcon = ({ width, height }: CheckIconProps) => {
+const CheckIcon = ({ width, height, color }: CheckIconProps) => {
   return (
     <svg
       width="30"
@@ -12,7 +13,7 @@ const CheckIcon = ({ width, height }: CheckIconProps) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx="15" cy="15" r="10" fill="#FF007A" />
+      <circle cx="15" cy="15" r="10" fill={color} />
       <path
         d="M10.625 13.75L14.2689 17.3939C14.3275 17.4525 14.4225 17.4525 14.4811 17.3939L24.375 7.5"
         stroke="white"

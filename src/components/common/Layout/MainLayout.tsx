@@ -6,19 +6,14 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  return (
-    <LayoutContainer>
-      <main>{children}</main>
-    </LayoutContainer>
-  );
+  return <LayoutContainer>{children}</LayoutContainer>;
 };
 
 const LayoutContainer = styled.div`
   margin: 0 0 0 100px;
-  main {
-    display: flex;
-    flex-direction: column;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 `;
 
 export default MainLayout;

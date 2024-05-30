@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ProgressBar from "components/home/ProgressBar";
-import Flag from "assets/flag.png";
+import Flag from "assets/images/flag.png";
 
 interface TimeProps {
   title: string;
@@ -10,8 +10,6 @@ interface TimeProps {
 }
 
 const Time: React.FC<TimeProps> = (props: TimeProps) => {
-  const [progress, setProgress] = useState<number>(0);
-
   return (
     <Container>
       <Title>
@@ -28,9 +26,8 @@ const Time: React.FC<TimeProps> = (props: TimeProps) => {
 };
 
 const Container = styled.div`
-  height: 38vh;
-  padding: 50px 43px 80px;
   display: flex;
+  height: 80%;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
@@ -40,7 +37,7 @@ const Title = styled.div`
   display: flex;
   gap: 15px;
   font-size: 24px;
-  font-family: NotoSansSemiBold;
+  font-family: NotoSansBold;
   align-items: center;
 `;
 

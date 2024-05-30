@@ -55,8 +55,8 @@ const SelectOptions = styled.ul<{ show: boolean }>`
   top: 36px;
   left: 0;
   width: 100%;
-  overflow: hidden;
-  max-height: ${(props) => (props.show ? "none" : "0")};
+  overflow: auto;
+  max-height: ${(props) => (props.show ? "200px" : "0")};
   padding: 0;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.colors.black01};
