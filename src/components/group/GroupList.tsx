@@ -27,6 +27,11 @@ const GroupList: React.FC = () => {
     { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
     { name: "캡디 손들어", date: "2024-04-25", role: "Owner", memberCount: 8 },
     { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
+    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
+    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
+    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
+    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
+    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
   ];
 
   return (

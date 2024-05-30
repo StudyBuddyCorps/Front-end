@@ -58,10 +58,11 @@ const GroupSetting: React.FC = () => {
 };
 
 const Wrapper = styled.div`
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
-  justify-content: space-around;
+  gap: 50px;
   align-items: center;
 `;
 const Container = styled.div`

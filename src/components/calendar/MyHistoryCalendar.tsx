@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { subMonths, format } from "date-fns";
 import useCalendar from "hooks/useCalendar";
 import Day from "./Day";
-import Prev from "../../assets/prev_icon.png";
-import Next from "../../assets/next_icon.png";
+import Prev from "assets/images/prev_icon.png";
+import Next from "assets/images/next_icon.png";
 import CheckIcon from "components/common/Icons/CheckIcon";
 
 const DAY_LIST = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -13,8 +13,8 @@ const MyHistoryCalendar = () => {
   const calendar = useCalendar();
   const result = format(calendar.currentDate, "yyyy'년' MM'월'");
   const c = calendar.weekCalendarList;
-
   const [select, setSelect] = React.useState<number[]>([]);
+
   return (
     <Container>
       <TitleS>
@@ -42,7 +42,7 @@ const MyHistoryCalendar = () => {
           <Week>
             {item.map((day) => (
               <Day day={day}>
-                <CheckIcon width="20" height="20"></CheckIcon>
+                <CheckIcon width="20" height="20" color="#FF007A"></CheckIcon>
               </Day>
             ))}
           </Week>
@@ -54,6 +54,7 @@ const MyHistoryCalendar = () => {
 
 const Container = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
 `;
 
@@ -68,7 +69,7 @@ const TitleS = styled.div`
 const ContentS = styled.div`
   display: flex;
   flex-direction: column;
-  font-family: NotoSansRegular;
+  font-family: NotoSansMedium;
   color: ${({ theme }) => theme.colors.black02};
   font-size: 20px;
   text-align: center;
@@ -84,12 +85,11 @@ const Icon = styled.img`
 const Week = styled.div`
   display: grid;
   grid-template-columns: repeat(7, auto); /* 7개의 열을 자동으로 생성 */
-  grid-column-gap: 32px;
+  grid-column-gap: 5%;
   > :nth-child(1) {
     /* grid의 첫 번째 열에 대해서만 빨간색 */
     color: red;
   }
-  margin: 10px 0px;
 `;
 
 const WeekT = styled.div`
