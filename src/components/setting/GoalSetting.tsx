@@ -2,8 +2,8 @@ import styled from "styled-components";
 import SelectBox from "../common/SelectBox";
 import { useState } from "react";
 
-const hours: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-const minutes: number[] = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+const hours: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const minutes: number[] = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 
 const GoalSetting: React.FC = () => {
   const [totalTime, setTotalTime] = useState<number>(0);
