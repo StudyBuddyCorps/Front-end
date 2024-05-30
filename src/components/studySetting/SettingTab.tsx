@@ -30,7 +30,7 @@ const SettingTab: React.FC<SettingTabProps> = ({
 
 const Wrapper = styled.div`
   display: flex;
-  width: 200px;
+  width: 210px;
   height: 88vh;
   align-items: flex-start;
   flex-direction: column;
@@ -48,7 +48,7 @@ const TabButton = styled.button<{ $isSelected: boolean }>`
   color: ${({ $isSelected }) =>
     $isSelected ? theme.colors.subMain : theme.colors.black02};
   font-size: 20px;
-  font-family: NotoSansSemiBold;
+  font-family: NotoSansBold;
   padding: 20px 26px;
   text-align: left;
 `;

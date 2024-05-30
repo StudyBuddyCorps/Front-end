@@ -28,6 +28,7 @@ const ItemImg = styled.img`
   bottom: 0;
   left: 50%;
   transform: translate(-50%);
+  width: 84%;
 `;
 
 export default Preview;
