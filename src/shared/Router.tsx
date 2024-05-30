@@ -5,6 +5,7 @@ import {
   Home,
   Group,
   GroupMain,
+  GroupGenerate,
   Calendar,
   MemberCalendar,
   Setting,
@@ -15,7 +16,6 @@ import {
   ResetPwd,
 } from "../pages";
 import Sidebar from "./Sidebar";
-import GroupGenerate from "pages/GroupGenerate";
 
 const Router = () => {
   return (

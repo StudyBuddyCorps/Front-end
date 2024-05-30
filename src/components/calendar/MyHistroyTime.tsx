@@ -47,9 +47,7 @@ const Container = styled.div`
   border-radius: 20px;
   box-shadow: 4px 4px 20px #0000000d;
   box-shadow: -4px -4px 20px #0000000d;
-  padding: 30px;
-  width: 20%
-  height: 100%;
+  padding: 20px;
 `;
 
 const TitleS = styled.div`

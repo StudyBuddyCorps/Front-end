@@ -4,19 +4,16 @@ import styled from "styled-components";
 
 interface GenerateTabsProps {
   children: React.ReactNode;
+  selectedTab: string;
+  handleSelectTab: (title: string) => void;
 }
 
 const GenerateTabs: React.FC<GenerateTabsProps> = ({
   children,
+  selectedTab,
+  handleSelectTab,
 }: GenerateTabsProps) => {
   const childrenArray = React.Children.toArray(children) as ReactElement[];
-  const [selectedTab, setSelectedTab] = useState<string>(
-    childrenArray[0].props.title
-  );
-
-  const handleTabSelect = (title: string) => {
-    setSelectedTab(title);
-  };
 
   return (
     <>
@@ -25,7 +22,7 @@ const GenerateTabs: React.FC<GenerateTabsProps> = ({
           <GenerateTab
             key={child.props.title}
             title={child.props.title}
-            onSelectTab={handleTabSelect}
+            onSelectTab={handleSelectTab}
             selectedTab={selectedTab}
           />
         ))}
@@ -55,7 +52,7 @@ const TabContent = styled.div`
   justify-content: center;
   width: 45vw;
   height: 88vh;
-  padding: 20px;
+  padding: 6vh 30px 30px 30px;
   background-color: #ffffff;
   border: none;
   border-radius: 0 15px 15px 0;

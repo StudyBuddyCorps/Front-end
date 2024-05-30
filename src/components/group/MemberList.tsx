@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import MemberProfile from "./MemberProfile";
-import Ava from "../../assets/avatar_woman.png";
+import Ava from "assets/images/avatar_woman.png";
 
 const MemberList: React.FC = () => {
   const items: {
@@ -10,6 +10,39 @@ const MemberList: React.FC = () => {
     imgUrl: string;
     role: string;
   }[] = [
+    {
+      name: "배주헝",
+      imgUrl: Ava,
+      role: "Owner",
+    },
+    { name: "전희죵", imgUrl: Ava, role: "Member" },
+    {
+      name: "한디슈",
+      imgUrl: Ava,
+      role: "Member",
+    },
+    {
+      name: "배주헝",
+      imgUrl: Ava,
+      role: "Owner",
+    },
+    { name: "전희죵", imgUrl: Ava, role: "Member" },
+    {
+      name: "한디슈",
+      imgUrl: Ava,
+      role: "Member",
+    },
+    {
+      name: "배주헝",
+      imgUrl: Ava,
+      role: "Owner",
+    },
+    { name: "전희죵", imgUrl: Ava, role: "Member" },
+    {
+      name: "한디슈",
+      imgUrl: Ava,
+      role: "Member",
+    },
     {
       name: "배주헝",
       imgUrl: Ava,
@@ -37,8 +70,9 @@ const MemberList: React.FC = () => {
   );
 };
 const ListContainer = styled.div`
-  margin: 0px 40px;
-  widht: auto;
-  height: auto;
+  width: 90%;
+  height: 50vh;
+  overflow: auto;
+  padding: 0px 20px 0px 10px;
 `;
 export default MemberList;

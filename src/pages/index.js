@@ -3,6 +3,7 @@ import Account from "./Account";
 import Home from "./Home";
 import Group from "./Group";
 import GroupMain from "./GroupMain";
+import GroupGenerate from "./GroupGenerate";
 import Calendar from "./Calender";
 import Setting from "./Setting";
 import MemberCalendar from "./MemberCalendar";
@@ -18,6 +19,7 @@ export {
   Account,
   Group,
   GroupMain,
+  GroupGenerate,
   Calendar,
   Setting,
   MemberCalendar,

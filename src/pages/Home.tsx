@@ -10,9 +10,9 @@ import Time from "components/common/Time";
 import Guideline from "components/common/GuideLine";
 import useModal from "hooks/useConfirm";
 import ConfirmModal from "components/common/ConfirmModal";
+import Footer from "components/common/Layout/Footer";
 
 const Home: React.FC = () => {
-  const [progress, setProgress] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const {
     isConfirmVisible,
@@ -52,7 +52,6 @@ const Home: React.FC = () => {
           >
             <Profile src={Avatar} alt="Profile" onClick={handleProfileClick} />
           </Header>
-
           {/* 스터디룸 입장 및 생성 */}
           <Study>
             <SDiv>
@@ -72,11 +71,13 @@ const Home: React.FC = () => {
           </Study>
 
           {/* 오늘의 총 공부 시간 */}
-          <Time
-            title="오늘의 총 공부 시간"
-            totalTime="03 : 30 : 01"
-            goalTime="06 : 00 : 00"
-          ></Time>
+          <Footer>
+            <Time
+              title="오늘의 총 공부 시간"
+              totalTime="03 : 30 : 01"
+              goalTime="06 : 00 : 00"
+            ></Time>
+          </Footer>
         </>
       )}
       {isConfirmVisible && (
@@ -108,6 +109,10 @@ const Study = styled.div`
   @media (min-width: 1280px) {
     gap: 22vw;
   }
+`;
+
+const Content = styled.div`
+  height: 100%;
 `;
 
 const SDiv = styled.div`

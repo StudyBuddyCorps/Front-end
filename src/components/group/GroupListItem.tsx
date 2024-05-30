@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import Arrow_Btn from "../../assets/images/arrow_right.png";
 import Badge from "components/group/Badge";
+import { Link, useNavigate } from "react-router-dom";
 
 interface GroupListporps {
   name: string;
@@ -25,7 +26,9 @@ const GroupListItem: React.FC<GroupListporps> = (props: GroupListporps) => {
         {props.memberCount}
       </div>
       <div id="c5" className="c">
-        <img src={Arrow_Btn} />
+        <Link to={"/group/${props.name}"}>
+          <img src={Arrow_Btn} />
+        </Link>
       </div>
     </ItemBox>
   );
