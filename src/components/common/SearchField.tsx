@@ -4,13 +4,14 @@ import { TextField } from "./FieldStyle";
 
 type SearchFieldProps = {
   placeHolder: string;
+  width?: string;
 };
 
-const SearchField = ({ placeHolder }: SearchFieldProps) => {
+const SearchField = ({ placeHolder, width }: SearchFieldProps) => {
   return (
     <SearchFiledStyle>
       <SearchIcon width="24px" height="24px" />
-      <TextField width="25vw" placeholder={placeHolder}></TextField>
+      <TextField width={width} placeholder={placeHolder}></TextField>
     </SearchFiledStyle>
   );
 };
