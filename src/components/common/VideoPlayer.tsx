@@ -27,11 +27,10 @@ const VideoPlayer = () => {
 };
 
 const Container = styled.div`
-  width: 45vw;
-  height: calc(40vw*0.7);
   overflow: hidden;
   border: none;
   border-radius: 5px;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const Video = styled.video`
