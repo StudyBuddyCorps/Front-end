@@ -1,30 +1,38 @@
 import React, { useState } from "react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import styled, { css } from "styled-components";
 import Message from "../../assets/images/message.png";
 import Lock from "../../assets/images/lock.png";
-import Kakao from "../../assets/images/kakao.png";
-import Google from "../../assets/images/google.png";
 import UnView from "../../assets/images/hideView.png";
 import View from "../../assets/images/notHideView.png";
 import Profile from "../../assets/images/profile.png";
+import GoogleButton from "./GoogleButton";
+import KakaoButton from "./KakoButton";
 
 interface JoinProps {
-  onSubmit: (form: {name: string, email: string, password: string, confirmPwd: string}) => void;
+  onSubmit: (form: {
+    name: string;
+    email: string;
+    password: string;
+    confirmPwd: string;
+  }) => void;
 }
 
-const Join = ({onSubmit}: JoinProps) => {
+const Join = ({ onSubmit }: JoinProps) => {
+  const googleClient = process.env.REACT_APP_GOOGLE_CLIENT_ID as string;
+
   const [showPwd, setShowPwd] = useState(false);
-   const [showConfirmPwd, setShowConfirmPwd] = useState(false);
-  const [ form, setForm ] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPwd: ''
+  const [showConfirmPwd, setShowConfirmPwd] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPwd: "",
   });
 
-  const { name, email, password, confirmPwd} = form;
+  const { name, email, password, confirmPwd } = form;
 
-  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm({
       ...form,
@@ -36,22 +44,23 @@ const Join = ({onSubmit}: JoinProps) => {
     e.preventDefault();
     onSubmit(form);
     setForm({
-      name: '',
-      email: '',
-      password: '',
-      confirmPwd: '',
+      name: "",
+      email: "",
+      password: "",
+      confirmPwd: "",
     });
   };
 
   // input 값이 다 입력되어 있는지 체크
-  const isFormValid = name !== '' && email !== '' && password !== '' && confirmPwd !== '';
-  
+  const isFormValid =
+    name !== "" && email !== "" && password !== "" && confirmPwd !== "";
+
   // 눈 아이콘 클릭 시 비밀번호가 보임
   const handleTogglePwdVisibility = () => {
-    setShowPwd(prevState => !prevState);
+    setShowPwd((prevState) => !prevState);
   };
   const handleToggleConfirmPdVisibility = () => {
-    setShowConfirmPwd(prevState => !prevState);
+    setShowConfirmPwd((prevState) => !prevState);
   };
 
   return (
@@ -61,74 +70,72 @@ const Join = ({onSubmit}: JoinProps) => {
           <JoinLabel>이름</JoinLabel>
           <InputContainer>
             <Img src={Profile} alt="name" />
-            <Input 
+            <Input
               type="text"
               name="name"
               placeholder="이름을 입력해주세요"
               value={name}
               onChange={onChange}
             />
-          </InputContainer>          
+          </InputContainer>
         </div>
         <div>
           <JoinLabel>이메일</JoinLabel>
           <InputContainer>
             <Img src={Message} alt="email" />
-            <Input 
+            <Input
               type="email"
               name="email"
               placeholder="이메일을 입력해주세요"
               value={email}
               onChange={onChange}
             />
-          </InputContainer>          
+          </InputContainer>
         </div>
         <div>
           <JoinLabel>비밀번호</JoinLabel>
           <InputContainer>
-            <Img src={Lock} alt='password' />
+            <Img src={Lock} alt="password" />
             <Input
-              type={showPwd ? 'text' : 'password'}
+              type={showPwd ? "text" : "password"}
               name="password"
-              placeholder='영문자, 숫자, 특수문자 포함 최소 8~25자'
+              placeholder="영문자, 숫자, 특수문자 포함 최소 8~25자"
               value={password}
               onChange={onChange}
             />
-            <ViewImg 
-              src={ showPwd ? View : UnView }  
-              alt={ showPwd ? "View" : "Hidde View" }
-              onClick={handleTogglePwdVisibility} 
+            <ViewImg
+              src={showPwd ? View : UnView}
+              alt={showPwd ? "View" : "Hidde View"}
+              onClick={handleTogglePwdVisibility}
             />
-          </InputContainer>   
+          </InputContainer>
           <InputContainer>
-            <Img src={Lock} alt='password' />
+            <Img src={Lock} alt="password" />
             <Input
-              type={showConfirmPwd ? 'text' : 'password'}
+              type={showConfirmPwd ? "text" : "password"}
               name="confirmPwd"
-              placeholder='비밀번호 확인'
+              placeholder="비밀번호 확인"
               value={confirmPwd}
               onChange={onChange}
             />
-            <ViewImg 
-              src={ showConfirmPwd ? View : UnView } 
-              alt={ showConfirmPwd ? "View" : "Hidde View" }
-              onClick={handleToggleConfirmPdVisibility} 
+            <ViewImg
+              src={showConfirmPwd ? View : UnView}
+              alt={showConfirmPwd ? "View" : "Hidde View"}
+              onClick={handleToggleConfirmPdVisibility}
             />
-          </InputContainer>       
-        </div>      
-        <Button type="submit" enabled={isFormValid}>회원가입</Button>
+          </InputContainer>
+        </div>
+        <Button type="submit" enabled={isFormValid}>
+          회원가입
+        </Button>
       </JoinForm>
       <Other>
         <Text>또는 다음으로 로그인</Text>
         <Icons>
-          <Icon>
-            <img src={Kakao} alt='kakao login' />
-            <IconName>Google</IconName>
-          </Icon>
-          <Icon>
-            <img src={Google} alt='google login' />
-            <IconName>Kakao</IconName>
-          </Icon>
+          <GoogleOAuthProvider clientId={googleClient}>
+            <GoogleButton />
+          </GoogleOAuthProvider>
+          <KakaoButton></KakaoButton>
         </Icons>
       </Other>
     </Wrapper>
@@ -142,7 +149,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   border: none;
   border-radius: 0 0 15px 15px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 0 5vw;
   box-sizing: border-box;
   justify-content: space-between;
@@ -187,11 +194,11 @@ const Input = styled.input`
   width: -webkit-fill-available;
   height: 46px;
   border-radius: 5px;
-  border: 1px solid #CDCDCD;
+  border: 1px solid #cdcdcd;
   box-sizing: border-box;
   font-size: 15px;
   &::placeholder {
-    color: #CDCDCD;
+    color: #cdcdcd;
   }
 `;
 
@@ -202,22 +209,21 @@ const ViewImg = styled.img`
   transform: translateY(-50%);
 `;
 
-const Button = styled.button<{ enabled: boolean}>`
+const Button = styled.button<{ enabled: boolean }>`
   height: 52px;
   border: none;
   border-radius: 10px;
-  background-color: #ECECEC;
-  color: #FFFFFF;
+  background-color: #ececec;
+  color: #ffffff;
   font-size: 20px;
   font-weight: 600;
   cursor: not-allowed;
-  ${props => 
+  ${(props) =>
     props.enabled &&
     css`
-      background-color: #2A3F5F;
+      background-color: #2a3f5f;
       cursor: pointer;
-    `
-  }
+    `}
 `;
 
 const Other = styled.div`
@@ -237,19 +243,6 @@ const Text = styled.div`
 const Icons = styled.div`
   display: flex;
   gap: 3.5vw;
-`;
-
-const Icon = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-`;
-
-const IconName =  styled.div`
-  font-size: 10px;
-  font-weight: 400;
-  color: #181D24;
 `;
 
 export default Join;

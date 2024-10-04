@@ -16,6 +16,7 @@ import {
   ResetPwd,
 } from "../pages";
 import Sidebar from "./Sidebar";
+import OAuthRedirect from "pages/OAuthRedirect";
 
 const Router = () => {
   return (
@@ -24,7 +25,7 @@ const Router = () => {
         <Route path="/" element={<Main />} />
         <Route path="/account" element={<Account />} />
         <Route path="/account/reset/password" element={<ResetPwd />} />
-
+        <Route path="/auth/kakao/callback" element={<OAuthRedirect />} />
         {/* 사이드바가 보이는 페이지 */}
         <Route element={<Sidebar />}>
           <Route path="/home" element={<Home />} />
@@ -37,7 +38,6 @@ const Router = () => {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/setting" element={<Setting />} />
         </Route>
-
         <Route path="/room/:rommId" element={<StudyRoom />} />
         <Route path="/room/:roomId" element={<StudyRoomPomodoro />} />
         <Route path="/room" element={<StudyRoomSetting />} />

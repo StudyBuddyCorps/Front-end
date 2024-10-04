@@ -12,6 +12,7 @@ import StudyRoomPomodoro from "./StudyRoomPomodoro";
 import StudyRoomSetting from "./StudyRoomSetting";
 import StudyRoomFinish from "./StudyRoomFinish";
 import ResetPwd from "./ResetPwd";
+import OAuthRedirect from "./OAuthRedirect";
 
 export {
   Main,
@@ -28,4 +29,5 @@ export {
   StudyRoomSetting,
   StudyRoomFinish,
   ResetPwd,
+  OAuthRedirect,
 };

@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import Message from "../../assets/images/message.png";
 import Lock from "../../assets/images/lock.png";
-import Kakao from "../../assets/images/kakao.png";
-import Google from "../../assets/images/google.png";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import GoogleButton from "./GoogleButton";
+import KakaoButton from "./KakoButton";
 import UnView from "../../assets/images/hideView.png";
 import View from "../../assets/images/notHideView.png";
 
 interface LoginProps {
-  onSubmit: (form: {email: string, password: string}) => void;
+  onSubmit: (form: { email: string; password: string }) => void;
 }
 
-function Login({onSubmit}: LoginProps) {
+function Login({ onSubmit }: LoginProps) {
+  const googleClient = process.env.REACT_APP_GOOGLE_CLIENT_ID as string;
   const [showPwd, setShowPwd] = useState(false);
   const [form, setForm] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const { email, password } = form;
 
-  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm({
       ...form,
-      [name]: value, 
+      [name]: value,
     });
   };
 
@@ -38,11 +40,11 @@ function Login({onSubmit}: LoginProps) {
   };
 
   // input 값이 다 입력되어 있는지 체크
-  const isFormValid = email !== '' && password !== '';
-  
+  const isFormValid = email !== "" && password !== "";
+
   // 눈 아이콘 클릭 시 비밀번호가 보임
   const handleTogglePwdVisibility = () => {
-    setShowPwd(prevState => !prevState);
+    setShowPwd((prevState) => !prevState);
   };
 
   return (
@@ -52,51 +54,49 @@ function Login({onSubmit}: LoginProps) {
           <LoginLabel>이메일</LoginLabel>
           <InputContainer>
             <Img src={Message} alt="email" />
-            <Input 
+            <Input
               type="email"
-              name='email'
+              name="email"
               placeholder="이메일을 입력해주세요"
               value={email}
               onChange={onChange}
             />
-          </InputContainer>          
+          </InputContainer>
         </div>
         <div>
           <LoginLabel>비밀번호</LoginLabel>
           <InputContainer>
-            <Img src={Lock} alt='password' />
+            <Img src={Lock} alt="password" />
             <Input
-              type={showPwd ? 'text' : 'password'}
-              name='password'
-              placeholder='비밀번호를 입력해주세요'
+              type={showPwd ? "text" : "password"}
+              name="password"
+              placeholder="비밀번호를 입력해주세요"
               value={password}
               onChange={onChange}
             />
-            <ViewImg 
-              src={ showPwd ? View : UnView } 
-              alt={ showPwd ? "Visible View" : "Hidde View" }
+            <ViewImg
+              src={showPwd ? View : UnView}
+              alt={showPwd ? "Visible View" : "Hidde View"}
               onClick={handleTogglePwdVisibility}
             />
-          </InputContainer>          
-        </div>      
-        <Button type='submit' enabled={isFormValid}>로그인</Button>
+          </InputContainer>
+        </div>
+        <Button type="submit" enabled={isFormValid}>
+          로그인
+        </Button>
       </LoginForm>
       <Other>
         <Text>또는 다음으로 로그인</Text>
         <Icons>
-          <Icon>
-            <img src={Kakao} alt='kakao login' />
-            <IconName>Google</IconName>
-          </Icon>
-          <Icon>
-            <img src={Google} alt='google login' />
-            <IconName>Kakao</IconName>
-          </Icon>
+          <GoogleOAuthProvider clientId={googleClient}>
+            <GoogleButton />
+          </GoogleOAuthProvider>
+          <KakaoButton></KakaoButton>
         </Icons>
       </Other>
     </Wrapper>
   );
-};
+}
 
 const Wrapper = styled.div`
   width: 35vw;
@@ -105,7 +105,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   border: none;
   border-radius: 0 0 15px 15px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 0 5vw;
   box-sizing: border-box;
   gap: 4.5vh;
@@ -146,11 +146,11 @@ const Input = styled.input`
   width: -webkit-fill-available;
   height: 46px;
   border-radius: 5px;
-  border: 1px solid #CDCDCD;
+  border: 1px solid #cdcdcd;
   box-sizing: border-box;
   font-size: 15px;
   &::placeholder {
-    color: #CDCDCD;
+    color: #cdcdcd;
   }
 `;
 
@@ -161,22 +161,21 @@ const ViewImg = styled.img`
   transform: translateY(-50%);
 `;
 
-const Button = styled.button<{ enabled: boolean}>`
+const Button = styled.button<{ enabled: boolean }>`
   height: 52px;
   border: none;
   border-radius: 10px;
-  background-color: #ECECEC;
-  color: #FFFFFF;
+  background-color: #ececec;
+  color: #ffffff;
   font-size: 20px;
   font-weight: 600;
   cursor: not-allowed;
-  ${props => 
+  ${(props) =>
     props.enabled &&
     css`
-      background-color: #2A3F5F;
+      background-color: #2a3f5f;
       cursor: pointer;
-    `
-  }
+    `}
 `;
 
 const Other = styled.div`
@@ -184,6 +183,7 @@ const Other = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  margin-bottom: 30px;
 `;
 
 const Text = styled.div`
@@ -195,19 +195,6 @@ const Text = styled.div`
 const Icons = styled.div`
   display: flex;
   gap: 3.5vw;
-`;
-
-const Icon = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-`;
-
-const IconName =  styled.div`
-  font-size: 10px;
-  font-weight: 400;
-  color: #181D24;
 `;
 
 export default Login;
