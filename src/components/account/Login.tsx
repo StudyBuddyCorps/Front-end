@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import Message from "../../assets/images/message.png";
 import Lock from "../../assets/images/lock.png";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import GoogleButton from "./GoogleButton";
 import KakaoButton from "./KakoButton";
 import UnView from "../../assets/images/hideView.png";
@@ -13,7 +12,6 @@ interface LoginProps {
 }
 
 function Login({ onSubmit }: LoginProps) {
-  const googleClient = process.env.REACT_APP_GOOGLE_CLIENT_ID as string;
   const [showPwd, setShowPwd] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -88,9 +86,7 @@ function Login({ onSubmit }: LoginProps) {
       <Other>
         <Text>또는 다음으로 로그인</Text>
         <Icons>
-          <GoogleOAuthProvider clientId={googleClient}>
-            <GoogleButton />
-          </GoogleOAuthProvider>
+          <GoogleButton />
           <KakaoButton></KakaoButton>
         </Icons>
       </Other>

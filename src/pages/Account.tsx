@@ -5,29 +5,26 @@ import Join from "components/account/Join";
 import Tab from "components/account/Tab";
 import AccountImg from "../assets/images/account.png";
 import { useNavigate } from "react-router-dom";
+import { handleSignup } from "services/userServices";
+import { handleLogin } from "services/authServices";
 
 const Account: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("로그인");
   const navigate = useNavigate();
+
   const onLoginSubmit = async (form: { email: string; password: string }) => {
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!response.ok) {
-        throw new Error("Login failed");
+      const success = await handleLogin(form.email, form.password);
+      if (success?.ok) {
+        navigate("/home");
+      } else {
+        console.error(success?.error || "Login failed. Please try again.");
       }
-
-      const data = await response.json();
-      console.log("Login success:", data);
-      navigate("/home");
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error("An error occurred during login:", error);
     }
   };
+
   const onJoinSubmit = async (form: {
     name: string;
     email: string;
@@ -35,26 +32,19 @@ const Account: React.FC = () => {
     confirmPwd: string;
   }) => {
     try {
-      const response = await fetch("http://localhost:8080/users/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: form.email,
-          nickname: form.name,
-          password: form.password,
-          comparePassword: form.confirmPwd,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Signup failed");
+      const success = await handleSignup(
+        form.email,
+        form.password,
+        form.confirmPwd,
+        form.name
+      );
+      if (success?.ok) {
+        navigate("/home");
+      } else {
+        console.error(success?.error || "Signup failed. Please try again.");
       }
-
-      const data = await response.json();
-      console.log("Signup success:", data);
-      navigate("/home");
     } catch (error) {
-      console.error("Error during signup:", error);
+      console.error("An error occurred during signup:", error);
     }
   };
 

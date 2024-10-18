@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import styled, { css } from "styled-components";
 import Message from "../../assets/images/message.png";
 import Lock from "../../assets/images/lock.png";
@@ -19,8 +18,6 @@ interface JoinProps {
 }
 
 const Join = ({ onSubmit }: JoinProps) => {
-  const googleClient = process.env.REACT_APP_GOOGLE_CLIENT_ID as string;
-
   const [showPwd, setShowPwd] = useState(false);
   const [showConfirmPwd, setShowConfirmPwd] = useState(false);
   const [form, setForm] = useState({
@@ -132,9 +129,7 @@ const Join = ({ onSubmit }: JoinProps) => {
       <Other>
         <Text>또는 다음으로 로그인</Text>
         <Icons>
-          <GoogleOAuthProvider clientId={googleClient}>
-            <GoogleButton />
-          </GoogleOAuthProvider>
+          <GoogleButton />
           <KakaoButton></KakaoButton>
         </Icons>
       </Other>

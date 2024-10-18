@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "../assets/images/avatar_woman.png";
@@ -11,9 +11,11 @@ import Guideline from "components/common/GuideLine";
 import useModal from "hooks/useConfirm";
 import ConfirmModal from "components/common/ConfirmModal";
 import Footer from "components/common/Layout/Footer";
+import { handleLogout, checkAccessToken } from "services/authServices";
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
+
   const {
     isConfirmVisible,
     confirmMessage,
@@ -35,10 +37,26 @@ const Home: React.FC = () => {
     showConfirm("로그아웃 하시겠습니까?", logout);
   };
 
-  const logout = () => {
-    navigate("/");
-    console.log("로그아웃합니다.");
+  const logout = async () => {
+    try {
+      const result = await handleLogout();
+      if (result) navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    const success = checkAccessToken();
+    console.log(success);
+    if (!success) {
+      // 실패 시
+      navigate("/");
+      console.log("인증에 실패하였습니다. 다시 시도하세요.");
+    } else {
+      console.log("로그인 성공");
+    }
+  }, []);
 
   return (
     <MainLayout>
