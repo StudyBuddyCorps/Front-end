@@ -5,6 +5,10 @@ import Time from "components/common/Time";
 import MyHistoryCalendar from "components/calendar/MyHistoryCalendar";
 import MyHistoryTime from "components/calendar/MyHistroyTime";
 import Footer from "components/common/Layout/Footer";
+import CalendarProvider, {
+  useCalendarState,
+} from "components/calendar/CalendarContext";
+import StudyHistory from "components/calendar/StudyHistory";
 
 const Calendar = () => {
   return (
@@ -13,18 +17,20 @@ const Calendar = () => {
         title="Calendar"
         dis="운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라"
       ></Header>
-      <MainContent>
-        <div className="left">
-          <MyHistoryCalendar></MyHistoryCalendar>
-        </div>
-        <div className="right">
-          <MyHistoryTime
-            dayTime="00 : 02 : 02"
-            weekTime="00 : 02 : 02"
-            monthTime="15 : 01 : 02"
-          ></MyHistoryTime>
-        </div>
-      </MainContent>
+      <Content>
+        <CalendarProvider>
+          <div className="left">
+            <MyHistoryCalendar></MyHistoryCalendar>
+          </div>
+          <div className="right">
+            <MyHistoryTime
+              dayTime="00 : 02 : 02"
+              weekTime="00 : 02 : 02"
+              monthTime="15 : 01 : 02"
+            />
+          </div>
+        </CalendarProvider>
+      </Content>
       <Footer>
         <Time
           title="목표 달성률"
@@ -36,7 +42,7 @@ const Calendar = () => {
   );
 };
 
-const MainContent = styled.div`
+const Content = styled.div`
   display: flex;
   align-items: center;
   padding: 0px 40px;

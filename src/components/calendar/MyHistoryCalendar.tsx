@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useCalendarDispatch } from "./CalendarContext";
 import styled from "styled-components";
 import { subMonths, format } from "date-fns";
 import useCalendar from "hooks/useCalendar";
@@ -13,7 +13,14 @@ const MyHistoryCalendar = () => {
   const calendar = useCalendar();
   const result = format(calendar.currentDate, "yyyy'년' MM'월'");
   const c = calendar.weekCalendarList;
-  const [select, setSelect] = React.useState<number[]>([]);
+  const dispatch = useCalendarDispatch();
+
+  const handleDayClick = (day: number) => {
+    dispatch({
+      type: "SET_SELECTED_DAY",
+      payload: day,
+    });
+  };
 
   return (
     <Container>
@@ -42,7 +49,12 @@ const MyHistoryCalendar = () => {
           <Week>
             {item.map((day) => (
               <Day day={day}>
-                <CheckIcon width="20" height="20" color="#FF007A"></CheckIcon>
+                <CheckIcon
+                  width="20"
+                  height="20"
+                  color="#FF007A"
+                  onClick={() => handleDayClick(day)}
+                ></CheckIcon>
               </Day>
             ))}
           </Week>
