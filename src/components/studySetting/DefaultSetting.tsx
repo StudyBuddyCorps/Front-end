@@ -94,7 +94,6 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
       cameraAccess: true,//cameraPermission,
     };
 
-    console.log("Access Token:", accessToken);
     console.log("Request Body:", JSON.stringify(requestBody, null, 2));
 
     try {
@@ -128,7 +127,27 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
 
       if (!response.ok) throw new Error("Failed to create study room.");
 
-      navigate('/room/:roomId');
+      const responseData = await response.json();
+      const roomId = responseData._id;
+      const userId = responseData.userId;
+
+      const startRoomResponse = await fetch(`http://localhost:8080/studyroom/${roomId}/start`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (!startRoomResponse.ok) throw new Error("Failed to start study room.");
+
+      const startRoomData = await startRoomResponse.json();
+      console.log("Start Room Response:", startRoomData);
+
+      setTimeout(() => {
+        navigate('/room/${roomId}');
+      }, 5000);
     } catch (error) {
       console.error("Error creating study room: ", error);
     } finally {
