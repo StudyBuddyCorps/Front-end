@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Radio from "../studySetting/Radio";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { getToken } from "../../utils/localStroage";
 
 const EnvPhrase = () => {
   const [inputStatus, setInputStatus] = useState<string>('랜덤');
@@ -11,9 +14,28 @@ const EnvPhrase = () => {
     console.log('Selected ID:', buttonName);
   };
 
-  const handleSave = () => {
-    if (inputStatus === '직접') {
-      console.log('Custom Phrase:', customPhrase);
+  const handleSave = async() => {
+    const token = getToken();
+    const id = token ? (jwtDecode<{ id: string }>(token).id) : null;
+    if (!id) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    try {
+      const isRandom = inputStatus === '랜덤' ? true : false;
+      const phrase = isRandom ? "지금 안 하면 언제 할거야?" : customPhrase;
+
+      await axios.put(
+        "http://localhost:8080/users/phrase", 
+        { userId: id, phrase, isRandom },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      alert("명언이 성공적으로 업데이트되었습니다.");
+    } catch (error) {
+      console.error("명언 업데이트 실패:", error);
+      alert("명언 업데이트에 실패했습니다.");
     }
   };
 
