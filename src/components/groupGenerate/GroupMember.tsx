@@ -9,6 +9,7 @@ import Ava from "assets/images/avatar_woman.png";
 
 
 interface Member {
+  userId: string;
   name: string;
   imgUrl: string;
   role: string;
@@ -37,6 +38,10 @@ const GroupMember: React.FC = () => {
     fetchMembers();
   }, []);
 
+  const handleInvite = (userId: string) => {
+    console.log("Inviting user with ID:", userId);
+  };
+
   return (
     <Wrapper>
       <FieldArea
@@ -53,7 +58,7 @@ const GroupMember: React.FC = () => {
           초대하기
         </Button>
       </Invite>
-      <MemberList members={members} searchTerm={searchTerm}/>
+      <MemberList members={members} searchTerm={searchTerm} onInvite={handleInvite}/>
     </Wrapper>
   );
 };

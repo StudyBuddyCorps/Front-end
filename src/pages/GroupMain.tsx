@@ -9,6 +9,7 @@ import MyHistoryTime from "components/calendar/MyHistroyTime";
 import Footer from "components/common/Layout/Footer";
 import Button from "components/common/Button";
 import MemberField from "components/group/MemberField";
+import InviteMember from "components/group/InviteMember";
 import Ava from "assets/images/avatar_woman.png";
 import axios from "axios";
 
@@ -37,48 +38,62 @@ const GroupMain = () => {
   const [studygroup, setStudygroup] = useState<Group | null>(null);
   const [groupId, setGroupId] = useState<string | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+
+  const fetchGroupData = async () => {
+    try {
+      const encodedGroupName = encodeURIComponent(groupName as string);
+      const groupInfoResponse = await axios.get(`http://localhost:8080/groups/name/${encodedGroupName}`);
+      const fetchedGroupId = groupInfoResponse.data.groupId;
+
+      setGroupId(fetchedGroupId);
+
+      const groupDataResponse = await axios.get(`http://localhost:8080/groups/${fetchedGroupId}`);
+      const groupData = groupDataResponse.data;
+
+      const membersWithNames = await Promise.all(
+        groupData.members.map(async (member: any) => {
+          const userResponse = await axios.get(`http://localhost:8080/users/${member.userId}`);
+          return {
+            userId: member.userId,
+            name: userResponse.data.name,
+            imgUrl: userResponse.data.imgUrl || Ava,
+            role: member.role,
+          };
+        })
+      );
+
+      setStudygroup({
+        ...groupData,
+        members: membersWithNames,
+      });
+      setMembers(membersWithNames);
+    } catch (error) {
+      console.error("그룹 정보를 불러오는 중 오류 발생:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchGroupData = async () => {
-      try {
-        const encodedGroupName = encodeURIComponent(groupName as string);
-        const groupInfoResponse = await axios.get(`http://localhost:8080/groups/name/${encodedGroupName}`);
-        const fetchedGroupId = groupInfoResponse.data.groupId;
-
-        setGroupId(fetchedGroupId);
-
-        const groupDataResponse = await axios.get(`http://localhost:8080/groups/${fetchedGroupId}`);
-        const groupData = groupDataResponse.data;
-
-        const membersWithNames = await Promise.all(
-          groupData.members.map(async (member: any) => {
-            const userResponse = await axios.get(`http://localhost:8080/users/${member.userId}`);
-            return {
-              name: userResponse.data.name,
-              imgUrl: userResponse.data.imgUrl || Ava, // 기본 이미지 처리
-              role: member.role,
-            };
-          })
-        );
-
-        setStudygroup({
-          ...groupData,
-          members: membersWithNames,
-        });
-        setMembers(membersWithNames);
-      } catch (error) {
-        console.error("그룹 정보를 불러오는 중 오류 발생:", error);
-      }
-    };
-
-    if (groupName) {
-      fetchGroupData();
-    }
+    fetchGroupData();
   }, [groupName]);
 
   if (!studygroup) {
     return <div>Loading...</div>;
   }
+
+  const handleOpenInvite = () => {
+    setIsInviteModalOpen(true);
+  };
+
+  const handleCloseInvite = () => {
+    fetchGroupData();
+    setIsInviteModalOpen(false);
+  };
+
+  const handleMemberInvite = () => {
+    fetchGroupData();
+    setIsInviteModalOpen(false);
+  };
 
   return (
     <MainLayout>
@@ -86,10 +101,13 @@ const GroupMain = () => {
         <Button width="150px" onClick={() => {}}>
           그룹 설정
         </Button>
-        <Button width="150px" onClick={() => {}}>
+        <Button width="150px" onClick={handleOpenInvite}>
           멤버 추가
         </Button>
       </Header>
+      {isInviteModalOpen && groupId && (
+        <InviteMember groupId={groupId} onClose={handleCloseInvite} onMemberInvite={handleMemberInvite} />
+      )}
       <MainContent>
         <div className="left">
           <MyHistoryCalendar></MyHistoryCalendar>
