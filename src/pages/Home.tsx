@@ -14,10 +14,13 @@ import ConfirmModal from "components/common/ConfirmModal";
 import Footer from "components/common/Layout/Footer";
 import { handleLogout, checkAccessToken } from "services/authServices";
 import { saveToken, getToken, removeToken } from "../utils/localStroage";
+import axios from "axios";
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [phrase, setPhrase] = useState<string>("운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라");
+  const [goal, setGoal] = useState<number>(360);
   const {
     isConfirmVisible,
     confirmMessage,
@@ -38,6 +41,27 @@ const Home: React.FC = () => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!userId || !token) return;
+      try {
+        const response = await axios.get(`http://localhost:8080/users/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const user = response.data;
+        setPhrase(user.phrase && user.phrase.content ? user.phrase.content : "빡공하쇼");
+        console.log(user);
+        setGoal(user.goal || 360);
+      } catch (error) {
+        console.error("사용자 데이터 가져오기 실패:", error);
+      }
+    };
+    
+    fetchUserData();
+  }, [userId, token]);
 
   const handleButtonClick = async () => {
     setLoading(true);
@@ -108,7 +132,7 @@ const Home: React.FC = () => {
         <>
           <Header
             title="Home"
-            dis="운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라"
+            dis={phrase}
           >
             <Profile src={Avatar} alt="Profile" onClick={handleProfileClick} />
           </Header>
@@ -134,8 +158,8 @@ const Home: React.FC = () => {
           <Footer>
             <Time
               title="오늘의 총 공부 시간"
-              totalTime="03 : 30 : 01"
-              goalTime="06 : 00 : 00"
+              totalTime="02 : 30 : 01"
+              goalTime={`${String(Math.floor(goal / 60)).padStart(2, '0')} : ${String(goal % 60).padStart(2, '0')} : 00`}
             ></Time>
           </Footer>
         </>
