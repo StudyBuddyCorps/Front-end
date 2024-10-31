@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import styled from "styled-components";
 import Avatar from "../assets/images/avatar_woman.png";
 import Btn_Enter from "../assets/images/btn_entrance.png";
@@ -14,6 +15,7 @@ import Footer from "components/common/Layout/Footer";
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const {
     isConfirmVisible,
     confirmMessage,
@@ -22,13 +24,53 @@ const Home: React.FC = () => {
     handleCancel,
   } = useModal();
   const navigate = useNavigate();
+  const token = localStorage.getItem("accessToken");
 
-  const handleButtonClick = () => {
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodedToken = jwtDecode<{ id: string }>(token);
+        setUserId(decodedToken.id);
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    }
+  }, []);
+
+  const handleButtonClick = async () => {
     setLoading(true);
-    setTimeout(() => {
+
+    if (!token || !userId) {
+      console.error("Access token or user ID is missing.");
       setLoading(false);
-      navigate(`/studyroom/:roomId`);
-    }, 5000);
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/studyroom/defaultstart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("스터디룸 생성 및 시작 성공:", data);
+
+        // 생성된 디폴트 스터디룸으로 이동
+        const studyRoomId = data.studyRoom._id;
+        navigate(`/studyroom/${studyRoomId}`);
+      } else {
+        console.error("스터디룸 생성 및 시작 실패:", response.statusText);
+      }
+    } catch (error) {
+      console.error("스터디룸 생성 요청 오류:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleProfileClick = () => {
@@ -36,9 +78,11 @@ const Home: React.FC = () => {
   };
 
   const logout = () => {
+    localStorage.removeItem("accessToken");
     navigate("/");
     console.log("로그아웃합니다.");
   };
+
 
   return (
     <MainLayout>
