@@ -1,9 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`  
-  body {
+  html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
     overflow-y: auto;
     -ms-overflow-style: none; /* IE 및 Edge 용 스크롤 바 숨김 */
     &::-webkit-scrollbar {

@@ -24,6 +24,7 @@ const Router = () => {
         <Route path="/" element={<Main />} />
         <Route path="/account" element={<Account />} />
         <Route path="/account/reset/password" element={<ResetPwd />} />
+        <Route path="/studyResult" element={<StudyRoomFinish />} />
 
         {/* 사이드바가 보이는 페이지 */}
         <Route element={<Sidebar />}>
