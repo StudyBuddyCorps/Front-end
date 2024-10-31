@@ -146,7 +146,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
       console.log("Start Room Response:", startRoomData);
 
       setTimeout(() => {
-        navigate('/room/${roomId}');
+        navigate(`/studyroom/${roomId}`);
       }, 5000);
     } catch (error) {
       console.error("Error creating study room: ", error);

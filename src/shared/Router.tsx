@@ -38,10 +38,10 @@ const Router = () => {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/setting" element={<Setting />} />
         </Route>
-        <Route path="/room/:rommId" element={<StudyRoom />} />
-        <Route path="/room/:roomId" element={<StudyRoomPomodoro />} />
-        <Route path="/room" element={<StudyRoomSetting />} />
-        <Route path="/room/:roomId/result" element={<StudyRoomFinish />} />
+        <Route path="/studyroom/:roomId" element={<StudyRoom />} />
+        <Route path="/studyroom/:roomId" element={<StudyRoomPomodoro />} />
+        <Route path="/studyroom" element={<StudyRoomSetting />} />
+        <Route path="/studyroom/:roomId/result" element={<StudyRoomFinish />} />
         <Route path="/newGroup" element={<GroupGenerate />} />
       </Routes>
     </BrowserRouter>

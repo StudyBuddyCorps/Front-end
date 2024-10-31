@@ -27,7 +27,7 @@ const Home: React.FC = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      navigate("/room/:roomId");
+      navigate(`/studyroom/:roomId`);
     }, 5000);
   };
 
@@ -64,7 +64,7 @@ const Home: React.FC = () => {
             <SDiv>
               <STitle>스터디룸 생성</STitle>
               <SText>새로운 스터디룸을 만들어보세요.</SText>
-              <StyleLink to="/room">
+              <StyleLink to="/studyroom">
                 <img src={Btn_Create} alt="Create a new StudyRoom" />
               </StyleLink>
             </SDiv>

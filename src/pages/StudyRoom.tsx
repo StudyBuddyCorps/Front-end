@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import VideoPlayer from "components/common/VideoPlayer";
 import Noti from 'assets/images/Noti2.png';
 import Feedback from "components/studyRoom/Feedback";
@@ -10,6 +11,8 @@ import Chat from "components/studyRoom/Chat";
 import ChatImg from "assets/images/chat.png";
 
 const StudyRoom: React.FC = () => {
+  const { roomId } = useParams<{ roomId: string }>();
+  const [userId, setUserId] = useState<string | null>(null);
   const [ time, setTime ] = useState(0);
   const [ paused, setPaused ] = useState(false);
   const [whiteNoise, setWhiteNoise] = useState(false);
@@ -19,6 +22,34 @@ const StudyRoom: React.FC = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [showChat, setShowChat] = useState(false);
+  const accessToken = localStorage.getItem("accessToken") || "";
+
+  useEffect(() => {
+    console.log("Fetched roomId from URL:", roomId);
+    if (!roomId) return;
+    const fetchUserId = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/studyroom/${roomId}`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+          },
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setUserId(data.userId);
+          console.log("userId: ", data.userId);
+        } else {
+          console.error("Failed to fetch userId");
+        }
+      } catch (error) {
+        console.error("Error fetching userId:", error);
+      }
+    };
+
+    fetchUserId();
+  }, [roomId, accessToken]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -43,26 +74,42 @@ const StudyRoom: React.FC = () => {
   useEffect(() => {
     if (showResume) {
       timeoutRef.current = setTimeout(() => {
-        window.location.href = '/studyroom/:roomId/result';
+        window.location.href = `/studyroom/${roomId}/result`;
       }, 15 * 60 * 1000); // 15분 후 이동
 
       intervalRef.current = setInterval(() => {
         setRemainingTime((prev) => prev - 1);
       }, 1000);
     } else {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
       setRemainingTime(15 * 60); // Reset remaining time
     }
   }, [showResume]);
 
-  const handlePause = () => {
-    setPaused(true);
-    setShowResume(true);
+  const handlePause = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/studyroom/${roomId}/pause`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Pause/Resume Response:", data);
+        setPaused(true);
+        setShowResume(true);
+      } else {
+        console.error("Failed to pause/resume study room.");
+        console.log("Fetched roomId from URL:", roomId);
+      }
+    } catch (error) {
+      console.error("Error pausing/resuming study room:", error);
+    }
   };
 
   const handleResume = () => {
@@ -70,7 +117,30 @@ const StudyRoom: React.FC = () => {
     setShowResume(false);
   };
 
-  const handleStop = () => window.location.href = '/room/:roomId/result';
+  const handleStop = async () => {
+    if (!roomId || !userId) return;
+    try {
+      const response = await fetch(`http://localhost:8080/studyroom/${roomId}/stop`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Stop Room Response:", data);
+        window.location.href = `/studyroom/${roomId}/result`;
+      } else {
+        console.error("Failed to stop study room.");
+      }
+    } catch (error) {
+      console.error("Error stopping study room:", error);
+    }
+  };
+
   const handleWhiteNoise = () => setWhiteNoise(!whiteNoise);
   const toggleChat = () => setShowChat(!showChat);
 
