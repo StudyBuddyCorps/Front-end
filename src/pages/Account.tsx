@@ -15,6 +15,7 @@ const Account: React.FC = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -23,6 +24,23 @@ const Account: React.FC = () => {
 
       const data = await response.json();
       console.log("Login success:", data);
+
+      const getCookie = (name: string) => {
+        const matches = document.cookie.match(new RegExp(
+          "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+      };
+
+      const accessToken = getCookie("accessToken");
+
+      if (accessToken) {
+        localStorage.setItem("accessToken", accessToken);
+        console.log("Access token saved to localStorage: ", accessToken);
+      } else {
+        console.error("Access token not found in cookies");
+      }
+      
       navigate("/home");
     } catch (error) {
       console.error("Error during login:", error);
