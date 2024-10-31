@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import SearchField from "components/common/SearchField";
 import MemberProfile from "./MemberProfile";
 import styled from "styled-components";
@@ -7,6 +7,8 @@ import Ava from "assets/images/avatar_woman.png";
 interface MemberFieldProps {}
 
 const MemberField: React.FC<MemberFieldProps> = (props: MemberFieldProps) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
   const items: {
     // 임시 데이터
     name: string;
@@ -26,17 +28,21 @@ const MemberField: React.FC<MemberFieldProps> = (props: MemberFieldProps) => {
     },
   ];
 
+  const filteredItems = items.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <Container>
       <TitleS>
         <LeftS>멤버</LeftS>
         <RightS>
-          <SearchField placeHolder="Search Member Name"></SearchField>
+          <SearchField placeHolder="Search Member Name" onSearch={(value) => setSearchTerm(value)}></SearchField>
         </RightS>
       </TitleS>
       <ContentS>
         <ListContainer>
-          {items.map((item, index) => (
+          {filteredItems.map((item, index) => (
             <MemberProfile
               key={index}
               name={item.name}

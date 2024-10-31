@@ -1,13 +1,64 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Header from "shared/Header";
 import MainLayout from "components/common/Layout/MainLayout";
 import GroupList from "components/group/GroupList";
 import Button from "components/common/Button";
 import { styled } from "styled-components";
 import SearchField from "components/common/SearchField";
+import { jwtDecode } from "jwt-decode";
+import { saveToken, getToken, removeToken } from "../utils/localStroage";
+import axios from "axios";
+
+interface Group {
+  _id: string;
+  groupId: string;
+  name: string;
+  members: { userId: string; role: string }[];
+  createdAt: string;
+  role: string;
+  memberCount: number;
+}
 
 const Group = () => {
   const navigate = useNavigate();
+  const token = getToken();
+  const [userId, setUserId] = useState<string | null>(null);
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [filteredGroups, setFilteredGroups] = useState<Group[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken = jwtDecode<{ id: string }>(token);
+      setUserId(decodedToken.id);
+      fetchUserGroups(decodedToken.id);
+    }
+  }, []);
+
+  const fetchUserGroups = async (userId: string) => {
+    try {
+      const response = await axios.post("http://localhost:8080/groups/mygroup", {
+        userId: userId,
+      });
+      setGroups(response.data);
+      setFilteredGroups(response.data);
+    } catch (error) {
+      console.error("그룹 목록을 불러오는 중 오류 발생:", error);
+    }
+  };
+
+  const handleSearch = async (query: string) => {
+    setSearchQuery(query);
+    if (!query) {
+      setFilteredGroups(groups); 
+    } else {
+      const filtered = groups.filter((group) =>
+        group.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredGroups(filtered); 
+    }
+  };
 
   const handleGenerateGroup = () => {
     navigate("/newGroup");
@@ -16,12 +67,19 @@ const Group = () => {
   return (
     <MainLayout>
       <Header title="Group">
-        <SearchField placeHolder="Search Group Name" width="25vw" />
+        <SearchField 
+          placeHolder="Search Group Name" 
+          width="25vw" 
+          onSearch={(value) => {
+            setSearchQuery(value); 
+            handleSearch(value);
+          }}
+        />
         <Button width="150px" onClick={handleGenerateGroup}>
           그룹 생성
         </Button>
       </Header>
-      <GroupList></GroupList>
+      {userId && <GroupList groups={filteredGroups} />}
     </MainLayout>
   );
 };

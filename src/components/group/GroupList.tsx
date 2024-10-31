@@ -1,68 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import GroupListItem from "./GroupListItem";
 import { styled } from "styled-components";
+import axios from "axios";
 
-const GroupList: React.FC = () => {
-  // 아이템 리스트 예시
-  const items: {
-    name: string;
-    date: string;
-    role: string;
-    memberCount: number;
-  }[] = [
-    {
-      name: "불쌍한 4학년 모임",
-      date: "2024-04-24",
-      role: "Owner",
-      memberCount: 10,
-    },
-    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
-    {
-      name: "호이짜호이짜",
-      date: "2024-04-26",
-      role: "Member",
-      memberCount: 12,
-    },
-    { name: "캡디 손들어", date: "2024-04-25", role: "Owner", memberCount: 8 },
-    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
-    { name: "캡디 손들어", date: "2024-04-25", role: "Owner", memberCount: 8 },
-    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
-    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
-    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
-    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
-    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
-    { name: "캡디 손들어", date: "2024-04-25", role: "Member", memberCount: 8 },
-  ];
+interface Group {
+  groupId: string;
+  name: string;
+  createdAt: string;
+  role: string;
+  memberCount: number;
+}
 
+interface GroupListProps {
+  groups: Group[];
+}
+
+const GroupList: React.FC<GroupListProps> = ({ groups }) => {
   return (
     <ListContainer>
       <Column>
-        <div id="c1" className="c">
-          Name
-        </div>
-        <div id="c2" className="c">
-          Role
-        </div>
-        <div id="c3" className="c">
-          Date
-        </div>
-        <div id="c4" className="c">
-          Member
-        </div>
+        <div id="c1" className="c">Name</div>
+        <div id="c2" className="c">Role</div>
+        <div id="c3" className="c">Date</div>
+        <div id="c4" className="c">Member</div>
         <div id="c5" className="c"></div>
       </Column>
-      {items.map((item, index) => (
+      {groups.map((group) => (
         <GroupListItem
-          key={index}
-          name={item.name}
-          date={item.date}
-          role={item.role}
-          memberCount={item.memberCount}
+          key={group.groupId}
+          name={group.name}
+          date={new Date(group.createdAt).toLocaleDateString()}
+          role={group.role || "Member"}
+          memberCount={group.memberCount}
         />
       ))}
     </ListContainer>
   );
 };
+
 const ListContainer = styled.div`
   margin: 0px 40px;
 `;
