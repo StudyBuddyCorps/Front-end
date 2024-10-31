@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchField from "components/common/SearchField";
 import MemberProfile from "./MemberProfile";
 import styled from "styled-components";
+import axios from "axios";
 
 interface Member {
   name: string;
@@ -10,15 +11,36 @@ interface Member {
 }
 
 interface MemberFieldProps {
-  members: Member[];
+  groupId: string;
+  initialMembers: Member[];
 }
 
-const MemberField: React.FC<MemberFieldProps> = ({ members }) => {
+const MemberField: React.FC<MemberFieldProps> = ({ groupId, initialMembers }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [members, setMembers] = useState<Member[]>([]);
 
-  const filteredItems = members.filter((member) =>
-    member.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    const fetchFilteredMembers = async () => {
+      if (!searchTerm) {
+        setMembers(initialMembers);
+        return;
+      }
+      try {
+        console.log("groupId:", groupId);
+        const response = await axios.get(
+          `http://localhost:8080/groups/${groupId}/members/search`,
+          { params: { searchTerm } }
+        );
+        setMembers(response.data);
+      } catch (error) {
+        console.error("멤버 검색 중 오류 발생:", error);
+      }
+    };
+
+    if (groupId) { 
+      fetchFilteredMembers();
+    }
+  }, [groupId, searchTerm]);
 
   return (
     <Container>
@@ -30,7 +52,7 @@ const MemberField: React.FC<MemberFieldProps> = ({ members }) => {
       </TitleS>
       <ContentS>
         <ListContainer>
-          {filteredItems.map((member, index) => (
+          {members.map((member, index) => (
             <MemberProfile
               key={index}
               name={member.name}

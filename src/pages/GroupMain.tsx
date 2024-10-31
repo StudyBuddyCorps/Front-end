@@ -35,19 +35,21 @@ const formatGoalTime = (milliseconds: number) => {
 const GroupMain = () => {
   const { groupName } = useParams<{ groupName: string }>();
   const [studygroup, setStudygroup] = useState<Group | null>(null);
-  console.log("groupName: ", groupName);
+  const [groupId, setGroupId] = useState<string | null>(null);
+  const [members, setMembers] = useState<Member[]>([]);
+
   useEffect(() => {
     const fetchGroupData = async () => {
       try {
         const encodedGroupName = encodeURIComponent(groupName as string);
         const groupInfoResponse = await axios.get(`http://localhost:8080/groups/name/${encodedGroupName}`);
-        
-        const groupId = groupInfoResponse.data.groupId;
-        console.log("GroupId: ", groupId);
+        const fetchedGroupId = groupInfoResponse.data.groupId;
 
-        const groupDataResponse = await axios.get(`http://localhost:8080/groups/${groupId}`);
+        setGroupId(fetchedGroupId);
 
+        const groupDataResponse = await axios.get(`http://localhost:8080/groups/${fetchedGroupId}`);
         const groupData = groupDataResponse.data;
+
         const membersWithNames = await Promise.all(
           groupData.members.map(async (member: any) => {
             const userResponse = await axios.get(`http://localhost:8080/users/${member.userId}`);
@@ -63,6 +65,7 @@ const GroupMain = () => {
           ...groupData,
           members: membersWithNames,
         });
+        setMembers(membersWithNames);
       } catch (error) {
         console.error("그룹 정보를 불러오는 중 오류 발생:", error);
       }
@@ -92,7 +95,7 @@ const GroupMain = () => {
           <MyHistoryCalendar></MyHistoryCalendar>
         </div>
         <div className="right">
-          <MemberField members={studygroup.members}></MemberField>
+          {groupId && <MemberField groupId={groupId} initialMembers={members}/>}
         </div>
       </MainContent>
       <Footer>
