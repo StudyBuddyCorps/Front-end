@@ -7,9 +7,13 @@ import UnSwitch from "../../assets/images/unSwitch.png";
 interface DefaultSettingProps {
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  roomType: string;
+  studyMateVoice: string;
+  assistantTone: string;
+  accessToken: string;
 }
 
-const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoading }) => {
+const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoading, roomType, studyMateVoice, assistantTone, accessToken }) => {
   const [cameraPermission, setCameraPermission] = useState<boolean>(false);
   const [defaultRoomSetting, setDefaultRoomSetting] = useState<boolean>(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -77,13 +81,52 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
     setSelectedTab('3. 스터디 도우미');
   };
   
-  const handleNextButtonClick = () => {
-    console.log("디폴트 설정: ", defaultRoomSetting);
+  const handleNextButtonClick = async () => {
     setLoading(true);
-    setTimeout(() => {    // 임의의 로딩시간 설정
-      setLoading(false);
+
+    const requestBody = {
+      roomType,
+      studyMate: {
+        image: "Noti",
+        voice: studyMateVoice,
+      },
+      assistantTone,
+      cameraAccess: true,//cameraPermission,
+    };
+
+    console.log("Access Token:", accessToken);
+    console.log("Request Body:", JSON.stringify(requestBody, null, 2));
+
+    try {
+      const response = await fetch("http://localhost:8080/studyroom", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken || ''}`,
+        },
+        credentials: 'include',
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) throw new Error("Failed to create study room.");
+
+      if (defaultRoomSetting) {
+        await fetch("http://localhost:8080/studyroom/default", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken || ''}`,
+          },
+          credentials: 'include',
+          body: JSON.stringify(requestBody),
+        });
+      }
       navigate('/room/:roomId');
-    }, 6000);
+    } catch (error) {
+      console.error("Error creating study room: ", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -129,7 +172,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
 
       <Buttons>
         <Button onClick={handlePrevButtonClick}>이전</Button>
-        <Button onClick={handleNextButtonClick} disabled={!cameraPermission}>다음</Button>
+        <Button onClick={handleNextButtonClick}>{/*disabled={!cameraPermission}*/}다음</Button>
       </Buttons>
     </Wrapper>
   );

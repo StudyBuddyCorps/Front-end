@@ -1,14 +1,9 @@
 import { UseGoogleLoginOptions, useGoogleLogin } from "@react-oauth/google";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Google from "../../assets/images/google.png";
 
 const GoogleButton = () => {
   const googleClient = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-
-  if (!googleClient) {
-    console.error("Google Client ID is not defined in .env file.");
-    return <div>Error: Google Client ID is missing</div>;
-  }
 
   const options: UseGoogleLoginOptions = {
     scope: "openid profile email",
@@ -23,8 +18,15 @@ const GoogleButton = () => {
     ux_mode: "redirect",
   };
 
+  const googleLogin = useGoogleLogin(options);
+
+  if (!googleClient) {
+    console.error("Google Client ID is not defined in .env file.");
+    return <div>Error: Google Client ID is missing</div>;
+  }
+
   return (
-    <Icon onClick={() => useGoogleLogin(options)}>
+    <Icon onClick={googleLogin}>
       <img src={Google} alt="google login" />
       <IconName> Google </IconName>
     </Icon>

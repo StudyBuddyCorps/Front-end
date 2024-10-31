@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SettingTab from "components/studySetting/SettingTab";
 import StudyType from "components/studySetting/StudyType";
@@ -10,6 +10,15 @@ import Guideline from "components/common/GuideLine";
 const StudyRoomSetting: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('1. 스터디룸 타입');
   const [loading, setLoading] = useState(false);
+  const [roomType, setRoomType] = useState('normal');
+  const [studyMateVoice, setStudyMateVoice] = useState('voice1');
+  const [assistantTone, setAssistantTone] = useState('default');
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setAccessToken(token); 
+  }, []);
 
   const handleTabSelect = (tab: string) => {
     setSelectedTab(tab);
@@ -30,7 +39,7 @@ const StudyRoomSetting: React.FC = () => {
           {selectedTab === '1. 스터디룸 타입' ? <StudyType setSelectedTab={setSelectedTab} /> 
           : selectedTab === '2. 스터디 메이트' ? <StudyMate setSelectedTab={setSelectedTab} /> 
           : selectedTab === '3. 스터디 도우미' ? <StudyHelper setSelectedTab={setSelectedTab} />
-          : <DefaultSetting setSelectedTab={setSelectedTab} setLoading={setLoading} />}
+          : <DefaultSetting roomType={roomType} studyMateVoice={studyMateVoice} assistantTone={assistantTone} accessToken={accessToken || ''} setSelectedTab={setSelectedTab} setLoading={setLoading} />}
         </>
       )}
     </Wrapper>

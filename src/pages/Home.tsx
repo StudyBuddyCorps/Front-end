@@ -28,7 +28,7 @@ const Home: React.FC = () => {
     setTimeout(() => {
       setLoading(false);
       navigate("/room/:roomId");
-    }, 100000);
+    }, 10000);
   };
 
   const handleProfileClick = () => {
