@@ -36,9 +36,9 @@ const StudyRoomSetting: React.FC = () => {
             onSelectTab={handleTabSelect}
           />
 
-          {selectedTab === '1. 스터디룸 타입' ? <StudyType setSelectedTab={setSelectedTab} /> 
-          : selectedTab === '2. 스터디 메이트' ? <StudyMate setSelectedTab={setSelectedTab} /> 
-          : selectedTab === '3. 스터디 도우미' ? <StudyHelper setSelectedTab={setSelectedTab} />
+          {selectedTab === '1. 스터디룸 타입' ? <StudyType setSelectedTab={setSelectedTab} setRoomType={setRoomType}/> 
+          : selectedTab === '2. 스터디 메이트' ? <StudyMate setSelectedTab={setSelectedTab} setStudyMateVoice={setStudyMateVoice}/> 
+          : selectedTab === '3. 스터디 도우미' ? <StudyHelper setSelectedTab={setSelectedTab} setAssistantTone={setAssistantTone}/>
           : <DefaultSetting roomType={roomType} studyMateVoice={studyMateVoice} assistantTone={assistantTone} accessToken={accessToken || ''} setSelectedTab={setSelectedTab} setLoading={setLoading} />}
         </>
       )}

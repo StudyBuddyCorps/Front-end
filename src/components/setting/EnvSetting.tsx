@@ -16,7 +16,7 @@ const EnvSetting = () => {
         <Left>
           <EnvRoomType />
           <EnvCharacterList />
-          <VoiceList />
+          {/*<VoiceList />*/}
           <EnvGPTType />          
         </Left>
         <Right>

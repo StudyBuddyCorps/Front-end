@@ -98,6 +98,24 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
     console.log("Request Body:", JSON.stringify(requestBody, null, 2));
 
     try {
+      if (defaultRoomSetting) {
+        const defaultResponse = await fetch("http://localhost:8080/studyroom/default", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+          },
+          credentials: 'include',
+          body: JSON.stringify(requestBody),
+        });
+  
+        if (!defaultResponse.ok) {
+          const errorText = await defaultResponse.text();
+          console.error("Failed to set default room:", errorText);
+          throw new Error("Failed to set default room.");
+        }
+      }
+
       const response = await fetch("http://localhost:8080/studyroom", {
         method: "POST",
         headers: {
@@ -110,17 +128,6 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
 
       if (!response.ok) throw new Error("Failed to create study room.");
 
-      if (defaultRoomSetting) {
-        await fetch("http://localhost:8080/studyroom/default", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken || ''}`,
-          },
-          credentials: 'include',
-          body: JSON.stringify(requestBody),
-        });
-      }
       navigate('/room/:roomId');
     } catch (error) {
       console.error("Error creating study room: ", error);

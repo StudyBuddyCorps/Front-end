@@ -5,13 +5,15 @@ import Done from "../../assets/images/Done.png"
 
 interface StudyTypeProps {
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+  setRoomType: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const StudyType: React.FC<StudyTypeProps> = ({ setSelectedTab }) => {
+const StudyType: React.FC<StudyTypeProps> = ({ setSelectedTab, setRoomType }) => {
   const [inputStatus, setInputStatus] = useState<string>('기본');
 
   const handleClickButton = (buttonName: string) => {
     setInputStatus(buttonName);
+    setRoomType(buttonName === "기본" ? "normal" : "pomodoro");
     console.log('Selected ID:', buttonName);
   };
 

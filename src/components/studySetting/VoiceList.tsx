@@ -6,14 +6,18 @@ import { Voice } from "./Voice";
 import { Character } from "./Character";
 import Mute from "../../assets/images/sound_mute.png";
 
-{/* 목소리 선택 임시 더미 데이터 */}
+interface VoiceListProps {
+  setStudyMateVoice: React.Dispatch<React.SetStateAction<string>>;
+}
+
+{/* 목소리 선택 더미 데이터 */}
 const voiceData: Voice[] = [
   { id: 1, name: '노티', img: require('../../assets/images/Noti.png'), audio: require('../../assets/audio/voice1.mp3')},
   { id: 2, name: '교수님', img: require('../../assets/images/sound_man.png'), audio: require('../../assets/audio/voice2.mp3')},
   { id: 3, name: '엄마', img: require('../../assets/images/sound_woman.png'), audio: require('../../assets/audio/voice3.mp3')}
 ];
 
-const VoiceList: React.FC = () => {
+const VoiceList: React.FC<VoiceListProps> = ({ setStudyMateVoice }) => {
   const [selectedVoice, setSelectedVoice] = useState<Voice | null>(null);
   const [voicePreviewVisible, setVoicePreviewVisible] = useState<boolean>(false);
   const [playingAudio, setPlayingAudio] = useState<HTMLAudioElement | null>(null);
@@ -23,8 +27,11 @@ const VoiceList: React.FC = () => {
       const voice = item as Voice;
       if (!selectedVoice || selectedVoice.id !== voice.id) {
         setSelectedVoice(voice);
-        setVoicePreviewVisible(true); // voicePreview를 보이도록 설정
-        console.log('Selected Voice ID:', voice.id);
+        setStudyMateVoice(voice.name);
+
+        const voiceType = `voice${voice.id}`;
+        setStudyMateVoice(voiceType); 
+        console.log('Selected Voice ID:', voiceType);
 
         // 새로운 오디오를 재생
         const newAudio = new Audio(voice.audio);

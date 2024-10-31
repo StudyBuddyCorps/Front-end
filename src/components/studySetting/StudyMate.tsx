@@ -5,9 +5,10 @@ import VoiceList from "./VoiceList";
 
 interface StudyMateProps {
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+  setStudyMateVoice: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const StudyMate: React.FC<StudyMateProps> = ({ setSelectedTab }) => {
+const StudyMate: React.FC<StudyMateProps> = ({ setSelectedTab, setStudyMateVoice }) => {
   const handlePrevButtonClick = () => {
     setSelectedTab('1. 스터디룸 타입');
   };
@@ -20,7 +21,7 @@ const StudyMate: React.FC<StudyMateProps> = ({ setSelectedTab }) => {
     <Wrapper>
       <Container>
         <CharacterList />
-        <VoiceList />
+        <VoiceList setStudyMateVoice={setStudyMateVoice}/>
 
         <Buttons>
           <Button onClick={handlePrevButtonClick}>이전</Button>

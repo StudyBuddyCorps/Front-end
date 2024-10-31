@@ -4,13 +4,32 @@ import Radio from "./Radio";
 
 interface StudyHelperProps {
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+  setAssistantTone: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const StudyHelper: React.FC<StudyHelperProps> = ({ setSelectedTab }) => {
+const StudyHelper: React.FC<StudyHelperProps> = ({ setSelectedTab, setAssistantTone }) => {
   const [inputStatus, setInputStatus] = useState<string>('ChatGPT');
   
   const handleClickButton = (buttonName: string) => {
     setInputStatus(buttonName);
+
+    switch (buttonName) {
+      case "ChatGPT":
+        setAssistantTone("default");
+        break;
+      case "천재 너드 친구":
+        setAssistantTone("nerd");
+        break;
+      case "조선시대 성균관생":
+        setAssistantTone("scholar");
+        break;
+      case "요정":
+        setAssistantTone("fairy");
+        break;
+      default:
+        setAssistantTone("default");
+    }
+    
     console.log('Selected ID:', buttonName);
   };
 
