@@ -104,7 +104,7 @@ const StudyRoom: React.FC = () => {
         </ControlContent>
       </MainContent>
       <Chat showChat={showChat} toggleChat={toggleChat} />
-      <audio ref={audioRef} src={require('assets/audio/Winner.mp3')} loop />
+      <audio ref={audioRef} src={require('assets/audio/voice1.mp3')} />
       {showResume && <Pause onResume={handleResume} remainingTime={remainingTime} />}
     </Wrapper>
   );

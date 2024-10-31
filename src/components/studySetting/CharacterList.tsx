@@ -10,7 +10,6 @@ import ImgBox from "../../assets/images/Img_box.png";
 {/* 임시 character 임시 더미 데이터 */}
 const characterData: Character[] = [
   { id: 1, name: 'noti', img: require('../../assets/images/Noti.png'), large_img: require('../../assets/images/Noti2.png') },
-  { id: 2, name: 'woman', img: require('../../assets/images/avatar_woman.png'), large_img: require('../../assets/images/avatar_woman.png') },
 ];
 
 const CharacterList: React.FC = () => {
