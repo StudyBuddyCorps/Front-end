@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Radio from "components/studySetting/Radio";
 
-const EnvRoomType = () => {
-  const [inputStatus, setInputStatus] = useState<string>('기본');
+interface EnvRoomTypeProps {
+  onSelect: (type: string) => void;
+}
+
+const EnvRoomType: React.FC<EnvRoomTypeProps> = ({ onSelect }) => {
+  const [inputStatus, setInputStatus] = useState<string>("normal");
   const [customPhrase, setCustomPhrase] = useState<string>('');
+
   const handleClickButton = (buttonName: string) => {
     setInputStatus(buttonName);
+    onSelect(buttonName);
     console.log('Selected ID:', buttonName);
   };
 
@@ -15,16 +21,16 @@ const EnvRoomType = () => {
       <Title>공부방 유형 <span>*</span></Title>
       <RadioDiv>
         <Radio
-          handleClickAdmin={handleClickButton}
-          selected={inputStatus === '기본'}
+           handleClickAdmin={() => handleClickButton("normal")}
+          selected={inputStatus === "normal"}
           text="기본"
-          id="기본"
+          id="normal"
         />
         <Radio
-          handleClickAdmin={handleClickButton}
-          selected={inputStatus === '뽀모도로'}
+          handleClickAdmin={() => handleClickButton("pomodoro")}
+          selected={inputStatus === 'pomodoro'}
           text="뽀모도로 (25분 공부 + 5분 휴식)"
-          id="뽀모도로"
+          id="pomodoro"
         />         
       </RadioDiv>
     </Wrapper>
