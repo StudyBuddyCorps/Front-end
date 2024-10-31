@@ -6,17 +6,45 @@ import GenerateTabs from "components/common/GenerateTabs";
 import Button from "components/common/Button";
 import GroupSetting from "components/groupGenerate/GroupSetting";
 import GroupMember from "components/groupGenerate/GroupMember";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { getToken } from "utils/localStroage";
 
 const GroupGenerate = () => {
   const [selectedTab, setSelectedTab] = useState("1. 그룹 설정");
+  const [groupName, setGroupName] = useState("");
+  const [description, setDescription] = useState("");
+  const [goalStudyTime, setGoalStudyTime] = useState(0);
   const navigate = useNavigate();
 
   const handleSelectTab = (tab: string) => {
     setSelectedTab(tab);
   };
 
-  const handleCompleteGenerate = () => {
-    navigate("/group");
+  const handleCompleteGenerate = async () => {
+    const token = getToken();
+    const creatorId = token ? jwtDecode<any>(token).id : null;
+    console.log(creatorId);
+    console.log("token: ", token);
+
+    if (!creatorId) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:8080/groups/create", {
+        name: groupName,
+        description: description,
+        goalStudyTime: goalStudyTime * 60 * 1000, // 분 단위로 계산된 시간
+        creatorId: creatorId,
+      });
+
+      console.log("그룹 생성 완료:", response.data);
+      navigate("/group");
+    } catch (error) {
+      console.error("그룹 생성 중 오류 발생:", error);
+    }
   };
 
   return (
@@ -26,7 +54,11 @@ const GroupGenerate = () => {
         handleSelectTab={() => handleSelectTab(selectedTab)}
       >
         <div title="1. 그룹 설정">
-          <GroupSetting></GroupSetting>
+          <GroupSetting
+            setGroupName={setGroupName}
+            setDescription={setDescription}
+            setGoalStudyTime={setGoalStudyTime}
+          ></GroupSetting>
           <ButtonSection>
             <Button
               width="155px"
