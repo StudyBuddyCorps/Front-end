@@ -11,6 +11,7 @@ import { saveToken, getToken, removeToken } from "../utils/localStroage";
 const StudyRoomSetting: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('1. 스터디룸 타입');
   const [loading, setLoading] = useState(false);
+  const [showGuideline, setShowGuideline] = useState(false);
   const [roomType, setRoomType] = useState('normal');
   const [studyMateVoice, setStudyMateVoice] = useState('voice1');
   const [assistantTone, setAssistantTone] = useState('default');
@@ -23,7 +24,7 @@ const StudyRoomSetting: React.FC = () => {
 
   return (
     <Wrapper>
-      { loading ? (
+      { showGuideline ? (
         <Guideline />
       ) : (
         <>
@@ -36,7 +37,15 @@ const StudyRoomSetting: React.FC = () => {
           {selectedTab === '1. 스터디룸 타입' ? <StudyType setSelectedTab={setSelectedTab} setRoomType={setRoomType}/> 
           : selectedTab === '2. 스터디 메이트' ? <StudyMate setSelectedTab={setSelectedTab} setStudyMateVoice={setStudyMateVoice}/> 
           : selectedTab === '3. 스터디 도우미' ? <StudyHelper setSelectedTab={setSelectedTab} setAssistantTone={setAssistantTone}/>
-          : <DefaultSetting roomType={roomType} studyMateVoice={studyMateVoice} assistantTone={assistantTone} accessToken={accessToken || ''} setSelectedTab={setSelectedTab} setLoading={setLoading} />}
+          : <DefaultSetting 
+              roomType={roomType} 
+              studyMateVoice={studyMateVoice} 
+              assistantTone={assistantTone} 
+              accessToken={accessToken || ''} 
+              setSelectedTab={setSelectedTab} 
+              setShowGuideline={setShowGuideline} 
+            />
+          }
         </>
       )}
     </Wrapper>

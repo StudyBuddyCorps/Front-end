@@ -6,14 +6,14 @@ import UnSwitch from "../../assets/images/unSwitch.png";
 
 interface DefaultSettingProps {
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowGuideline: React.Dispatch<React.SetStateAction<boolean>>;
   roomType: string;
   studyMateVoice: string;
   assistantTone: string;
   accessToken: string;
 }
 
-const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoading, roomType, studyMateVoice, assistantTone, accessToken }) => {
+const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShowGuideline, roomType, studyMateVoice, assistantTone, accessToken }) => {
   const [cameraPermission, setCameraPermission] = useState<boolean>(false);
   const [defaultRoomSetting, setDefaultRoomSetting] = useState<boolean>(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -82,7 +82,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
   };
   
   const handleNextButtonClick = async () => {
-    setLoading(true);
+    setShowGuideline(true);
 
     const requestBody = {
       roomType,
@@ -146,13 +146,13 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setLoad
       console.log("Start Room Response:", startRoomData);
 
       setTimeout(() => {
+        setShowGuideline(false);
         navigate(`/studyroom/${roomId}`);
       }, 5000);
     } catch (error) {
       console.error("Error creating study room: ", error);
-    } finally {
-      setLoading(false);
-    }
+      setShowGuideline(false);
+    } 
   };
 
   return (
