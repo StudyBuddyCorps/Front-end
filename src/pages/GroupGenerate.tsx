@@ -24,7 +24,7 @@ const GroupGenerate = () => {
   const handleCompleteGenerate = async () => {
     const token = getToken();
     const creatorId = token ? jwtDecode<any>(token).id : null;
-    console.log(creatorId);
+    console.log("creatorId: ", creatorId);
     console.log("token: ", token);
 
     if (!creatorId) {
@@ -58,7 +58,7 @@ const GroupGenerate = () => {
             setGroupName={setGroupName}
             setDescription={setDescription}
             setGoalStudyTime={setGoalStudyTime}
-          ></GroupSetting>
+          />
           <ButtonSection>
             <Button
               width="155px"
@@ -69,7 +69,7 @@ const GroupGenerate = () => {
           </ButtonSection>
         </div>
         <div title="2. 멤버 초대">
-          <GroupMember></GroupMember>
+          <GroupMember />
           <ButtonSection>
             <Button
               width="155px"

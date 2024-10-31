@@ -1,64 +1,26 @@
 import React from "react";
 import { styled } from "styled-components";
 import MemberProfile from "./MemberProfile";
-import Ava from "assets/images/avatar_woman.png";
 
-const MemberList: React.FC = () => {
-  const items: {
-    // 임시 데이터
-    name: string;
-    imgUrl: string;
-    role: string;
-  }[] = [
-    {
-      name: "배주헝",
-      imgUrl: Ava,
-      role: "Owner",
-    },
-    { name: "전희죵", imgUrl: Ava, role: "Member" },
-    {
-      name: "한디슈",
-      imgUrl: Ava,
-      role: "Member",
-    },
-    {
-      name: "배주헝",
-      imgUrl: Ava,
-      role: "Owner",
-    },
-    { name: "전희죵", imgUrl: Ava, role: "Member" },
-    {
-      name: "한디슈",
-      imgUrl: Ava,
-      role: "Member",
-    },
-    {
-      name: "배주헝",
-      imgUrl: Ava,
-      role: "Owner",
-    },
-    { name: "전희죵", imgUrl: Ava, role: "Member" },
-    {
-      name: "한디슈",
-      imgUrl: Ava,
-      role: "Member",
-    },
-    {
-      name: "배주헝",
-      imgUrl: Ava,
-      role: "Owner",
-    },
-    { name: "전희죵", imgUrl: Ava, role: "Member" },
-    {
-      name: "한디슈",
-      imgUrl: Ava,
-      role: "Member",
-    },
-  ];
+interface Member {
+  name: string;
+  imgUrl: string;
+  role: string;
+}
+
+interface MemberListProps {
+  members: Member[];
+  searchTerm: string;
+}
+
+const MemberList: React.FC<MemberListProps> = ({ members, searchTerm }) => {
+  const filteredItems = members.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <ListContainer>
-      {items.map((item, index) => (
+      {filteredItems.map((item, index) => (
         <MemberProfile
           key={index}
           name={item.name}
