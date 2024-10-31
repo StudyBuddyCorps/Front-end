@@ -9,6 +9,7 @@ import Controls from "components/studyRoom/Controls";
 import Pause from "components/studyRoom/Pause";
 import Chat from "components/studyRoom/Chat";
 import ChatImg from "assets/images/chat.png";
+import { saveToken, getToken, removeToken } from "../utils/localStroage";
 
 const StudyRoom: React.FC = () => {
   const { roomId } = useParams<{ roomId: string }>();
@@ -22,7 +23,7 @@ const StudyRoom: React.FC = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [showChat, setShowChat] = useState(false);
-  const accessToken = localStorage.getItem("accessToken") || "";
+  const accessToken = getToken();
 
   useEffect(() => {
     console.log("Fetched roomId from URL:", roomId);

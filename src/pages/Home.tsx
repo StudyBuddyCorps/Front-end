@@ -13,6 +13,7 @@ import useModal from "hooks/useConfirm";
 import ConfirmModal from "components/common/ConfirmModal";
 import Footer from "components/common/Layout/Footer";
 import { handleLogout, checkAccessToken } from "services/authServices";
+import { saveToken, getToken, removeToken } from "../utils/localStroage";
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ const Home: React.FC = () => {
     handleCancel,
   } = useModal();
   const navigate = useNavigate();
-  const token = localStorage.getItem("accessToken");
+  const token = getToken();
 
   useEffect(() => {
     if (token) {

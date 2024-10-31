@@ -6,6 +6,7 @@ import StudyMate from "components/studySetting/StudyMate";
 import StudyHelper from "components/studySetting/StudyHelper";
 import DefaultSetting from "components/studySetting/DefaultSetting";
 import Guideline from "components/common/GuideLine";
+import { saveToken, getToken, removeToken } from "../utils/localStroage";
 
 const StudyRoomSetting: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('1. 스터디룸 타입');
@@ -13,12 +14,8 @@ const StudyRoomSetting: React.FC = () => {
   const [roomType, setRoomType] = useState('normal');
   const [studyMateVoice, setStudyMateVoice] = useState('voice1');
   const [assistantTone, setAssistantTone] = useState('default');
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const accessToken = getToken();
 
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setAccessToken(token); 
-  }, []);
 
   const handleTabSelect = (tab: string) => {
     setSelectedTab(tab);
