@@ -2,34 +2,22 @@ import React, { useState } from "react";
 import SearchField from "components/common/SearchField";
 import MemberProfile from "./MemberProfile";
 import styled from "styled-components";
-import Ava from "assets/images/avatar_woman.png";
 
-interface MemberFieldProps {}
+interface Member {
+  name: string;
+  imgUrl: string;
+  role: string;
+}
 
-const MemberField: React.FC<MemberFieldProps> = (props: MemberFieldProps) => {
+interface MemberFieldProps {
+  members: Member[];
+}
+
+const MemberField: React.FC<MemberFieldProps> = ({ members }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const items: {
-    // 임시 데이터
-    name: string;
-    imgUrl: string;
-    role: string;
-  }[] = [
-    {
-      name: "배주헝",
-      imgUrl: Ava,
-      role: "Owner",
-    },
-    { name: "전희죵", imgUrl: Ava, role: "Member" },
-    {
-      name: "한디슈",
-      imgUrl: Ava,
-      role: "Member",
-    },
-  ];
-
-  const filteredItems = items.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredItems = members.filter((member) =>
+    member.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -42,12 +30,12 @@ const MemberField: React.FC<MemberFieldProps> = (props: MemberFieldProps) => {
       </TitleS>
       <ContentS>
         <ListContainer>
-          {filteredItems.map((item, index) => (
+          {filteredItems.map((member, index) => (
             <MemberProfile
               key={index}
-              name={item.name}
-              imgUrl={item.imgUrl}
-              role={item.role}
+              name={member.name}
+              imgUrl={member.imgUrl}
+              role={member.role}
             />
           ))}
         </ListContainer>

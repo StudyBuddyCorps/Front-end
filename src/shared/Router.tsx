@@ -29,7 +29,7 @@ const Router = () => {
         <Route element={<Sidebar />}>
           <Route path="/home" element={<Home />} />
           <Route path="/group" element={<Group />} />
-          <Route path="/group/:groupId" element={<GroupMain />} />
+          <Route path="/group/:groupName" element={<GroupMain />} />
           <Route
             path="/group/:groupId/:memberId"
             element={<MemberCalendar />}

@@ -26,7 +26,7 @@ const GroupListItem: React.FC<GroupListporps> = (props: GroupListporps) => {
         {props.memberCount}
       </div>
       <div id="c5" className="c">
-        <Link to={"/group/${props.name}"}>
+        <Link to={`/group/${props.name}`}>
           <img src={Arrow_Btn} />
         </Link>
       </div>
