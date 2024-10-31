@@ -1,13 +1,10 @@
 import styled from "styled-components";
 import Kakao from "../../assets/images/kakao.png";
+import { handleKakaoLogin } from "services/authServices";
 
 const KakaoButton = () => {
-  const clientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
-  const redirect = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-  const URL = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirect}&response_type=code`;
-
   return (
-    <Icon onClick={() => (window.location.href = URL)}>
+    <Icon onClick={handleKakaoLogin}>
       <img src={Kakao} alt="kakao login" />
       <IconName>Kakao</IconName>
     </Icon>
