@@ -3,15 +3,25 @@ import styled from "styled-components";
 
 interface FeedbackProps {
   showChat: boolean;
+  message: string | null;
+  time: number;
 }
 
-const Feedback: React.FC<FeedbackProps> = ({ showChat }) => {
+const formatTime = (time: number) => {
+  const getSeconds = `0${time % 60}`.slice(-2);
+  const minutes = `${Math.floor(time / 60)}`;
+  const getMinutes = `0${parseInt(minutes) % 60}`.slice(-2);
+  const getHours = `0${Math.floor(time / 3600)}`.slice(-2);
+  return `${getHours} : ${getMinutes} : ${getSeconds}`;
+};
+
+const Feedback: React.FC<FeedbackProps> = ({ showChat, message, time }) => {
   return (
     <Container showChat={showChat}>
       <PinkBar />
       <Contents>
-        <Message>자면 안돼!</Message>
-        <Time>00 : 45 : 02</Time>        
+        <Message>{message}</Message>
+        <Time>{formatTime(time)}</Time>        
       </Contents>
     </Container>
   );

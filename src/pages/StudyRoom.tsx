@@ -9,7 +9,7 @@ import Controls from "components/studyRoom/Controls";
 import Pause from "components/studyRoom/Pause";
 import Chat from "components/studyRoom/Chat";
 import ChatImg from "assets/images/chat.png";
-import { saveToken, getToken, removeToken } from "../utils/localStroage";
+import { getToken } from "../utils/localStroage";
 
 const StudyRoom: React.FC = () => {
   const { roomId } = useParams<{ roomId: string }>();
@@ -24,7 +24,17 @@ const StudyRoom: React.FC = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [showChat, setShowChat] = useState(false);
   const accessToken = getToken();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(document.createElement('canvas'));
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [feedbackTime, setFeedbackTime] = useState<number | null>(0);
 
+  // 피드백 메시지 목록
+  const postureMessages = ["자세가 바르지 않아요!", "허리를 펴세요!", "자세 불량!!!", "바른 자세로 집중하세요!", "똑바로 앉고 집중!"];
+  const phoneMessages = ["핸드폰 금지!!", "핸드폰을 멀리 두세요!", "핸드폰에 집중하지 마세요!", "핸드폰과는 거리 두기 필수!", "핸드폰 부셔버린다^^"];
+  const sleepMessages = ["자면 안돼!!", "일어나! 일어나!!", "자는 중이에요! 눈을 떠요!", "잠은 죽어서 자자ㅎㅎ", "잠에서 깨세요!"];
+
+  // studyroom 가져오기
   useEffect(() => {
     console.log("Fetched roomId from URL:", roomId);
     if (!roomId) return;
@@ -51,6 +61,77 @@ const StudyRoom: React.FC = () => {
 
     fetchUserId();
   }, [roomId, accessToken]);
+
+  useEffect(() => {
+    const captureImage = () => {
+      if (canvasRef.current && videoRef.current) {
+        const canvas = canvasRef.current;
+        const video = videoRef.current;
+        const context = canvas.getContext("2d");
+        if (context) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          return canvas.toDataURL("image/jpeg");
+        }
+      }
+      return null;
+    };
+
+    const sendImageToServer = async () => {
+      const image = captureImage();
+      if (image) {
+        try {
+          const byteString = atob(image.split(',')[1]);
+          const mimeString = image.split(',')[0].split(':')[1].split(';')[0];
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const blob = new Blob([ab], { type: mimeString });
+          const formData = new FormData();
+          formData.append("file", blob, "capture.jpg");
+          formData.append("verify", "false");
+          const response = await fetch('http://3.107.8.184:5000/upload_image', {
+            method: "POST",
+            body: formData,
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            console.log("request: ", formData);
+            const currentTime = time + 10;
+            if (result.bad_posture) {
+              setFeedbackMessage(postureMessages[Math.floor(Math.random() * postureMessages.length)]);
+              setFeedbackTime(currentTime);
+            } else if (result.is_holding_phone) {
+              setFeedbackMessage(phoneMessages[Math.floor(Math.random() * phoneMessages.length)]);
+              setFeedbackTime(currentTime);
+            } else if (result.is_sleeping) {
+              setFeedbackMessage(sleepMessages[Math.floor(Math.random() * sleepMessages.length)]);
+              setFeedbackTime(currentTime);
+            } else {
+              setFeedbackMessage(null);
+              setFeedbackTime(null);
+            }
+          } else {
+            console.error("Failed to send image to server:", response.status);
+          }
+        } catch (error) {
+          console.error("Error sending image to server:", error);
+        }
+      }
+    };
+
+    if (!paused) {
+      const intervalId = setInterval(() => {
+        sendImageToServer();
+      }, 10000);
+  
+      return () => clearInterval(intervalId);
+    }
+  }, [paused, time]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -153,10 +234,12 @@ const StudyRoom: React.FC = () => {
             <BuddyImg src={Noti} alt="Buddy image" />
           </BuddyContainer>
           <StyledVideoPlayer>
-            <VideoPlayer />
+            <VideoPlayer videoRef={videoRef}/>
           </StyledVideoPlayer>
         </VideoContainer>
-        <Feedback showChat={showChat} />
+        {feedbackMessage && (
+          <Feedback showChat={showChat} message={feedbackMessage} time={feedbackTime ?? 0}/>
+        )}
         <ControlContent>
           <div></div>
           <CenterDiv>

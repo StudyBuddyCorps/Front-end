@@ -1,8 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import styled from "styled-components";
 
-const VideoPlayer = () => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+interface VideoPlayerProps {
+  videoRef: React.RefObject<HTMLVideoElement>;
+}
+
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoRef }) => {
 
   useEffect(() => {
     async function setupCamera() {
@@ -17,7 +20,7 @@ const VideoPlayer = () => {
     }
 
     setupCamera();
-  }, []);
+  }, [videoRef]);
 
   return (
     <Container>

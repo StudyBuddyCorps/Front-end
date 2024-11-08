@@ -91,7 +91,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShow
         voice: studyMateVoice,
       },
       assistantTone,
-      cameraAccess: true,//cameraPermission,
+      cameraAceess: true,
     };
 
     console.log("Request Body:", JSON.stringify(requestBody, null, 2));
@@ -198,7 +198,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShow
 
       <Buttons>
         <Button onClick={handlePrevButtonClick}>이전</Button>
-        <Button onClick={handleNextButtonClick}>{/*disabled={!cameraPermission}*/}다음</Button>
+        <Button onClick={handleNextButtonClick}>disabled={!cameraPermission}다음</Button>
       </Buttons>
     </Wrapper>
   );

@@ -8,7 +8,7 @@ const Guideline: React.FC = () => {
     <Wrapper>
       <Container>
         <VideoContainer>
-          <VideoPlayer />
+          {/* <VideoPlayer /> */}
           <Overlay>
             <Rectangle />
             <Circle />
