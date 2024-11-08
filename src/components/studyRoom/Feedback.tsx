@@ -16,6 +16,8 @@ const formatTime = (time: number) => {
 };
 
 const Feedback: React.FC<FeedbackProps> = ({ showChat, message, time }) => {
+  if (!message) return null;
+  
   return (
     <Container showChat={showChat}>
       <PinkBar />
