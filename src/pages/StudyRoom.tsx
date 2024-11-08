@@ -105,11 +105,11 @@ const StudyRoom: React.FC = () => {
           if (response.ok) {
             const result = await response.json();
             const currentTime = timeRef.current;
-            if (result.bad_posture) {
-              setFeedbackMessage(postureMessages[Math.floor(Math.random() * postureMessages.length)]);
-              setFeedbackTime(currentTime);
-            } else if (result.is_holding_phone) {
+            if (result.is_holding_phone) {
               setFeedbackMessage(phoneMessages[Math.floor(Math.random() * phoneMessages.length)]);
+              setFeedbackTime(currentTime);
+            } else if (result.bad_posture) {
+              setFeedbackMessage(postureMessages[Math.floor(Math.random() * postureMessages.length)]);
               setFeedbackTime(currentTime);
             } else if (result.is_sleeping) {
               setFeedbackMessage(sleepMessages[Math.floor(Math.random() * sleepMessages.length)]);
