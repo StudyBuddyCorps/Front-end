@@ -33,10 +33,15 @@ const StudyRoom: React.FC = () => {
   const postureMessages = ["자세가 바르지 않아요!", "허리를 펴세요!", "자세 불량!!!", "바른 자세로 집중하세요!", "똑바로 앉고 집중!"];
   const phoneMessages = ["핸드폰 금지!!", "핸드폰을 멀리 두세요!", "핸드폰에 집중하지 마세요!", "핸드폰과는 거리 두기 필수!", "핸드폰 부셔버린다^^"];
   const sleepMessages = ["자면 안돼!!", "일어나! 일어나!!", "자는 중이에요! 눈을 떠요!", "잠은 죽어서 자자ㅎㅎ", "잠에서 깨세요!"];
+  
+  // time 값을 최신으로 유지하기 위한 Ref
+  const timeRef = useRef(time);
+  useEffect(() => {
+    timeRef.current = time;
+  }, [time]);
 
   // studyroom 가져오기
   useEffect(() => {
-    console.log("Fetched roomId from URL:", roomId);
     if (!roomId) return;
     const fetchUserId = async () => {
       try {
@@ -50,7 +55,6 @@ const StudyRoom: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           setUserId(data.userId);
-          console.log("userId: ", data.userId);
         } else {
           console.error("Failed to fetch userId");
         }
@@ -100,8 +104,7 @@ const StudyRoom: React.FC = () => {
 
           if (response.ok) {
             const result = await response.json();
-            console.log("request: ", formData);
-            const currentTime = time + 10;
+            const currentTime = timeRef.current;
             if (result.bad_posture) {
               setFeedbackMessage(postureMessages[Math.floor(Math.random() * postureMessages.length)]);
               setFeedbackTime(currentTime);
@@ -131,7 +134,7 @@ const StudyRoom: React.FC = () => {
   
       return () => clearInterval(intervalId);
     }
-  }, [paused, time]);
+  }, [paused]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;

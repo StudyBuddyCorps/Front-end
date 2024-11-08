@@ -198,7 +198,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShow
 
       <Buttons>
         <Button onClick={handlePrevButtonClick}>이전</Button>
-        <Button onClick={handleNextButtonClick}>disabled={!cameraPermission}다음</Button>
+        <Button onClick={handleNextButtonClick} disabled={!cameraPermission}>다음</Button>
       </Buttons>
     </Wrapper>
   );
