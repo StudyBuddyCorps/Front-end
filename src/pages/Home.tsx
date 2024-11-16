@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import styled from "styled-components";
 import Avatar from "../assets/images/avatar_woman.png";
 import Btn_Enter from "../assets/images/btn_entrance.png";
@@ -19,7 +18,6 @@ import axios from "axios";
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showGuideline, setShowGuideline] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
   const [phrase, setPhrase] = useState<string>("운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라");
   const [goal, setGoal] = useState<number>(360);
   const {
@@ -33,41 +31,33 @@ const Home: React.FC = () => {
   const token = getToken();
 
   useEffect(() => {
-    if (token) {
-      try {
-        const decodedToken = jwtDecode<{ id: string }>(token);
-        setUserId(decodedToken.id);
-      } catch (error) {
-        console.error("Failed to decode token:", error);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
     const fetchUserData = async () => {
-      if (!userId || !token) return;
+      if (!token) {
+        console.error("Access token is missing");
+        return;
+      }
+
       try {
-        const response = await axios.get(`http://localhost:8080/users/${userId}`, {
+        const response = await axios.get(`http://localhost:8080/users/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         const user = response.data;
         setPhrase(user.phrase && user.phrase.content ? user.phrase.content : "빡공하쇼");
-        console.log(user);
         setGoal(user.goal || 360);
       } catch (error) {
-        console.error("사용자 데이터 가져오기 실패:", error);
+        console.error("Error fetching user data:", error);
       }
     };
     
     fetchUserData();
-  }, [userId, token]);
+  }, [token]);
 
   const handleButtonClick = async () => {
     setShowGuideline(true);
 
-    if (!token || !userId) {
+    if (!token) {
       console.error("Access token or user ID is missing.");
       setShowGuideline(false);
       return;
@@ -80,7 +70,6 @@ const Home: React.FC = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId }),
       });
 
       if (response.ok) {

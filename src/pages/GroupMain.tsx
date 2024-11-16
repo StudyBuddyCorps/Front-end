@@ -8,17 +8,10 @@ import MyHistoryCalendar from "components/calendar/MyHistoryCalendar";
 import MyHistoryTime from "components/calendar/MyHistroyTime";
 import Footer from "components/common/Layout/Footer";
 import Button from "components/common/Button";
-import MemberField from "components/group/MemberField";
+import MemberField, { Member } from "components/group/MemberField";
 import InviteMember from "components/group/InviteMember";
-import Ava from "assets/images/avatar_woman.png";
 import axios from "axios";
 import { getToken } from "utils/localStroage";
-
-interface Member {
-  name: string;
-  imgUrl: string;
-  role: string;
-}
 
 interface Group {
   groupId: string;
@@ -67,30 +60,18 @@ const GroupMain = () => {
         },
       });
 
-      const { name, description, goalStudyTime, members } = groupDetailResponse.data;
-
-      const membersWithNames = await Promise.all(
-        members.map(async (member: any) => {
-          const userResponse = await axios.get(`http://localhost:8080/users/user`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          return {
-            userId: member.userId,
-            name: userResponse.data.name,
-            imgUrl: userResponse.data.imgUrl || Ava,
-            role: member.role,
-          };
-        })
-      );
+      const groupMemberResponse = await axios.get(`http://localhost:8080/groups/${group.groupId}/members`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setStudygroup({
-        groupId: group.groupId,
-        name,
-        description,
-        goalStudyTime,
-        members: membersWithNames,
+        groupId: groupDetailResponse.data.groupId,
+        name: groupDetailResponse.data.name,
+        description: groupDetailResponse.data.description,
+        goalStudyTime: groupDetailResponse.data.goalStudyTime,
+        members: groupMemberResponse.data,
       });
     } catch (error) {
       console.error("그룹 정보를 불러오는 중 오류 발생:", error);
@@ -134,7 +115,7 @@ const GroupMain = () => {
       )}
       <MainContent>
         <div className="left">
-          <MyHistoryCalendar></MyHistoryCalendar>
+          <MyHistoryCalendar />
         </div>
         <div className="right">
           {groupId && <MemberField groupId={groupId} initialMembers={studygroup.members}/>}

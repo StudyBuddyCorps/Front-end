@@ -3,9 +3,13 @@ import SearchField from "components/common/SearchField";
 import MemberProfile from "./MemberProfile";
 import styled from "styled-components";
 import axios from "axios";
+import { getToken } from "utils/localStroage";
+import Ava from "assets/images/avatar_woman.png";
 
-interface Member {
-  name: string;
+export interface Member {
+  userId: string;
+  nickname: string;
+  email: string;
   imgUrl: string;
   role: string;
 }
@@ -17,7 +21,8 @@ interface MemberFieldProps {
 
 const MemberField: React.FC<MemberFieldProps> = ({ groupId, initialMembers }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [members, setMembers] = useState<Member[]>([]);
+  const [members, setMembers] = useState<Member[]>(initialMembers);
+  const token = getToken();
 
   useEffect(() => {
     const fetchFilteredMembers = async () => {
@@ -26,10 +31,13 @@ const MemberField: React.FC<MemberFieldProps> = ({ groupId, initialMembers }) =>
         return;
       }
       try {
-        console.log("groupId:", groupId);
         const response = await axios.get(
-          `http://localhost:8080/groups/${groupId}/members/search`,
-          { params: { searchTerm } }
+          `http://localhost:8080/groups/${groupId}/members/search`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            params: { searchTerm }
+          }
         );
         setMembers(response.data);
       } catch (error) {
@@ -40,14 +48,14 @@ const MemberField: React.FC<MemberFieldProps> = ({ groupId, initialMembers }) =>
     if (groupId) { 
       fetchFilteredMembers();
     }
-  }, [groupId, searchTerm]);
+  }, [groupId, searchTerm, initialMembers]);
 
   return (
     <Container>
       <TitleS>
         <LeftS>멤버</LeftS>
         <RightS>
-          <SearchField placeHolder="Search Member Name" onSearch={(value) => setSearchTerm(value)}></SearchField>
+          <SearchField placeHolder="Search Member Name" onSearch={(value) => setSearchTerm(value)} />
         </RightS>
       </TitleS>
       <ContentS>
@@ -55,8 +63,8 @@ const MemberField: React.FC<MemberFieldProps> = ({ groupId, initialMembers }) =>
           {members.map((member, index) => (
             <MemberProfile
               key={index}
-              name={member.name}
-              imgUrl={member.imgUrl}
+              name={member.nickname}
+              imgUrl={Ava}
               role={member.role}
             />
           ))}

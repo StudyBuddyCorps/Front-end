@@ -34,9 +34,14 @@ const Account = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        setUserData(response.data);
-        setName(response.data.name);
+        
+        setUserData({
+          name: response.data.nickname,
+          profileUrl: response.data.profileUrl || "",
+          goal: response.data.goal,
+          defaultSettings: response.data.defaultSettings,
+        });
+        setName(response.data.nickname);
       } catch (error) {
         console.error("사용자 데이터 가져오기 실패:", error);
       }
@@ -52,7 +57,7 @@ const Account = () => {
         { nickname: name },
         {
           headers: {
-            Authorization: 'Bearer ${token}',
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -81,7 +86,7 @@ const Account = () => {
         { nickname: name },
         {
           headers: {
-            Authorization: 'Bearer ${token}',
+            Authorization: `Bearer ${token}`,
           },
         }
       );

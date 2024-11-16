@@ -8,7 +8,6 @@ interface EnvRoomTypeProps {
 
 const EnvRoomType: React.FC<EnvRoomTypeProps> = ({ onSelect }) => {
   const [inputStatus, setInputStatus] = useState<string>("normal");
-  const [customPhrase, setCustomPhrase] = useState<string>('');
 
   const handleClickButton = (buttonName: string) => {
     setInputStatus(buttonName);

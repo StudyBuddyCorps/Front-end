@@ -22,7 +22,6 @@ interface Group {
 const Group = () => {
   const navigate = useNavigate();
   const token = getToken();
-  const [userId, setUserId] = useState<string | null>(null);
   const [groups, setGroups] = useState<Group[]>([]);
   const [filteredGroups, setFilteredGroups] = useState<Group[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -78,7 +77,7 @@ const Group = () => {
           그룹 생성
         </Button>
       </Header>
-      {userId && <GroupList groups={filteredGroups} />}
+      {token && <GroupList groups={filteredGroups} />}
     </MainLayout>
   );
 };

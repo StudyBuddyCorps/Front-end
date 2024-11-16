@@ -5,6 +5,7 @@ import { InputField } from "components/common/FieldStyle";
 import Button from "components/common/Button";
 import axios from "axios";
 import Ava from "assets/images/avatar_woman.png";
+import { getToken } from "utils/localStroage";
 
 interface Member {
   name: string;
@@ -22,11 +23,17 @@ interface InviteMemberProps {
 const InviteMember: React.FC<InviteMemberProps> = ({ groupId, onClose, onMemberInvite }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [members, setMembers] = useState<Member[]>([]);
+  const token = getToken();
 
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/users");
+        const response = await axios.get("http://localhost:8080/users", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log("AllUser: ", response);
         const membersData = response.data.map((user: any) => ({
           name: user.nickname,
           imgUrl: user.profileUrl || Ava,
@@ -42,15 +49,19 @@ const InviteMember: React.FC<InviteMemberProps> = ({ groupId, onClose, onMemberI
     fetchMembers();
   }, []);
 
-  const handleInvite = async (userId: string) => {
+  const handleInvite = async (memberId: string) => {
     try {
-      await axios.post(`http://localhost:8080/groups/addMember`, {
+      await axios.post(`http://localhost:8080/groups/${groupId}/addMember`, {
         groupId,
-        userId,
+        memberId,
         role: "member",
-      });
+      },
+      {
+        headers: {Authorization: `Bearer ${token}`}
+      }
+    );
       alert("멤버가 성공적으로 초대되었습니다!");
-      onMemberInvite(userId);
+      onMemberInvite(memberId);
     } catch (error) {
       console.error("멤버 초대 중 오류 발생:", error);
       alert("멤버 초대에 실패했습니다.");

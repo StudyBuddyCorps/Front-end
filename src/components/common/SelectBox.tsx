@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 interface SelectBoxProps {
   optionData: number[];
   onChange: (value: number) => void;
+  defaultValue?: number;
 }
 
-const SelectBox: React.FC<SelectBoxProps> = ({ optionData, onChange }) => {
-  const [currentValue, setCurrentValue] = useState<number>();
+const SelectBox: React.FC<SelectBoxProps> = ({ optionData, onChange, defaultValue }) => {
+  const [currentValue, setCurrentValue] = useState<number | undefined>(defaultValue);
   const [showOptions, setShowOptions] = useState(false);
 
   const handleOnChangeSelectValue = (value: number) => {
@@ -15,6 +16,12 @@ const SelectBox: React.FC<SelectBoxProps> = ({ optionData, onChange }) => {
     setShowOptions(false);
     onChange(value); // onChange 콜백 호출
   };
+
+  useEffect(() => {
+    if (defaultValue !== undefined) {
+      setCurrentValue(defaultValue);
+    }
+  }, [defaultValue]);
 
   return (
     <SelectContainer onClick={() => setShowOptions(!showOptions)}>
