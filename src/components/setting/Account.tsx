@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import EditProfile from "./EditProfile";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { saveToken, getToken, removeToken } from "../../utils/localStroage";
+import { getToken } from "../../utils/localStroage";
 import {jwtDecode} from "jwt-decode";
 
 interface UserData {
@@ -45,36 +45,41 @@ const Account = () => {
     };
 
     fetchUserData();
-  }, []);
-
-  useEffect(() => {
-    if (userData) {
-      console.log("userData: ", userData);
-    }
-  }, [userData]);
-
+  }, [id, token]);
 
   const handleCheckDuplicate = async () => {
     try {
-      console.log("변경된 이름: ", name);
-      const response = await axios.post("http://localhost:8080/users/nickname/check", { name, id });
+      const response = await axios.post("http://localhost:8080/users/nickname/check", { nickname: name, userId: id });
       setIsDuplicate(response.data.isDuplicate);
-      console.log("중복: ", isDuplicate);
-    } catch (error) {
-      console.error("닉네임 중복 확인 실패:", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === 409) {
+        // 중복된 닉네임 처리
+        setIsDuplicate(true);
+        console.log("닉네임 중복: 이미 사용 중인 닉네임입니다.");
+      } else {
+        // 기타 오류 처리
+        console.error("닉네임 중복 확인 실패:", error);
+      }
     }
   };
 
   const handleNicknameChange = async () => {
-    if (!id) return;
-
+    if (!id || !name) {
+      alert("닉네임 변경에 필요한 데이터가 없습니다.");
+      return;
+    }
+  
     try {
-      await axios.put("http://localhost:8080/users/nickname", { id, name });
+      const response = await axios.put("http://localhost:8080/users/nickname/change", { userId: id, nickname: name });
       alert("닉네임이 성공적으로 변경되었습니다.");
-      setUserData((prevData) => prevData ? { ...prevData, name } : null);
-    } catch (error) {
-      console.error("닉네임 변경 실패:", error);
-      alert("닉네임 변경에 실패했습니다.");
+      setUserData((prevData) => (prevData ? { ...prevData, name } : null));
+    } catch (error: any) {
+      if (error.response) {
+        console.error("닉네임 변경 실패 응답 데이터:", error.response.data); // 응답 데이터 확인
+        alert(error.response.data.message || "닉네임 변경에 실패했습니다.");
+      } else {
+        console.error("닉네임 변경 실패:", error);
+      }
     }
   };
 
