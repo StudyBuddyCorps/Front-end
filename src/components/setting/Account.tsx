@@ -3,7 +3,6 @@ import EditProfile from "./EditProfile";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getToken } from "../../utils/localStroage";
-import {jwtDecode} from "jwt-decode";
 
 interface UserData {
   name: string;
@@ -26,12 +25,11 @@ const Account = () => {
   const [isDuplicate, setIsDuplicate] = useState<boolean | null>(null);
 
   const token = getToken();
-  const id = token ? (jwtDecode<{ id: string }>(token).id) : null;
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/users/${id}`, {
+        const response = await axios.get(`http://localhost:8080/users/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,11 +43,19 @@ const Account = () => {
     };
 
     fetchUserData();
-  }, [id, token]);
+  }, [token]);
 
   const handleCheckDuplicate = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/users/nickname/check", { nickname: name, userId: id });
+      const response = await axios.post(
+        "http://localhost:8080/users/nickname/check", 
+        { nickname: name },
+        {
+          headers: {
+            Authorization: 'Bearer ${token}',
+          },
+        }
+      );
       setIsDuplicate(response.data.isDuplicate);
     } catch (error: any) {
       if (error.response && error.response.status === 409) {
@@ -64,13 +70,21 @@ const Account = () => {
   };
 
   const handleNicknameChange = async () => {
-    if (!id || !name) {
+    if (!token || !name) {
       alert("닉네임 변경에 필요한 데이터가 없습니다.");
       return;
     }
   
     try {
-      const response = await axios.put("http://localhost:8080/users/nickname/change", { userId: id, nickname: name });
+      await axios.put(
+        "http://localhost:8080/users/nickname/change", 
+        { nickname: name },
+        {
+          headers: {
+            Authorization: 'Bearer ${token}',
+          },
+        }
+      );
       alert("닉네임이 성공적으로 변경되었습니다.");
       setUserData((prevData) => (prevData ? { ...prevData, name } : null));
     } catch (error: any) {

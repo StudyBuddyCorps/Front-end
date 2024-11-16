@@ -7,7 +7,6 @@ import Button from "components/common/Button";
 import GroupSetting from "components/groupGenerate/GroupSetting";
 import GroupMember from "components/groupGenerate/GroupMember";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import { getToken } from "utils/localStroage";
 
 const GroupGenerate = () => {
@@ -23,24 +22,25 @@ const GroupGenerate = () => {
 
   const handleCompleteGenerate = async () => {
     const token = getToken();
-    const creatorId = token ? jwtDecode<any>(token).id : null;
-    console.log("creatorId: ", creatorId);
-    console.log("token: ", token);
 
-    if (!creatorId) {
+    if (!token) {
       alert("로그인이 필요합니다.");
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/groups/create", {
-        name: groupName,
-        description: description,
-        goalStudyTime: goalStudyTime * 60 * 1000, // 분 단위로 계산된 시간
-        creatorId: creatorId,
-      });
-
-      console.log("그룹 생성 완료:", response.data);
+      const response = await axios.post("http://localhost:8080/groups/create", 
+        {
+          name: groupName,
+          description: description,
+          goalStudyTime: goalStudyTime * 60 * 1000, // 분 단위로 계산된 시간
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },  
+        }
+      );
       navigate("/group");
     } catch (error) {
       console.error("그룹 생성 중 오류 발생:", error);

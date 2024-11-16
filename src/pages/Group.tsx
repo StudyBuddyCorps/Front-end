@@ -6,8 +6,7 @@ import GroupList from "components/group/GroupList";
 import Button from "components/common/Button";
 import { styled } from "styled-components";
 import SearchField from "components/common/SearchField";
-import { jwtDecode } from "jwt-decode";
-import { saveToken, getToken, removeToken } from "../utils/localStroage";
+import { getToken } from "../utils/localStroage";
 import axios from "axios";
 
 interface Group {
@@ -29,17 +28,17 @@ const Group = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    if (token) {
-      const decodedToken = jwtDecode<{ id: string }>(token);
-      setUserId(decodedToken.id);
-      fetchUserGroups(decodedToken.id);
+    if(token) {
+      fetchUserGroups();
     }
-  }, []);
+  }, [token]);
 
-  const fetchUserGroups = async (userId: string) => {
+  const fetchUserGroups = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/groups/mygroup", {
-        userId: userId,
+      const response = await axios.get("http://localhost:8080/groups/mygroup", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       setGroups(response.data);
       setFilteredGroups(response.data);

@@ -2,7 +2,6 @@ import styled from "styled-components";
 import SelectBox from "../common/SelectBox";
 import { useState } from "react";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import { getToken } from "../../utils/localStroage";
 
 const hours: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -15,12 +14,6 @@ const GoalSetting: React.FC = () => {
 
   const handleSave = async () => {
     const token = getToken();
-    const id = token ? (jwtDecode<{ id: string }>(token).id) : null;
-
-    if (!id) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
 
     const total = selectedHour * 60 + selectedMinute; // 시간을 분으로 변환 후 합산
     setTotalTime(total);
@@ -29,8 +22,12 @@ const GoalSetting: React.FC = () => {
     try {
       await axios.put(
         "http://localhost:8080/users/goal",
-        { userId: id, goal: total },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { goal: total },
+        { 
+          headers: { 
+            Authorization: `Bearer ${token}` 
+          }, 
+        }
       );
       alert("목표 공부 시간이 성공적으로 업데이트되었습니다.");
     } catch (error) {

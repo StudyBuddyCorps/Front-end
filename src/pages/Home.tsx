@@ -13,7 +13,7 @@ import useModal from "hooks/useConfirm";
 import ConfirmModal from "components/common/ConfirmModal";
 import Footer from "components/common/Layout/Footer";
 import { handleLogout, checkAccessToken } from "services/authServices";
-import { saveToken, getToken, removeToken } from "../utils/localStroage";
+import { getToken } from "../utils/localStroage";
 import axios from "axios";
 
 const Home: React.FC = () => {

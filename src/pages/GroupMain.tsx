@@ -12,6 +12,7 @@ import MemberField from "components/group/MemberField";
 import InviteMember from "components/group/InviteMember";
 import Ava from "assets/images/avatar_woman.png";
 import axios from "axios";
+import { getToken } from "utils/localStroage";
 
 interface Member {
   name: string;
@@ -20,6 +21,7 @@ interface Member {
 }
 
 interface Group {
+  groupId: string;
   name: string;
   description: string;
   goalStudyTime: number;
@@ -37,23 +39,43 @@ const GroupMain = () => {
   const { groupName } = useParams<{ groupName: string }>();
   const [studygroup, setStudygroup] = useState<Group | null>(null);
   const [groupId, setGroupId] = useState<string | null>(null);
-  const [members, setMembers] = useState<Member[]>([]);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const token = getToken();
 
   const fetchGroupData = async () => {
     try {
-      const encodedGroupName = encodeURIComponent(groupName as string);
-      const groupInfoResponse = await axios.get(`http://localhost:8080/groups/name/${encodedGroupName}`);
-      const fetchedGroupId = groupInfoResponse.data.groupId;
+      const groupResponse = await axios.get("http://localhost:8080/groups/mygroup", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
-      setGroupId(fetchedGroupId);
+      const groups: Group[] = groupResponse.data;
 
-      const groupDataResponse = await axios.get(`http://localhost:8080/groups/${fetchedGroupId}`);
-      const groupData = groupDataResponse.data;
+      // Find the group by name
+      const group = groups.find((g) => g.name === groupName);
+      if (!group) {
+        throw new Error("Group not found");
+      }
+
+      setGroupId(group.groupId);
+
+      const groupDetailResponse = await axios.get(`http://localhost:8080/groups/${group.groupId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const { name, description, goalStudyTime, members } = groupDetailResponse.data;
 
       const membersWithNames = await Promise.all(
-        groupData.members.map(async (member: any) => {
-          const userResponse = await axios.get(`http://localhost:8080/users/${member.userId}`);
+        members.map(async (member: any) => {
+          const userResponse = await axios.get(`http://localhost:8080/users/user`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
           return {
             userId: member.userId,
             name: userResponse.data.name,
@@ -64,10 +86,12 @@ const GroupMain = () => {
       );
 
       setStudygroup({
-        ...groupData,
+        groupId: group.groupId,
+        name,
+        description,
+        goalStudyTime,
         members: membersWithNames,
       });
-      setMembers(membersWithNames);
     } catch (error) {
       console.error("그룹 정보를 불러오는 중 오류 발생:", error);
     }
@@ -113,7 +137,7 @@ const GroupMain = () => {
           <MyHistoryCalendar></MyHistoryCalendar>
         </div>
         <div className="right">
-          {groupId && <MemberField groupId={groupId} initialMembers={members}/>}
+          {groupId && <MemberField groupId={groupId} initialMembers={studygroup.members}/>}
         </div>
       </MainContent>
       <Footer>

@@ -6,7 +6,7 @@ import VoiceList from "components/studySetting/VoiceList";
 import EnvGPTType from "./EnvGPTType";
 import { useState } from "react";
 import axios from "axios";
-import { saveToken, getToken, removeToken } from "../../utils/localStroage";
+import { getToken } from "../../utils/localStroage";
 
 const EnvSetting = () => {
   const [roomType, setRoomType] = useState("normal");

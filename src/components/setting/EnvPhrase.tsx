@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Radio from "../studySetting/Radio";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import { getToken } from "../../utils/localStroage";
 
 const EnvPhrase = () => {
@@ -16,11 +15,6 @@ const EnvPhrase = () => {
 
   const handleSave = async() => {
     const token = getToken();
-    const id = token ? (jwtDecode<{ id: string }>(token).id) : null;
-    if (!id) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
 
     try {
       const isRandom = inputStatus === '랜덤' ? true : false;
@@ -28,8 +22,12 @@ const EnvPhrase = () => {
 
       await axios.put(
         "http://localhost:8080/users/phrase", 
-        { userId: id, phrase, isRandom },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { phrase, isRandom },
+        { 
+          headers: { 
+            Authorization: `Bearer ${token}` 
+          },
+        }
       );
 
       alert("명언이 성공적으로 업데이트되었습니다.");
