@@ -10,15 +10,16 @@ interface DefaultSettingProps {
   roomType: string;
   studyMateVoice: string;
   assistantTone: string;
-  accessToken: string;
+  token: string;
 }
 
-const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShowGuideline, roomType, studyMateVoice, assistantTone, accessToken }) => {
+const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShowGuideline, roomType, studyMateVoice, assistantTone, token }) => {
   const [cameraPermission, setCameraPermission] = useState<boolean>(false);
   const [defaultRoomSetting, setDefaultRoomSetting] = useState<boolean>(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const navigate = useNavigate();
+  const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     if (cameraPermission) {
@@ -29,6 +30,9 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShow
 
     return () => {
       stopCamera();
+      if (wsRef.current) {
+        wsRef.current.close();  // websockect 연결 종료
+      }
     };
   }, [cameraPermission]);
 
@@ -91,7 +95,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShow
         voice: studyMateVoice,
       },
       assistantTone,
-      cameraAceess: true,
+      cameraAccess: true,
     };
 
     console.log("Request Body:", JSON.stringify(requestBody, null, 2));
@@ -102,7 +106,7 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShow
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
+            "Authorization": `Bearer ${token}`,
           },
           credentials: 'include',
           body: JSON.stringify(requestBody),
@@ -119,31 +123,50 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShow
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken || ''}`,
+          "Authorization": `Bearer ${token || ''}`,
         },
         credentials: 'include',
         body: JSON.stringify(requestBody),
       });
 
-      if (!response.ok) throw new Error("Failed to create study room.");
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Failed to create study room:", errorText);
+        throw new Error("Failed to create study room.");
+      }
 
       const responseData = await response.json();
       const roomId = responseData._id;
-      const userId = responseData.userId;
+      console.log(responseData);
 
       const startRoomResponse = await fetch(`http://localhost:8080/studyroom/${roomId}/start`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`,
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId }),
       });
 
       if (!startRoomResponse.ok) throw new Error("Failed to start study room.");
 
       const startRoomData = await startRoomResponse.json();
       console.log("Start Room Response:", startRoomData);
+
+      wsRef.current = new WebSocket("ws://localhost:8080");
+      wsRef.current.onopen = () => {
+        console.log("WebSocket connection opened.");
+        wsRef.current?.send(JSON.stringify({ type: "joinRoom", roomId }));
+      };
+      
+      // 소켓 연결
+      wsRef.current.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log("WebSocket message:", data);
+      };
+
+      wsRef.current.onclose = () => {
+        console.log("WebSocket connection closed.");
+      };
 
       setTimeout(() => {
         setShowGuideline(false);

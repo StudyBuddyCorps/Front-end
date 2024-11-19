@@ -23,7 +23,7 @@ const StudyRoom: React.FC = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [showChat, setShowChat] = useState(false);
-  const accessToken = getToken();
+  const token = getToken();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(document.createElement('canvas'));
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
@@ -42,13 +42,18 @@ const StudyRoom: React.FC = () => {
 
   // studyroom 가져오기
   useEffect(() => {
-    if (!roomId) return;
+    if (!roomId) {
+      console.error("Room ID is undefined. Ensure that it is provided in the URL.");
+      alert("Invalid room ID. Please check the URL.");
+      return;
+    }
+
     const fetchUserId = async () => {
       try {
         const response = await fetch(`http://localhost:8080/studyroom/${roomId}`, {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${accessToken}`,
+            "Authorization": `Bearer ${token}`,
           },
         });
         
@@ -64,7 +69,7 @@ const StudyRoom: React.FC = () => {
     };
 
     fetchUserId();
-  }, [roomId, accessToken]);
+  }, [roomId, token]);
 
   useEffect(() => {
     const captureImage = () => {
@@ -178,19 +183,16 @@ const StudyRoom: React.FC = () => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`,
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Pause/Resume Response:", data);
         setPaused(true);
         setShowResume(true);
       } else {
         console.error("Failed to pause/resume study room.");
-        console.log("Fetched roomId from URL:", roomId);
       }
     } catch (error) {
       console.error("Error pausing/resuming study room:", error);
@@ -209,14 +211,13 @@ const StudyRoom: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`,
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({ userId }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Stop Room Response:", data);
         window.location.href = `/studyroom/${roomId}/result`;
       } else {
         console.error("Failed to stop study room.");

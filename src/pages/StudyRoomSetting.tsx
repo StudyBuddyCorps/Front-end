@@ -41,7 +41,7 @@ const StudyRoomSetting: React.FC = () => {
               roomType={roomType} 
               studyMateVoice={studyMateVoice} 
               assistantTone={assistantTone} 
-              accessToken={token || ''} 
+              token={token || ''} 
               setSelectedTab={setSelectedTab} 
               setShowGuideline={setShowGuideline} 
             />

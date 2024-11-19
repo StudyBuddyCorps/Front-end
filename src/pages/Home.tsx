@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "../assets/images/avatar_woman.png";
@@ -20,6 +20,8 @@ const Home: React.FC = () => {
   const [showGuideline, setShowGuideline] = useState(false);
   const [phrase, setPhrase] = useState<string>("운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라");
   const [goal, setGoal] = useState<number>(360);
+  const wsRef = useRef<WebSocket | null>(null);
+
   const {
     isConfirmVisible,
     confirmMessage,
@@ -56,13 +58,13 @@ const Home: React.FC = () => {
 
   const handleButtonClick = async () => {
     setShowGuideline(true);
-
+  
     if (!token) {
-      console.error("Access token or user ID is missing.");
+      console.error("Access token is missing.");
       setShowGuideline(false);
       return;
     }
-
+  
     try {
       const response = await fetch("http://localhost:8080/studyroom/defaultstart", {
         method: "POST",
@@ -71,26 +73,52 @@ const Home: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("스터디룸 생성 및 시작 성공:", data);
-
-        // 생성된 디폴트 스터디룸으로 이동
-        const studyRoomId = data.studyRoom._id;
-        setTimeout(() => {
-          setShowGuideline(false);
-          navigate(`/studyroom/${studyRoomId}`);
-        }, 5000);
-      } else {
+  
+      if (!response.ok) {
         console.error("스터디룸 생성 및 시작 실패:", response.statusText);
+        return;
       }
+  
+      const data = await response.json();
+  
+      const studyRoomId = data.room?.roomId;
+      if (!studyRoomId) {
+        console.error("Room ID (_id) is missing from the response.");
+        return;
+      }
+  
+      // WebSocket 연결
+      wsRef.current = new WebSocket("ws://localhost:8080");
+      wsRef.current.onopen = () => {
+        console.log("WebSocket connection opened.");
+        wsRef.current?.send(JSON.stringify({ type: "joinRoom", roomId: studyRoomId }));
+      };
+  
+      wsRef.current.onmessage = (event) => {
+        const messageData = JSON.parse(event.data);
+        console.log("WebSocket message received:", messageData);
+  
+        if (messageData.type === "roomStatus") {
+          console.log(`Room Status Update: ${messageData.status}`);
+        }
+      };
+  
+      wsRef.current.onclose = () => {
+        console.log("WebSocket connection closed.");
+      };
+  
+      // 5초 후 스터디룸으로 이동
+      setTimeout(() => {
+        setShowGuideline(false);
+        navigate(`/studyroom/${studyRoomId}`);
+      }, 5000);
     } catch (error) {
       console.error("스터디룸 생성 요청 오류:", error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleProfileClick = () => {
     showConfirm("로그아웃 하시겠습니까?", logout);
