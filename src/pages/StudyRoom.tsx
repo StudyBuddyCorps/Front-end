@@ -123,6 +123,27 @@ const StudyRoom: React.FC = () => {
               setFeedbackMessage(null);
               setFeedbackTime(null);
             }
+
+            // 피드백 저장 요청
+            const feedbackType = [];
+            if (result.is_holding_phone) feedbackType.push("is_holding_phone");
+            if (result.bad_posture) feedbackType.push("bad_posture");
+            if (result.is_sleeping) feedbackType.push("is_sleeping");
+
+            if (feedbackType.length > 0) {
+              const feedbackResponse = await fetch(`http://localhost:8080/studyroom/${roomId}/feedback`, {
+                method: "PATCH",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ feedbackType, time: currentTime }),
+              });
+  
+              if (!feedbackResponse.ok) {
+                console.error("Failed to save feedback to the server.");
+              }
+            }
           } else {
             console.error("Failed to send image to server:", response.status);
           }
@@ -177,20 +198,32 @@ const StudyRoom: React.FC = () => {
     }
   }, [showResume]);
 
-  const handlePause = async () => {
+  const handlePauseResume = async () => {
     try {
+      const obj = { time: 36000 };
+      console.log(JSON.stringify(obj));
       const response = await fetch(`http://localhost:8080/studyroom/${roomId}/pause`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
+        body: JSON.stringify({ accumulatedTime: time }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        setPaused(true);
-        setShowResume(true);
+        const newStatus = data.status;
+
+        if (newStatus === "paused") {
+          setPaused(true);
+          setShowResume(true);
+        } else if (newStatus === "active") {
+          setPaused(false);
+          setShowResume(false);
+        } else {
+          console.error("Unexpected status:", newStatus);
+        }
       } else {
         console.error("Failed to pause/resume study room.");
       }
@@ -199,25 +232,21 @@ const StudyRoom: React.FC = () => {
     }
   };
 
-  const handleResume = () => {
-    setPaused(false);
-    setShowResume(false);
-  };
-
   const handleStop = async () => {
     if (!roomId || !userId) return;
     try {
+      const obj = { time: 36000 };
+      console.log(obj.toString());
       const response = await fetch(`http://localhost:8080/studyroom/${roomId}/stop`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId }),
+        body: JSON.stringify({ accumulatedTime: time }),
       });
 
       if (response.ok) {
-        const data = await response.json();
         window.location.href = `/studyroom/${roomId}/result`;
       } else {
         console.error("Failed to stop study room.");
@@ -249,7 +278,7 @@ const StudyRoom: React.FC = () => {
           <CenterDiv>
             <Timer time={time} />
             <Controls
-              onPause={handlePause}
+              onPause={handlePauseResume}
               onStop={handleStop}
               onWhiteNoise={handleWhiteNoise}
             />          
@@ -263,7 +292,7 @@ const StudyRoom: React.FC = () => {
       </MainContent>
       <Chat showChat={showChat} toggleChat={toggleChat} />
       <audio ref={audioRef} src={require('assets/audio/whitenoise.mp3')} />
-      {showResume && <Pause onResume={handleResume} remainingTime={remainingTime} />}
+      {showResume && <Pause onResume={handlePauseResume} remainingTime={remainingTime} />}
     </Wrapper>
   );
 };

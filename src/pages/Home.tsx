@@ -81,7 +81,7 @@ const Home: React.FC = () => {
   
       const data = await response.json();
   
-      const studyRoomId = data.room?.roomId;
+      const studyRoomId = data.room?._id;
       if (!studyRoomId) {
         console.error("Room ID (_id) is missing from the response.");
         return;
