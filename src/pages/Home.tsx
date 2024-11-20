@@ -18,7 +18,9 @@ import axios from "axios";
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showGuideline, setShowGuideline] = useState(false);
-  const [phrase, setPhrase] = useState<string>("운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라");
+  const [phrase, setPhrase] = useState<string>(
+    "운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라"
+  );
   const [goal, setGoal] = useState<number>(360);
   const wsRef = useRef<WebSocket | null>(null);
 
@@ -30,9 +32,18 @@ const Home: React.FC = () => {
     handleCancel,
   } = useModal();
   const navigate = useNavigate();
-  const token = getToken();
 
   useEffect(() => {
+    const success = checkAccessToken();
+    if (!success) {
+      navigate("/");
+      console.log("인증에 실패하였습니다. 다시 시도하세요.");
+    } else {
+      console.log("로그인 성공");
+    }
+
+    const token = getToken();
+
     const fetchUserData = async () => {
       if (!token) {
         console.error("Access token is missing");
@@ -46,67 +57,75 @@ const Home: React.FC = () => {
           },
         });
         const user = response.data;
-        setPhrase(user.phrase && user.phrase.content ? user.phrase.content : "빡공하쇼");
+        setPhrase(
+          user.phrase && user.phrase.content ? user.phrase.content : "빡공하쇼"
+        );
         setGoal(user.goal || 360);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
-    
+
     fetchUserData();
-  }, [token]);
+  }, []);
 
   const handleButtonClick = async () => {
     setShowGuideline(true);
-  
+    const token = getToken();
+
     if (!token) {
       console.error("Access token is missing.");
       setShowGuideline(false);
       return;
     }
-  
+
     try {
-      const response = await fetch("http://localhost:8080/studyroom/defaultstart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
+      const response = await fetch(
+        "http://localhost:8080/studyroom/defaultstart",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       if (!response.ok) {
         console.error("스터디룸 생성 및 시작 실패:", response.statusText);
         return;
       }
-  
+
       const data = await response.json();
-  
+
       const studyRoomId = data.room?._id;
       if (!studyRoomId) {
         console.error("Room ID (_id) is missing from the response.");
         return;
       }
-  
+
       // WebSocket 연결
       wsRef.current = new WebSocket("ws://localhost:8080");
       wsRef.current.onopen = () => {
         console.log("WebSocket connection opened.");
-        wsRef.current?.send(JSON.stringify({ type: "joinRoom", roomId: studyRoomId }));
+        wsRef.current?.send(
+          JSON.stringify({ type: "joinRoom", roomId: studyRoomId })
+        );
       };
-  
+
       wsRef.current.onmessage = (event) => {
         const messageData = JSON.parse(event.data);
         console.log("WebSocket message received:", messageData);
-  
+
         if (messageData.type === "roomStatus") {
           console.log(`Room Status Update: ${messageData.status}`);
         }
       };
-  
+
       wsRef.current.onclose = () => {
         console.log("WebSocket connection closed.");
       };
-  
+
       // 5초 후 스터디룸으로 이동
       setTimeout(() => {
         setShowGuideline(false);
@@ -118,7 +137,6 @@ const Home: React.FC = () => {
       setLoading(false);
     }
   };
-  
 
   const handleProfileClick = () => {
     showConfirm("로그아웃 하시겠습니까?", logout);
@@ -133,27 +151,13 @@ const Home: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const success = checkAccessToken();
-    console.log(success);
-    if (!success) {
-      navigate("/");
-      console.log("인증에 실패하였습니다. 다시 시도하세요.");
-    } else {
-      console.log("로그인 성공");
-    }
-  }, []);
-
   return (
     <MainLayout>
       {showGuideline ? (
         <Guideline />
       ) : (
         <>
-          <Header
-            title="Home"
-            dis={phrase}
-          >
+          <Header title="Home" dis={phrase}>
             <Profile src={Avatar} alt="Profile" onClick={handleProfileClick} />
           </Header>
           {/* 스터디룸 입장 및 생성 */}
@@ -179,7 +183,10 @@ const Home: React.FC = () => {
             <Time
               title="오늘의 총 공부 시간"
               totalTime="02 : 30 : 01"
-              goalTime={`${String(Math.floor(goal / 60)).padStart(2, '0')} : ${String(goal % 60).padStart(2, '0')} : 00`}
+              goalTime={`${String(Math.floor(goal / 60)).padStart(
+                2,
+                "0"
+              )} : ${String(goal % 60).padStart(2, "0")} : 00`}
             ></Time>
           </Footer>
         </>
