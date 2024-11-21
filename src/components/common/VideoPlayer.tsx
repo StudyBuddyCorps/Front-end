@@ -30,6 +30,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoRef }) => {
 };
 
 const Container = styled.div`
+  position: relative;
   height: 100%;
   border: none;
   border-radius: 5px;
@@ -38,6 +39,12 @@ const Container = styled.div`
 
 const Video = styled.video`
   width: 100%;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  border-radius: 5px;
 `;
 
 export default VideoPlayer;
