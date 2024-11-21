@@ -16,3 +16,7 @@ export const googleLogin = () => {
 export const logout = () => {
   return axios.get("/auth/logout");
 };
+
+export const getNewToken = () => {
+  return axios.get("/auth/getNewToken");
+};
