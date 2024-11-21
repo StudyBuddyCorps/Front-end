@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import VideoPlayer from './VideoPlayer';
 
 
 const Guideline: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   return (
     <Wrapper>
       <Container>
         <VideoContainer>
-          {/* <VideoPlayer /> */}
+          <VideoPlayer videoRef={videoRef}/>
           <Overlay>
             <Rectangle />
             <Circle />
