@@ -3,11 +3,13 @@ import EditProfile from "./EditProfile";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getToken } from "../../utils/localStroage";
+import { handleUser } from "services/userServices";
 
 interface UserData {
   name: string;
   profileUrl: string;
   goal: number;
+  email: string;
   defaultSettings: {
     roomType: string;
     studyMate: {
@@ -23,25 +25,33 @@ const Account = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [name, setName] = useState("");
   const [isDuplicate, setIsDuplicate] = useState<boolean | null>(null);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    const token = getToken();
-
-    const fetchUserData = async () => {
+    const fetchUserData = async (attempts = 1): Promise<void> => {
       try {
-        const response = await axios.get(`http://localhost:8080/users/user`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setUserData({
-          name: response.data.name,
-          profileUrl: response.data.profileUrl || "",
-          goal: response.data.goal,
-          defaultSettings: response.data.defaultSettings,
-        });
-        setName(response.data.name);
+        const success = await handleUser();
+        console.log(success.user);
+        if (success.ok && success.message == "user") {
+          // 정상적으로 받은 경우
+          const user = success.user;
+          setUserData({
+            email: user.email,
+            name: user.nickname,
+            profileUrl: user.profileUrl || "",
+            goal: user.goal,
+            defaultSettings: user.defaultSettings,
+          });
+          setName(user.nickname);
+          setEmail(user.email);
+        } else if (success.ok && success.message == "newToken") {
+          // 재시도 횟수가 1회 이하라면 새로 발급받은 토큰으로 다시 시도
+          if (attempts < 2) {
+            return fetchUserData(attempts + 1); // 재귀 호출
+          } else {
+            console.error("Failed to fetch user data after retrying.");
+          }
+        }
       } catch (error) {
         console.error("사용자 데이터 가져오기 실패:", error);
       }
@@ -132,7 +142,7 @@ const Account = () => {
         </Container>
         <Container>
           <Label>이메일</Label>
-          <EmailDiv>test@gmail.com</EmailDiv>
+          <EmailDiv>{email}</EmailDiv>
         </Container>
       </Edit>
       <BtnDiv>

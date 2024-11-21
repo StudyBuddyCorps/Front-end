@@ -12,6 +12,7 @@ import useModal from "hooks/useConfirm";
 import ConfirmModal from "components/common/ConfirmModal";
 import Footer from "components/common/Layout/Footer";
 import { handleLogout, checkAccessToken } from "services/authServices";
+import { handleUser } from "services/userServices";
 import { getToken } from "../utils/localStroage";
 import axios from "axios";
 
@@ -38,31 +39,32 @@ const Home: React.FC = () => {
     if (!success) {
       navigate("/");
       console.log("인증에 실패하였습니다. 다시 시도하세요.");
-    } else {
-      console.log("로그인 성공");
     }
 
-    const token = getToken();
-
-    const fetchUserData = async () => {
-      if (!token) {
-        console.error("Access token is missing");
-        return;
-      }
-
+    const fetchUserData = async (attempts = 1): Promise<void> => {
       try {
-        const response = await axios.get(`http://localhost:8080/users/user`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const user = response.data;
-        setPhrase(
-          user.phrase && user.phrase.content ? user.phrase.content : "빡공하쇼"
-        );
-        setGoal(user.goal || 360);
+        const success = await handleUser();
+        if (success.ok && success.message == "user") {
+          // 정상적으로 받은 경우
+          const user = success.user;
+          setPhrase(
+            user.phrase && user.phrase.content
+              ? user.phrase.content
+              : "빡공하쇼"
+          );
+          setGoal(user.goal || 360);
+        } else if (success.ok && success.message == "newToken") {
+          // 재시도 횟수가 1회 이하라면 새로 발급받은 토큰으로 다시 시도
+          if (attempts < 2) {
+            return fetchUserData(attempts + 1); // 재귀 호출
+          } else {
+            console.error("Failed to fetch user data after retrying.");
+          }
+        } else {
+          console.error(success?.error || "Login failed. Please try again.");
+        }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("An error occurred during login:", error);
       }
     };
 
