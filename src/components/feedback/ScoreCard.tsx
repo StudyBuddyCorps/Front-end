@@ -2,9 +2,20 @@ import { Card, CardTitle } from "components/common/Card";
 import styled from "styled-components";
 import { LinearProgress } from "@mui/material";
 import theme from "styles/theme";
+import { timeToShortString, timeToString } from "utils/timeLine";
 
-export default function ScoreCard() {
-  const score = 50;
+interface ScoreCardProps {
+  totalTime: number;
+  feedTime: number;
+}
+
+const ScoreCard: React.FC<ScoreCardProps> = ({ totalTime, feedTime }) => {
+  const actualTime = totalTime - feedTime;
+  const total = timeToShortString(totalTime);
+  const feed = timeToShortString(feedTime);
+  const real = timeToShortString(actualTime);
+  const score = Math.round((actualTime / totalTime) * 100);
+
   return (
     <Card>
       <Container>
@@ -15,7 +26,7 @@ export default function ScoreCard() {
         <ItemArea>
           <Item>
             <Label>총 공부시간</Label>
-            <Value>2h 50min</Value>
+            <Value>{total}</Value>
           </Item>
           <LinearProgress
             variant="determinate"
@@ -29,27 +40,27 @@ export default function ScoreCard() {
           />
           <Item>
             <Label>순공시간</Label>
-            <Value>1h 30m</Value>
+            <Value>{real}</Value>
           </Item>
           <LinearProgress
             variant="determinate"
-            value={50}
+            value={Math.round((actualTime / totalTime) * 70)}
             sx={{ width: "100%", height: "20%", mb: 2, borderRadius: 5 }}
           />
           <Item>
             <Label>피드백 받은 시간</Label>
-            <Value>36m</Value>
+            <Value>{feed}</Value>
           </Item>
           <LinearProgress
             variant="determinate"
-            value={20}
+            value={Math.round((feedTime / totalTime) * 70)}
             sx={{ width: "100%", height: "20%", borderRadius: 5 }}
           />
         </ItemArea>
       </Container>
     </Card>
   );
-}
+};
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -90,3 +101,5 @@ const Value = styled.span`
   font-family: NotoSansMedium;
   color: ${({ theme }) => theme.colors.black00};
 `;
+
+export default ScoreCard;
