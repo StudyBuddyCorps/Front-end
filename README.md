@@ -1,6 +1,6 @@
 ![Stylized laptop side mockup](https://github.com/user-attachments/assets/b64e834b-dae0-43f0-9c2e-b42139c6b804)
-# 🐣StudyBuddy Backend🐣
-노티와 함께 성장하는 공부 파트너, StudyBuddy의 백엔드입니다!
+# 🐣StudyBuddy Frontend🐣
+노티와 함께 성장하는 공부 파트너, StudyBuddy의 프론트엔드입니다!
 
 <br>
 
@@ -13,7 +13,7 @@ StudyBuddy는 가상의 캐릭터 `노티`가 학습 자세를 관찰하고 피�
 
 <br><br>
 
-## 😁 Backend Developers
+## 😁 Frontend Developers
 <table>
   <tbody>
     <tr>
