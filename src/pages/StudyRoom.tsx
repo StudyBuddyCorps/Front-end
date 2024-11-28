@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import VideoPlayer from "components/common/VideoPlayer";
-import Noti from 'assets/images/Noti2.png';
 import Feedback from "components/studyRoom/Feedback";
 import Timer from "components/studyRoom/Timer";
 import Controls from "components/studyRoom/Controls";
@@ -10,6 +9,19 @@ import Pause from "components/studyRoom/Pause";
 import Chat from "components/studyRoom/Chat";
 import ChatImg from "assets/images/chat.png";
 import { getToken } from "../utils/localStroage";
+import Angry from "assets/videos/Angry.mp4";
+import Blink from "assets/videos/Blink.mp4";
+import BlinkFast from "assets/videos/BlinkFast.mp4";
+import Hello from "assets/videos/BlinkFast.mp4";
+import Scratch from "assets/videos/Scratch.mp4";
+import ShakeHead from "assets/videos/ShakeHead.mp4";
+import Stare from "assets/videos/Stare.mp4";
+import Sleep1 from "assets/audio/v1_sleep1.mp3";
+import Sleep2 from "assets/audio/v1_sleep2.mp3";
+import Posture from "assets/audio/v1_posture1.mp3";
+import Phone1 from "assets/audio/v1_phone1.mp3";
+import Phone2 from "assets/audio/v1_phone2.mp3";
+import Compliment from "assets/audio/v1_complimet.mp3";
 
 const StudyRoom: React.FC = () => {
   const { roomId } = useParams<{ roomId: string }>();
@@ -28,12 +40,77 @@ const StudyRoom: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(document.createElement('canvas'));
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [feedbackTime, setFeedbackTime] = useState<number | null>(0);
+  const [currentVideo, setCurrentVideo] = useState(Hello);
+  const lastPraiseTimeRef = useRef<number>(0);
+
+  const whiteNoiseRef = useRef<HTMLAudioElement>(document.createElement("audio"));
+  const notiVoiceRef = useRef<HTMLAudioElement>(null);
+  
+  const negativeVideos = [ShakeHead, Stare, Angry];
+  const neutralVideos = [Blink, BlinkFast, Scratch];
 
   // 피드백 메시지 목록
   const postureMessages = ["자세가 바르지 않아요!", "허리를 펴세요!", "자세 불량!!!", "바른 자세로 집중하세요!", "똑바로 앉고 집중!"];
   const phoneMessages = ["핸드폰 금지!!", "핸드폰을 멀리 두세요!", "핸드폰에 집중하지 마세요!", "핸드폰과는 거리 두기 필수!", "핸드폰 부셔버린다^^"];
   const sleepMessages = ["자면 안돼!!", "일어나! 일어나!!", "자는 중이에요! 눈을 떠요!", "잠은 죽어서 자자ㅎㅎ", "잠에서 깨세요!"];
-  
+
+  // 오디오 목록
+  const audioFiles = {
+    is_sleeping: [Sleep1, Sleep2],
+    bad_posture: [Posture],
+    is_holding_phone: [Phone1, Phone2],
+    praise: [Compliment],
+  };
+
+  const playAudio = (file: string) => {
+    if (notiVoiceRef.current) {
+      notiVoiceRef.current.src = file;
+      notiVoiceRef.current.play().catch((error) => {
+        console.error("Failed to play noti voice:", error);
+      });
+    }
+  };
+
+  const handleFeedback = (result: any) => {
+    const currentTime = timeRef.current;
+    let audioToPlay: string | null = null;
+
+    // 비디오 및 메시지 설정
+    if (result.is_holding_phone || result.bad_posture || result.is_sleeping) {
+      setCurrentVideo(negativeVideos[Math.floor(Math.random() * negativeVideos.length)]);
+    } else {
+      setCurrentVideo(neutralVideos[Math.floor(Math.random() * neutralVideos.length)]);
+    }
+
+    // 메시지 설정
+    if (result.is_holding_phone) {
+      setFeedbackMessage(phoneMessages[Math.floor(Math.random() * phoneMessages.length)]);
+      audioToPlay = audioFiles.is_holding_phone[Math.floor(Math.random() * audioFiles.is_holding_phone.length)];
+    } else if (result.bad_posture) {
+      setFeedbackMessage(postureMessages[Math.floor(Math.random() * postureMessages.length)]);
+      audioToPlay = audioFiles.bad_posture[0];
+    } else if (result.is_sleeping) {
+      setFeedbackMessage(sleepMessages[Math.floor(Math.random() * sleepMessages.length)]);
+      audioToPlay = audioFiles.is_sleeping[Math.floor(Math.random() * audioFiles.is_sleeping.length)];
+    } else {
+      setFeedbackMessage(null);
+    }
+
+    const timeSinceLastPraise = currentTime - lastPraiseTimeRef.current;
+    if (timeSinceLastPraise >= 300) { // 5분 = 300초
+      audioToPlay = audioFiles.praise[0];
+      lastPraiseTimeRef.current = currentTime;
+    }
+
+    // 피드백 시간 저장
+    setFeedbackTime(currentTime);
+
+    if (audioToPlay) {
+      playAudio(audioToPlay);
+    }
+  };
+
+
   // time 값을 최신으로 유지하기 위한 Ref
   const timeRef = useRef(time);
   useEffect(() => {
@@ -89,6 +166,7 @@ const StudyRoom: React.FC = () => {
 
     const sendImageToServer = async () => {
       const image = captureImage();
+      const currentTime = timeRef.current;
       if (image) {
         try {
           const byteString = atob(image.split(',')[1]);
@@ -109,20 +187,8 @@ const StudyRoom: React.FC = () => {
 
           if (response.ok) {
             const result = await response.json();
-            const currentTime = timeRef.current;
-            if (result.is_holding_phone) {
-              setFeedbackMessage(phoneMessages[Math.floor(Math.random() * phoneMessages.length)]);
-              setFeedbackTime(currentTime);
-            } else if (result.bad_posture) {
-              setFeedbackMessage(postureMessages[Math.floor(Math.random() * postureMessages.length)]);
-              setFeedbackTime(currentTime);
-            } else if (result.is_sleeping) {
-              setFeedbackMessage(sleepMessages[Math.floor(Math.random() * sleepMessages.length)]);
-              setFeedbackTime(currentTime);
-            } else {
-              setFeedbackMessage(null);
-              setFeedbackTime(null);
-            }
+            handleFeedback(result);
+            
 
             // 피드백 저장 요청
             const feedbackType = [];
@@ -256,15 +322,45 @@ const StudyRoom: React.FC = () => {
     }
   };
 
-  const handleWhiteNoise = () => setWhiteNoise(!whiteNoise);
   const toggleChat = () => setShowChat(!showChat);
+  const handleWhiteNoise = () => {
+    setWhiteNoise(!whiteNoise);
+
+    if (whiteNoiseRef.current) {
+      if (!whiteNoise) {
+        whiteNoiseRef.current
+          .play()
+          .catch((error) => console.error("Failed to play white noise:", error));
+      } else {
+        whiteNoiseRef.current.pause();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (whiteNoiseRef.current) {
+      if (whiteNoise) {
+        whiteNoiseRef.current
+          .play()
+          .catch((error) => console.error("Failed to play white noise:", error));
+      } else {
+        whiteNoiseRef.current.pause();
+      }
+    }
+  }, [whiteNoise]);
+
 
   return (
     <Wrapper>
       <MainContent showChat={showChat}>
         <VideoContainer>
           <BuddyContainer>
-            <BuddyImg src={Noti} alt="Buddy image" />
+            <BuddyVideo
+              src = {currentVideo}
+              autoPlay
+              loop
+              muted
+            />
           </BuddyContainer>
           <StyledVideoPlayer>
             <VideoPlayer videoRef={videoRef}/>
@@ -291,7 +387,8 @@ const StudyRoom: React.FC = () => {
         </ControlContent>
       </MainContent>
       <Chat showChat={showChat} toggleChat={toggleChat} />
-      <audio ref={audioRef} src={require('assets/audio/whitenoise.mp3')} />
+      <audio ref={whiteNoiseRef} src={require('assets/audio/whitenoise.mp3')} loop/>
+      <audio ref={notiVoiceRef} />
       {showResume && <Pause onResume={handlePauseResume} remainingTime={remainingTime} />}
     </Wrapper>
   );
@@ -331,13 +428,12 @@ const BuddyContainer = styled.div`
   overflow: hidden;
 `;
 
-const BuddyImg = styled.img`
+const BuddyVideo = styled.video`
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translate(-50%);
-  width: 40vw;
-  width: 78%;
+  width: 100%;
 `;
 
 const StyledVideoPlayer = styled.div`

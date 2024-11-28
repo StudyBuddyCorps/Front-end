@@ -38,7 +38,7 @@ const Router = () => {
           <Route path="/setting" element={<Setting />} />
         </Route>
         <Route path="/studyroom/:roomId" element={<StudyRoom />} />
-        <Route path="/studyroom/:roomId" element={<StudyRoomPomodoro />} />
+        <Route path="/studyroom/pomodoro/:roomId" element={<StudyRoomPomodoro />} />
         <Route path="/studyroom" element={<StudyRoomSetting />} />
         <Route path="/studyroom/:roomId/result" element={<StudyRoomFinish />} />
         <Route path="/newGroup" element={<GroupGenerate />} />
