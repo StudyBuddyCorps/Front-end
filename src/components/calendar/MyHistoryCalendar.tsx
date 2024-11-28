@@ -1,4 +1,8 @@
-import { useCalendarDispatch } from "./CalendarContext";
+import { useEffect } from "react";
+import {
+  useCalendarDispatch,
+  useCalendarState,
+} from "../../state/CalendarContext";
 import styled from "styled-components";
 import { subMonths, format } from "date-fns";
 import useCalendar from "hooks/useCalendar";
@@ -6,6 +10,7 @@ import Day from "./Day";
 import Prev from "assets/images/prev_icon.png";
 import Next from "assets/images/next_icon.png";
 import CheckIcon from "components/common/Icons/CheckIcon";
+import { getYearMonth } from "utils/timeLine";
 
 const DAY_LIST = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -14,11 +19,19 @@ const MyHistoryCalendar = () => {
   const result = format(calendar.currentDate, "yyyy'년' MM'월'");
   const c = calendar.weekCalendarList;
   const dispatch = useCalendarDispatch();
+  const calendarState = useCalendarState();
 
   const handleDayClick = (day: number) => {
     dispatch({
       type: "SET_SELECTED_DAY",
-      payload: day,
+      date: day,
+    });
+  };
+
+  const handleMonthClick = (yearMonth: string) => {
+    dispatch({
+      type: "SET_YEAR_MONTH",
+      yearMonth: yearMonth,
     });
   };
 
@@ -28,14 +41,20 @@ const MyHistoryCalendar = () => {
         <Icon
           src={Prev}
           onClick={() => {
-            calendar.setCurrentDate(subMonths(calendar.currentDate, +1));
+            const newYearMonth = subMonths(calendar.currentDate, +1);
+            calendar.setCurrentDate(newYearMonth);
+            const yearMonth = getYearMonth(newYearMonth); // 바뀐 후 월별
+            handleMonthClick(yearMonth);
           }}
         />
         <span> {result} </span>
         <Icon
           src={Next}
           onClick={() => {
-            calendar.setCurrentDate(subMonths(calendar.currentDate, -1));
+            const newYearMonth = subMonths(calendar.currentDate, -1);
+            calendar.setCurrentDate(newYearMonth);
+            const yearMonth = getYearMonth(newYearMonth); // 바뀐 후 월별
+            handleMonthClick(yearMonth);
           }}
         />
       </TitleS>
@@ -47,16 +66,25 @@ const MyHistoryCalendar = () => {
         </Week>
         {c.map((item) => (
           <Week>
-            {item.map((day) => (
-              <Day day={day}>
-                <CheckIcon
-                  width="20"
-                  height="20"
-                  color="#FF007A"
-                  onClick={() => handleDayClick(day)}
-                ></CheckIcon>
-              </Day>
-            ))}
+            {item.map((day) => {
+              const record = calendarState.dateRecord.find(
+                (record) => record.date === day
+              );
+              return (
+                <Day day={day}>
+                  {record ? (
+                    <CheckIcon
+                      width="20"
+                      height="20"
+                      color="#FF007A"
+                      onClick={() => handleDayClick(day)}
+                    ></CheckIcon>
+                  ) : (
+                    <div style={{ width: 40, height: 40 }} />
+                  )}
+                </Day>
+              );
+            })}
           </Week>
         ))}
       </ContentS>
@@ -67,6 +95,7 @@ const MyHistoryCalendar = () => {
 const Container = styled.div`
   display: flex;
   width: 100%;
+  height: 100%;
   flex-direction: column;
 `;
 
@@ -80,6 +109,7 @@ const TitleS = styled.div`
 
 const ContentS = styled.div`
   display: flex;
+  height: 100%;
   flex-direction: column;
   font-family: NotoSansMedium;
   color: ${({ theme }) => theme.colors.black02};

@@ -1,13 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import { timeToString } from "utils/timeLine";
 
 interface TimeProps {
-  dayTime: string;
-  weekTime: string;
-  monthTime: string;
+  dayTime: number;
+  weekTime: number;
+  monthTime: number;
 }
 
 const MyHistoryTime: React.FC<TimeProps> = (props: TimeProps) => {
+  const day = timeToString(props.dayTime);
+  const week = timeToString(props.weekTime);
+  const month = timeToString(props.monthTime);
+
   return (
     <Container>
       <TitleS>누적 공부 시간</TitleS>
@@ -17,14 +22,14 @@ const MyHistoryTime: React.FC<TimeProps> = (props: TimeProps) => {
             이번 달<br />
             공부시간(h)
           </Title>
-          <TimeHis>{props.monthTime}</TimeHis>
+          <TimeHis>{month}</TimeHis>
         </TimeCard>
         <TimeCard>
           <Title>
             이번 주<br />
             공부시간(h)
           </Title>
-          <TimeHis>{props.monthTime}</TimeHis>
+          <TimeHis>{week}</TimeHis>
         </TimeCard>
         <TimeCard>
           <Title>
@@ -32,7 +37,7 @@ const MyHistoryTime: React.FC<TimeProps> = (props: TimeProps) => {
             <br />
             공부시간(h)
           </Title>
-          <TimeHis>{props.dayTime}</TimeHis>
+          <TimeHis>{day}</TimeHis>
         </TimeCard>
       </ContentS>
     </Container>

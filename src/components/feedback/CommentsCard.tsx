@@ -17,6 +17,7 @@ const CommentsCard: React.FC<CommentsProps> = ({ advice }) => {
 };
 
 const Description = styled.div`
+  margin-top: 5px;
   line-height: 1.5;
   overflow-wrap: break-word;
   font-size: 1.5rem;
