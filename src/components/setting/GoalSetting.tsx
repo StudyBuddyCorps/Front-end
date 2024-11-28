@@ -12,7 +12,7 @@ const GoalSetting: React.FC = () => {
   const [selectedHour, setSelectedHour] = useState<number>(0);
   const [selectedMinute, setSelectedMinute] = useState<number>(0);
 
-  const hours = Array.from({ length: 24 }, (_, i) => i); 
+  const hours = Array.from({ length: 24 }, (_, i) => i);
   const minutes = Array.from({ length: 6 }, (_, i) => i * 10);
 
   useEffect(() => {
@@ -26,8 +26,8 @@ const GoalSetting: React.FC = () => {
         });
 
         const goal = response.data.goal;
-        const initialHours = Math.floor(goal / 60); 
-        const initialMinutes = goal % 60; 
+        const initialHours = Math.floor(goal / 3660);
+        const initialMinutes = Math.floor((goal % 3600) / 60);
 
         setTotalTime(goal);
         setSelectedHour(initialHours);
@@ -43,7 +43,7 @@ const GoalSetting: React.FC = () => {
   const handleSave = async () => {
     const token = getToken();
 
-    const total = selectedHour * 60 + selectedMinute; // 시간을 분으로 변환 후 합산
+    const total = (selectedHour * 60 + selectedMinute) * 60; // 시간을 초로 변환 후 합산
     setTotalTime(total);
     console.log("총 공부시간:", total);
 
@@ -51,10 +51,10 @@ const GoalSetting: React.FC = () => {
       await axios.put(
         "http://localhost:8080/users/goal",
         { goal: total },
-        { 
-          headers: { 
-            Authorization: `Bearer ${token}` 
-          }, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       alert("목표 공부 시간이 성공적으로 업데이트되었습니다.");
@@ -77,11 +77,19 @@ const GoalSetting: React.FC = () => {
         <Title>하루 총 공부시간</Title>
         <Bottom>
           <Container>
-            <SelectBox optionData={hours} onChange={handleHourChange} defaultValue={selectedHour}/>
+            <SelectBox
+              optionData={hours}
+              onChange={handleHourChange}
+              defaultValue={selectedHour}
+            />
             <span>시간</span>
           </Container>
           <Container>
-            <SelectBox optionData={minutes} defaultValue={selectedMinute} onChange={handleMinuteChange} />
+            <SelectBox
+              optionData={minutes}
+              defaultValue={selectedMinute}
+              onChange={handleMinuteChange}
+            />
             <span>분</span>
           </Container>
         </Bottom>

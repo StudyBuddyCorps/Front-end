@@ -16,18 +16,14 @@ const MemberCalendar = () => {
         </div>
         <div className="right">
           <MyHistoryTime
-            dayTime="00 : 02 : 02"
-            weekTime="00 : 02 : 02"
-            monthTime="15 : 01 : 02"
+            dayTime={60}
+            weekTime={100}
+            monthTime={1000}
           ></MyHistoryTime>
         </div>
       </MainContent>
       <Footer>
-        <Time
-          title="목표 달성률"
-          totalTime="03 : 40 : 01"
-          goalTime="06 : 00 : 00"
-        ></Time>
+        <Time title="목표 달성률" totalTime={20} goalTime={100}></Time>
       </Footer>
     </MainLayout>
   );

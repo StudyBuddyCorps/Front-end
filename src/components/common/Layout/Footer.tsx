@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface FooterProps {
   children: React.ReactNode;
+  width?: string;
 }
 
 const Footer: React.FC<FooterProps> = ({ children }) => {

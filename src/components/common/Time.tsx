@@ -2,24 +2,28 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ProgressBar from "components/home/ProgressBar";
 import Flag from "assets/images/flag.png";
+import { timeToString } from "utils/timeLine";
 
 interface TimeProps {
   title: string;
-  totalTime: string;
-  goalTime: string;
+  totalTime: number;
+  goalTime: number;
 }
 
 const Time: React.FC<TimeProps> = (props: TimeProps) => {
+  const total = timeToString(props.totalTime);
+  const goal = timeToString(props.goalTime);
+  const prog = (props.totalTime / props.goalTime) * 100;
   return (
     <Container>
       <Title>
         <img src={Flag} alt="today's study time" />
         <span>{props.title}</span>
       </Title>
-      <TotalStudyTime>{props.totalTime}</TotalStudyTime>
+      <TotalStudyTime>{total}</TotalStudyTime>
       <Percent>
-        <ProgressBar progress={88} />
-        <GoalStudyTime>{props.goalTime}</GoalStudyTime>
+        <ProgressBar progress={prog} />
+        <GoalStudyTime>{goal}</GoalStudyTime>
       </Percent>
     </Container>
   );

@@ -14,7 +14,7 @@ import Footer from "components/common/Layout/Footer";
 import { handleLogout, checkAccessToken } from "services/authServices";
 import { handleUser } from "services/userServices";
 import { getToken } from "../utils/localStroage";
-import axios from "axios";
+import { useCalendarState } from "state/CalendarContext";
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +24,7 @@ const Home: React.FC = () => {
   );
   const [goal, setGoal] = useState<number>(360);
   const wsRef = useRef<WebSocket | null>(null);
+  const calendar = useCalendarState();
 
   const {
     isConfirmVisible,
@@ -184,11 +185,8 @@ const Home: React.FC = () => {
           <Footer>
             <Time
               title="오늘의 총 공부 시간"
-              totalTime="02 : 30 : 01"
-              goalTime={`${String(Math.floor(goal / 60)).padStart(
-                2,
-                "0"
-              )} : ${String(goal % 60).padStart(2, "0")} : 00`}
+              totalTime={calendar.dailyTime}
+              goalTime={goal}
             ></Time>
           </Footer>
         </>

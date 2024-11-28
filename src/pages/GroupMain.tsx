@@ -21,13 +21,6 @@ interface Group {
   members: Member[];
 }
 
-const formatGoalTime = (milliseconds: number) => {
-  const hours = Math.floor(milliseconds / (1000 * 60 * 60)).toString().padStart(2, '0');
-  const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-  const seconds = Math.floor((milliseconds % (1000 * 60)) / 1000).toString().padStart(2, '0');
-  return `${hours} : ${minutes} : ${seconds}`;
-};
-
 const GroupMain = () => {
   const { groupName } = useParams<{ groupName: string }>();
   const [studygroup, setStudygroup] = useState<Group | null>(null);
@@ -37,10 +30,12 @@ const GroupMain = () => {
 
   const fetchGroupData = async () => {
     try {
-      const groupResponse = await axios.get("http://localhost:8080/groups/mygroup", {
+      const groupResponse = await axios.get(
+        "http://localhost:8080/groups/mygroup",
+        {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -54,17 +49,23 @@ const GroupMain = () => {
 
       setGroupId(group.groupId);
 
-      const groupDetailResponse = await axios.get(`http://localhost:8080/groups/${group.groupId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const groupDetailResponse = await axios.get(
+        `http://localhost:8080/groups/${group.groupId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      const groupMemberResponse = await axios.get(`http://localhost:8080/groups/${group.groupId}/members`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const groupMemberResponse = await axios.get(
+        `http://localhost:8080/groups/${group.groupId}/members`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setStudygroup({
         groupId: groupDetailResponse.data.groupId,
@@ -111,21 +112,30 @@ const GroupMain = () => {
         </Button>
       </Header>
       {isInviteModalOpen && groupId && (
-        <InviteMember groupId={groupId} onClose={handleCloseInvite} onMemberInvite={handleMemberInvite} />
+        <InviteMember
+          groupId={groupId}
+          onClose={handleCloseInvite}
+          onMemberInvite={handleMemberInvite}
+        />
       )}
       <MainContent>
         <div className="left">
           <MyHistoryCalendar />
         </div>
         <div className="right">
-          {groupId && <MemberField groupId={groupId} initialMembers={studygroup.members}/>}
+          {groupId && (
+            <MemberField
+              groupId={groupId}
+              initialMembers={studygroup.members}
+            />
+          )}
         </div>
       </MainContent>
       <Footer>
         <Time
           title="목표 달성률"
-          totalTime="03 : 40 : 01"
-          goalTime={formatGoalTime(studygroup.goalStudyTime)}
+          totalTime={10}
+          goalTime={studygroup.goalStudyTime}
         ></Time>
       </Footer>
     </MainLayout>
