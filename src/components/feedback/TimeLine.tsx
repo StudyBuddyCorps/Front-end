@@ -21,12 +21,14 @@ interface FeedbackBoxProps {
   start: number;
   end: number;
   backgroundColor?: string;
+  totalTime: number;
 }
 
 export const FeedbackBox = styled.div<FeedbackBoxProps>`
   position: absolute;
-  left: ${({ start }) => start}%;
-  width: ${({ end, start }) => end - start}%;
+  left: ${({ start, totalTime }) => (start / totalTime) * 100}%; // 비율로 계산
+  width: ${({ start, end, totalTime }) =>
+    ((end - start) / totalTime) * 100}%; // 비율로 계산
   height: 100%;
   background-color: ${({ backgroundColor }) =>
     backgroundColor || theme.colors.highlight};

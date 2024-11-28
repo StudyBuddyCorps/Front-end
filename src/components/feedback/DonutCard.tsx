@@ -4,14 +4,19 @@ import { PieChart, pieArcLabelClasses } from "@mui/x-charts";
 import { DefaultizedPieValueType } from "@mui/x-charts/models";
 import theme from "styles/theme";
 
-export default function DonutChart() {
+interface DonutProps {
+  sleep: number;
+  phone: number;
+  posture: number;
+}
+
+const DonutChart: React.FC<DonutProps> = ({ sleep, phone, posture }) => {
   const data = [
-    { value: 40, label: "졸림" },
-    { value: 10, label: "자세 불량" },
-    { value: 38, label: "휴대폰" },
-    { value: 12, label: "집중력 저하" },
+    { value: sleep, label: "졸림" },
+    { value: posture, label: "자세 불량" },
+    { value: phone, label: "휴대폰" },
   ];
-  const TOTAL = data.map((item) => item.value).reduce((a, b) => a + b, 0);
+  const TOTAL = sleep + phone + posture;
   const getArcLabel = (params: DefaultizedPieValueType) => {
     const percent = params.value / TOTAL;
     return `${(percent * 100).toFixed(0)}%`;
@@ -36,7 +41,6 @@ export default function DonutChart() {
             theme.colors.feeback01,
             theme.colors.feeback02,
             theme.colors.feeback03,
-            theme.colors.feeback04,
           ]}
           width={500}
           height={500}
@@ -71,9 +75,11 @@ export default function DonutChart() {
       </Container>
     </Card>
   );
-}
+};
 
 const Container = styled.div`
   display: flex;
   padding: 0;
 `;
+
+export default DonutChart;
