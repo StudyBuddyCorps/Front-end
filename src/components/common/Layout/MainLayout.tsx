@@ -13,7 +13,7 @@ const LayoutContainer = styled.div`
   margin: 0 0 50px 100px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
 `;
 
 export default MainLayout;
