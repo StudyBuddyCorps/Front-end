@@ -8,7 +8,7 @@ export const handleFinalResult = async (data: GetStudyFinalRecord) => {
       // 성공적으로 정보를 가져옴
       return {
         ok: true,
-        studyRecord: response,
+        data: response.data,
       };
     }
   } catch (error) {

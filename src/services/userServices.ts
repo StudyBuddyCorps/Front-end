@@ -73,3 +73,41 @@ export const handleUser = async () => {
     };
   }
 };
+
+export const handleUserNickName = async () => {
+  try {
+    const response = await getUser();
+
+    if (response.status === 200) {
+      return {
+        ok: true,
+        data: response.data.nickname,
+      };
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      error:
+        error instanceof Error ? error.message : "An unknown error occurred",
+    };
+  }
+};
+
+export const handleUserPhrase = async () => {
+  try {
+    const response = await getUser();
+
+    if (response.status === 200) {
+      return {
+        ok: true,
+        data: response.data.phrase,
+      };
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      error:
+        error instanceof Error ? error.message : "An unknown error occurred",
+    };
+  }
+};

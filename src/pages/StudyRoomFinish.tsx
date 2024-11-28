@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import TimelineCard from "components/feedback/TimelineCard";
@@ -9,45 +9,50 @@ import StudyResultBar from "components/feedback/StudyResultBar";
 import StudyResultLine from "components/feedback/StudyResultLine";
 import Button from "components/common/Button";
 import { handleFinalResult } from "services/recordServices";
-import { handlePrevRecord } from "services/calendarServices";
-import { Feedback } from "DTO/record/Feedback.dto";
+import {
+  handlePrevRecord,
+  handleUpadteRecord,
+} from "services/calendarServices";
+import { getYearMonth } from "utils/timeLine";
+import { initialRecord, recordReducer } from "state/recordReducer";
+import { handleUserNickName } from "services/userServices";
 
 const StudyRoomFinish = () => {
+  const [name, setName] = useState<string>("");
+  const [record, dispatch] = useReducer(recordReducer, initialRecord);
   const { roomId } = useParams(); // roomId를 URL 파라미터에서 추출
-  const [totalTime, setTotalTime] = useState<number>(0);
-  const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
-  const [feedTime, setFeedTime] = useState<number>(0);
-  const [sleepCount, setSleep] = useState<number>(0);
-  const [phoneCount, setPhone] = useState<number>(0);
-  const [postureCount, setPosture] = useState<number>(0);
-  const [advice, setAdvice] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async (roomId: string) => {
       try {
+        const nameRes = await handleUserNickName();
+        if (nameRes?.ok == false) {
+          throw new Error("회원이 존재하지 않습니다.");
+        }
         const response = await handleFinalResult({ roomId }); // roomId를 사용하여 응답을 받음
         if (response?.ok === false) {
-          return;
+          throw new Error("공부 기록이 존재하지 않습니다.");
         }
-        console.log(response);
+        setName(nameRes?.data);
+        const result = response?.data;
 
-        const totalTimeFromResponse = response?.studyRecord?.data?.totalTime;
-        const feedListFromResponse = response?.studyRecord?.data?.feedList;
-        const feedTimeResponse = response?.studyRecord?.data?.feedTime || [];
-        const sleepResponse = response?.studyRecord?.data?.sleepCount;
-        const phoneResponse = response?.studyRecord?.data?.phoneCount;
-        const postureResponse = response?.studyRecord?.data?.postureCount;
-        const adviceResponse = response?.studyRecord?.data?.advice;
-        setTotalTime(totalTimeFromResponse);
-        setFeedbackList(feedListFromResponse);
-        setFeedTime(feedTimeResponse);
-        setSleep(sleepResponse);
-        setPhone(phoneResponse);
-        setPosture(postureResponse);
-        setAdvice(adviceResponse);
+        dispatch({
+          type: "SET_STUDY_DATA",
+          record: {
+            totalTime: result.totalTime,
+            feedbackList: result.feedList,
+            feedTime: result.feedTime,
+            sleepCount: result.sleepCount,
+            phoneCount: result.phoneCount,
+            postureCount: result.postureCount,
+            advice: result.advice,
+            studyRecordId: result._id,
+            createdAt: result.createdAt,
+          },
+        });
 
         // 존재하는 경우에 대해서 오늘부터 21일 전까지의 날짜를 배열로 계산
-        const today = new Date(response?.studyRecord?.data.createdAt);
+        const today = new Date(result.createdAt);
         const dates = [
           today, // 오늘
           new Date(today.getDate() - 1 * 24 * 60 * 60 * 1000), // 어제
@@ -59,9 +64,7 @@ const StudyRoomFinish = () => {
 
         // 각 날짜에 대해 `handlePrevRecord`를 호출하는 배열을 생성
         const promises = dates.map((date) => {
-          const yearMonth = `${date.getFullYear()}-${(date.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}`;
+          const yearMonth = getYearMonth(date);
           const day = date.getDate();
           return handlePrevRecord(yearMonth, day); // `handlePrevRecord` 호출
         });
@@ -90,9 +93,7 @@ const StudyRoomFinish = () => {
     if (roomId) {
       fetchData(roomId);
     }
-  }, []);
-
-  const name = "배주헝";
+  }, [roomId]);
 
   return (
     <Wrapper>
@@ -105,19 +106,22 @@ const StudyRoomFinish = () => {
       </Header>
       <Container>
         <Item1>
-          <TimelineCard totalTime={totalTime} feedList={feedbackList} />
+          <TimelineCard
+            totalTime={record.totalTime}
+            feedList={record.feedbackList}
+          />
         </Item1>
         <Item2>
-          <ScoreCard totalTime={totalTime} feedTime={feedTime} />
+          <ScoreCard totalTime={record.totalTime} feedTime={record.feedTime} />
         </Item2>
         <Item3>
-          <CommentsCard advice={advice} />
+          <CommentsCard advice={record.advice} />
         </Item3>
         <Item4>
           <DonutChart
-            sleep={sleepCount}
-            phone={phoneCount}
-            posture={postureCount}
+            sleep={record.sleepCount}
+            phone={record.phoneCount}
+            posture={record.postureCount}
           />
         </Item4>
         <Item5>
@@ -128,7 +132,16 @@ const StudyRoomFinish = () => {
         </Item6>
       </Container>
       <ButtonWrapper>
-        <Button width="5rem" onClick={() => (window.location.href = "/home")}>
+        <Button
+          width="5rem"
+          onClick={() => {
+            const today = new Date(record.createdAt!);
+            const yearMonth = getYearMonth(today);
+            const date = today.getDate();
+            handleUpadteRecord(yearMonth, date, record.studyRecordId);
+            window.location.href = "/home";
+          }}
+        >
           홈으로
         </Button>
       </ButtonWrapper>
