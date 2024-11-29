@@ -17,3 +17,12 @@ export interface DateRecord {
   phoneCount: number;
   postureCount: number;
 }
+
+export interface PrevRecord {
+  date: Date;
+  totalTime: number;
+  feedTime: number;
+  sleepCount: number;
+  phoneCount: number;
+  postureCount: number;
+}

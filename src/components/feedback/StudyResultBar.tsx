@@ -1,48 +1,45 @@
 import styled from "styled-components";
 import { Card, CardHeader, CardTitle } from "components/common/Card";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { BarChart } from "@mui/x-charts";
+import { PrevRecord } from "DTO/calendar/DateRecord.dto";
 
-export default function StudyResultBar() {
-  const data = [
-    { date: "21일전", current: 80, total: 60 },
-    { date: "14일전", current: 40, total: 20 },
-    { date: "7일전", current: 70, total: 50 },
-    { date: "3일전", current: 90, total: 70 },
-    { date: "어제", current: 60, total: 40 },
-    { date: "오늘", current: 30, total: 0 },
-  ];
-
+const StudyResultBar: React.FC<{ prevResult: PrevRecord[] }> = ({
+  prevResult,
+}) => {
+  if (prevResult.length === 0) {
+    return <div>No data available</div>; // prevResult가 비어 있을 때 처리
+  }
   const chartData = [
     {
       category: "21일전",
-      value: data[0].total,
-      value2: data[0].current,
+      value: prevResult[0].totalTime,
+      value2: prevResult[0].feedTime,
     },
     {
       category: "14일전",
-      value: data[1].total,
-      value2: data[1].current,
+      value: prevResult[1].totalTime,
+      value2: prevResult[1].feedTime,
     },
     {
       category: "7일전",
-      value: data[2].total,
-      value2: data[2].current,
+      value: prevResult[2].totalTime,
+      value2: prevResult[2].feedTime,
     },
     {
       category: "3일전",
-      value: data[3].total,
-      value2: data[3].current,
+      value: prevResult[3].totalTime,
+      value2: prevResult[3].feedTime,
     },
     {
       category: "어제",
-      value: data[4].total,
-      value2: data[4].current,
+      value: prevResult[4].totalTime,
+      value2: prevResult[4].feedTime,
     },
     {
       category: "오늘",
-      value: data[5].total,
-      value2: data[5].current,
+      value: prevResult[5].totalTime,
+      value2: prevResult[5].feedTime,
     },
   ];
 
@@ -53,11 +50,11 @@ export default function StudyResultBar() {
         <Legend>
           <LegendItem>
             <LegendCircle sx={{ bgcolor: "dodgerblue" }} />
-            하루 총 공부 시간
+            하루 총 공부 시간(sec)
           </LegendItem>
           <LegendItem>
             <LegendCircle sx={{ bgcolor: "darkviolet" }} />
-            현재 시간까지 공부 시간
+            하루 총 피드백 받은 시간(sec)
           </LegendItem>
         </Legend>
       </CardHeader>
@@ -81,7 +78,7 @@ export default function StudyResultBar() {
       </ChartContainer>
     </Card>
   );
-}
+};
 
 const ChartContainer = styled.div`
   display: flex;
@@ -113,3 +110,5 @@ const LegendCircle = styled(Box)`
   height: 10px;
   border-radius: 50%;
 `;
+
+export default StudyResultBar;

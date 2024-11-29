@@ -16,11 +16,13 @@ import {
 import { getYearMonth } from "utils/timeLine";
 import { initialRecord, recordReducer } from "state/recordReducer";
 import { handleUserNickName } from "services/userServices";
+import { PrevRecord } from "DTO/calendar/DateRecord.dto";
 
 const StudyRoomFinish = () => {
   const [name, setName] = useState<string>("");
   const [record, dispatch] = useReducer(recordReducer, initialRecord);
   const { roomId } = useParams(); // roomId를 URL 파라미터에서 추출
+  const [prevResult, setPrevResult] = useState<PrevRecord[]>([]);
 
   useEffect(() => {
     const fetchData = async (roomId: string) => {
@@ -54,12 +56,12 @@ const StudyRoomFinish = () => {
         // 존재하는 경우에 대해서 오늘부터 21일 전까지의 날짜를 배열로 계산
         const today = new Date(result.createdAt);
         const dates = [
-          today, // 오늘
-          new Date(today.getDate() - 1 * 24 * 60 * 60 * 1000), // 어제
-          new Date(today.getDate() - 3 * 24 * 60 * 60 * 1000), // 3일 전
-          new Date(today.getDate() - 7 * 24 * 60 * 60 * 1000), // 7일 전
-          new Date(today.getDate() - 14 * 24 * 60 * 60 * 1000), // 14일 전
-          new Date(today.getDate() - 21 * 24 * 60 * 60 * 1000), // 21일 전
+          today,
+          new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000), // 어제
+          new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000), // 3일 전
+          new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000), // 7일 전
+          new Date(today.getTime() - 14 * 24 * 60 * 60 * 1000), // 14일 전
+          new Date(today.getTime() - 21 * 24 * 60 * 60 * 1000), // 21일 전
         ];
 
         // 각 날짜에 대해 `handlePrevRecord`를 호출하는 배열을 생성
@@ -69,21 +71,50 @@ const StudyRoomFinish = () => {
           return handlePrevRecord(yearMonth, day); // `handlePrevRecord` 호출
         });
 
-        // 여러 개의 `handlePrevRecord` 호출을 동시에 처리하고 개별 결과를 반환
+        // 개별 결과 반환
         const responses = await Promise.allSettled(promises);
 
         responses.forEach((result, index) => {
           if (result.status === "fulfilled") {
-            console.log(
-              `Success for date ${dates[index].toDateString()}:`,
-              result.value
-            );
+            const newRecord = {
+              date: dates[index],
+              totalTime: result.value?.ok ? result.value.data.total_time : 0,
+              feedTime: result.value?.ok ? result.value.data.feed_time : 0,
+              sleepCount: result.value?.ok ? result.value.data.sleep_count : 0,
+              phoneCount: result.value?.ok ? result.value.data.phone_count : 0,
+              postureCount: result.value?.ok
+                ? result.value.data.posture_count
+                : 0,
+            };
+
+            // 상태를 직접 수정하는 것이 아니라 새로운 배열을 만들어서 업데이트
+            setPrevResult((prev) => [...prev, newRecord]);
           } else {
+            // Promise에서 실패 웅덥
             console.error(
               `Failed for date ${dates[index].toDateString()}:`,
               result.reason
             );
           }
+        });
+
+        setPrevResult((prev) =>
+          [...prev].sort((a, b) => a.date.getTime() - b.date.getTime())
+        ); // 이전 날짜 순으로 정렬
+
+        // 오늘 자의 공부 데이터 추가
+        setPrevResult((prev) => {
+          const updatedPrevResult = [...prev]; // prev 배열 복사
+          updatedPrevResult[5] = {
+            ...updatedPrevResult[5], // 기존 데이터를 유지하고 업데이트
+            totalTime: updatedPrevResult[5].totalTime + result.totalTime,
+            feedTime: updatedPrevResult[5].feedTime + result.feedTime,
+            sleepCount: updatedPrevResult[5].sleepCount + result.sleepCount,
+            phoneCount: updatedPrevResult[5].phoneCount + result.phoneCount,
+            postureCount:
+              updatedPrevResult[5].postureCount + result.postureCount,
+          };
+          return updatedPrevResult; // 새로운 상태 반환
         });
       } catch (error) {
         console.error("Error during fetchData:", error);
@@ -125,10 +156,10 @@ const StudyRoomFinish = () => {
           />
         </Item4>
         <Item5>
-          <StudyResultBar />
+          <StudyResultBar prevResult={prevResult} />
         </Item5>
         <Item6>
-          <StudyResultLine />
+          <StudyResultLine prevResult={prevResult} />
         </Item6>
       </Container>
       <ButtonWrapper>
