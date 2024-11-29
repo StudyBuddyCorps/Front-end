@@ -1,4 +1,3 @@
-![Stylized laptop side mockup](https://github.com/user-attachments/assets/b64e834b-dae0-43f0-9c2e-b42139c6b804)
 # 🐣StudyBuddy Frontend🐣
 Vision을 활용한 실시간 학습 관리 웹어플리케이션, StudyBuddy의 프론트엔드입니다!
 
