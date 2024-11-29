@@ -10,16 +10,26 @@ import Chat from "components/studyRoom/Chat";
 import PausePomodoro from "components/studyRoom/PausePomodoro";
 import ChatImg from "../assets/images/chat.png"
 import Pause from "components/studyRoom/Pause";
+import Angry from "assets/videos/Angry.mp4";
+import Blink from "assets/videos/Blink.mp4";
+import BlinkFast from "assets/videos/BlinkFast.mp4";
+import Hello from "assets/videos/Hello.mp4";
+import Scratch from "assets/videos/Scratch.mp4";
+import ShakeHead from "assets/videos/ShakeHead.mp4";
+import Stare from "assets/videos/Stare.mp4";
+import Sleep1 from "assets/audio/v1_sleep1.mp3";
+import Sleep2 from "assets/audio/v1_sleep2.mp3";
+import Posture from "assets/audio/v1_posture1.mp3";
+import Phone1 from "assets/audio/v1_phone1.mp3";
+import Phone2 from "assets/audio/v1_phone2.mp3";
+import Compliment from "assets/audio/v1_complimet.mp3";
 
 const StudyRoomPomodoro = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const [userId, setUserId] = useState<string | null>(null);
   const token = getToken();
   const [showChat, setShowChat] = useState(false);
-  const [videoSource, setVideoSource] = useState<string>("안녕.mp4");
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
-  const [feedbackTime, setFeedbackTime] = useState<number | null>(0);
   const [ time, setTime ] = useState(25 * 60);
   const [ totalStudyTime, setTotalStudyTime ] = useState(0);
   const [pomodoroCount, setPomodoroCount] = useState(1);
@@ -32,6 +42,70 @@ const StudyRoomPomodoro = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [remainingTime, setRemainingTime] = useState(15 * 60);
   const whiteNoiseRef = useRef<HTMLAudioElement>(document.createElement("audio"));
+  const canvasRef = useRef<HTMLCanvasElement | null>(document.createElement('canvas'));
+
+  const [currentVideo, setCurrentVideo] = useState(Hello);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [feedbackTime, setFeedbackTime] = useState<number | null>(0);
+  const notiVoiceRef = useRef<HTMLAudioElement>(null);
+
+  const negativeVideos = [ShakeHead, Stare, Angry];
+  const neutralVideos = [Blink, BlinkFast, Scratch];
+
+  const postureMessages = ["자세가 바르지 않아요!", "허리를 펴세요!"];
+  const phoneMessages = ["핸드폰 금지!!", "핸드폰을 멀리 두세요!"];
+  const sleepMessages = ["자면 안돼!!", "일어나!"];
+
+  const audioFiles = {
+    is_sleeping: [Sleep1, Sleep2],
+    bad_posture: [Posture],
+    is_holding_phone: [Phone1, Phone2],
+    praise: [Compliment],
+  };
+
+  const playAudio = (file: string) => {
+    if (notiVoiceRef.current) {
+      notiVoiceRef.current.src = file;
+      notiVoiceRef.current.play().catch((error) => {
+        console.error("Failed to play noti voice:", error);
+      });
+    }
+  };
+
+  const handleFeedback = (result: any) => {
+    let audioToPlay: string | null = null;
+
+    if (result.is_holding_phone || result.bad_posture || result.is_sleeping) {
+      setCurrentVideo(negativeVideos[Math.floor(Math.random() * negativeVideos.length)]);
+    } else {
+      setCurrentVideo(neutralVideos[Math.floor(Math.random() * neutralVideos.length)]);
+    }
+
+    if (result.is_holding_phone) {
+      setFeedbackMessage(phoneMessages[Math.floor(Math.random() * phoneMessages.length)]);
+      audioToPlay = audioFiles.is_holding_phone[Math.floor(Math.random() * audioFiles.is_holding_phone.length)];
+    } else if (result.bad_posture) {
+      setFeedbackMessage(postureMessages[Math.floor(Math.random() * postureMessages.length)]);
+      audioToPlay = audioFiles.bad_posture[0];
+    } else if (result.is_sleeping) {
+      setFeedbackMessage(sleepMessages[Math.floor(Math.random() * sleepMessages.length)]);
+      audioToPlay = audioFiles.is_sleeping[Math.floor(Math.random() * audioFiles.is_sleeping.length)];
+    } else {
+      setFeedbackMessage(null);
+    }
+
+    setFeedbackTime(new Date().getTime());
+
+    if (audioToPlay) {
+      playAudio(audioToPlay);
+    }
+  };
+
+  // time 값을 최신으로 유지하기 위한 Ref
+  const timeRef = useRef(time);
+  useEffect(() => {
+    timeRef.current = time;
+  }, [time]);
 
   // 토큰 갱신
   const refreshAccessToken = async (): Promise<string | null> => {
@@ -215,6 +289,87 @@ const StudyRoomPomodoro = () => {
     }
   };
 
+  // 피드백 api
+  useEffect(() => {
+    const captureImage = () => {
+      if (canvasRef.current && videoRef.current) {
+        const canvas = canvasRef.current;
+        const video = videoRef.current;
+        const context = canvas.getContext("2d");
+        if (context) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          return canvas.toDataURL("image/jpeg");
+        }
+      }
+      return null;
+    };
+
+    const sendImageToServer = async () => {
+      const image = captureImage();
+      const currentTime = timeRef.current;
+      if (image) {
+        try {
+          const byteString = atob(image.split(',')[1]);
+          const mimeString = image.split(',')[0].split(':')[1].split(';')[0];
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const blob = new Blob([ab], { type: mimeString });
+          const formData = new FormData();
+          formData.append("file", blob, "capture.jpg");
+          formData.append("verify", "false");
+          const response = await fetch('http://3.107.8.184:5000/upload_image', {
+            method: "POST",
+            body: formData,
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            handleFeedback(result);
+            
+
+            // 피드백 저장 요청
+            const feedbackType = [];
+            if (result.is_holding_phone) feedbackType.push("is_holding_phone");
+            if (result.bad_posture) feedbackType.push("bad_posture");
+            if (result.is_sleeping) feedbackType.push("is_sleeping");
+
+            if (feedbackType.length > 0) {
+              const feedbackResponse = await fetch(`http://localhost:8080/studyroom/${roomId}/feedback`, {
+                method: "PATCH",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ feedbackType, time: currentTime }),
+              });
+  
+              if (!feedbackResponse.ok) {
+                console.error("Failed to save feedback to the server.");
+              }
+            }
+          } else {
+            console.error("Failed to send image to server:", response.status);
+          }
+        } catch (error) {
+          console.error("Error sending image to server:", error);
+        }
+      }
+    };
+
+    if (!paused) {
+      const intervalId = setInterval(() => {
+        sendImageToServer();
+      }, 10000);
+  
+      return () => clearInterval(intervalId);
+    }
+  }, [paused]);
+
   // 백색소음
   const handleWhiteNoise = () => {
     setWhiteNoise(!whiteNoise);
@@ -257,7 +412,7 @@ const StudyRoomPomodoro = () => {
         <VideoContainer>
           <BuddyContainer>
             <BuddyVideo
-              src = {`assets/videos/${videoSource}`}
+              src = {currentVideo}
               autoPlay
               loop
               muted
@@ -327,7 +482,7 @@ const VideoContainer = styled.div`
 const BuddyContainer = styled.div`
   position: relative;
   width: 49%;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: #a9a9a9;
   border: none;
   border-radius: 5px;
   overflow: hidden;
@@ -338,7 +493,6 @@ const BuddyVideo = styled.video`
   bottom: 0;
   left: 50%;
   transform: translate(-50%);
-  width: 40vw;
   width: 78%;
 `;
 
