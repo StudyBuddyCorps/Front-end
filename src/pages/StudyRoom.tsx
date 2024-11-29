@@ -434,7 +434,6 @@ const BuddyVideo = styled.video`
   left: 50%;
   transform: translate(-50%);
   width: 78%;
-  bottom: 0;
 `;
 
 const StyledVideoPlayer = styled.div`
