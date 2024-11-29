@@ -19,7 +19,10 @@ interface MemberFieldProps {
   initialMembers: Member[];
 }
 
-const MemberField: React.FC<MemberFieldProps> = ({ groupId, initialMembers }) => {
+const MemberField: React.FC<MemberFieldProps> = ({
+  groupId,
+  initialMembers,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [members, setMembers] = useState<Member[]>(initialMembers);
   const token = getToken();
@@ -32,11 +35,12 @@ const MemberField: React.FC<MemberFieldProps> = ({ groupId, initialMembers }) =>
       }
       try {
         const response = await axios.get(
-          `http://localhost:8080/groups/${groupId}/members/search`, {
+          `http://localhost:8080/groups/${groupId}/members/search`,
+          {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-            params: { searchTerm }
+            params: { searchTerm },
           }
         );
         setMembers(response.data);
@@ -45,7 +49,7 @@ const MemberField: React.FC<MemberFieldProps> = ({ groupId, initialMembers }) =>
       }
     };
 
-    if (groupId) { 
+    if (groupId) {
       fetchFilteredMembers();
     }
   }, [groupId, searchTerm, initialMembers]);
@@ -55,7 +59,10 @@ const MemberField: React.FC<MemberFieldProps> = ({ groupId, initialMembers }) =>
       <TitleS>
         <LeftS>멤버</LeftS>
         <RightS>
-          <SearchField placeHolder="Search Member Name" onSearch={(value) => setSearchTerm(value)} />
+          <SearchField
+            placeHolder="Search Member Name"
+            onSearch={(value) => setSearchTerm(value)}
+          />
         </RightS>
       </TitleS>
       <ContentS>
@@ -64,7 +71,7 @@ const MemberField: React.FC<MemberFieldProps> = ({ groupId, initialMembers }) =>
             <MemberProfile
               key={index}
               name={member.nickname}
-              imgUrl={Ava}
+              imgUrl={member.imgUrl === "" ? Ava : member.imgUrl}
               role={member.role}
             />
           ))}

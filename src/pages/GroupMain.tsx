@@ -118,19 +118,20 @@ const GroupMain = () => {
           onMemberInvite={handleMemberInvite}
         />
       )}
-      <MainContent>
-        <div className="left">
+      <ContentContainer>
+        <Left>
           <MyHistoryCalendar />
-        </div>
-        <div className="right">
+        </Left>
+
+        <Right>
           {groupId && (
             <MemberField
               groupId={groupId}
               initialMembers={studygroup.members}
             />
           )}
-        </div>
-      </MainContent>
+        </Right>
+      </ContentContainer>
       <Footer>
         <Time
           title="목표 달성률"
@@ -141,6 +142,24 @@ const GroupMain = () => {
     </MainLayout>
   );
 };
+
+const ContentContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-left: 5%;
+  padding-right: 5%;
+  transition: all 0.3s ease;
+`;
+
+const Left = styled.div`
+  width: 60%; /* 기본 넓이 */
+  transition: width 0.3s ease;
+`;
+
+const Right = styled.div`
+  width: 35%; /* 기본 넓이 */
+  transition: width 0.3s ease;
+`;
 
 const MainContent = styled.div`
   display: flex;
