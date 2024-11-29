@@ -2,43 +2,25 @@
 # 🐣StudyBuddy Frontend🐣
 Vision을 활용한 실시간 학습 관리 웹어플리케이션, StudyBuddy의 프론트엔드입니다!
 
+---      
+
 <br>
-
-## 🔎 Service Introduction
-StudyBuddy는 가상의 캐릭터 `노티`가 학습 자세를 관찰하고 피드백을 제공하며, 학습 결과를 시각화하여 목표 달성을 돕는 학습 플랫폼입니다.
-이제, 혼자 공부하지 말고, StudyBuddy와 함께하세요!
-### 🎥 Demonstration video
-[![StudyBuddy 소개 영상](https://github.com/user-attachments/assets/8a6c9c70-004c-4e74-9f5e-1d58c37a0141)
-](https://youtu.be/QcWG6GFLRQc)
-
-<br><br>
-
-## 😁 Frontend Developers
-<table>
-  <tbody>
-    <tr>
-      <td align="center"><img src="https://github.com/user-attachments/assets/558fe1f1-15de-436b-971c-a0d8d44ee371"width="100px;" alt="한지수"/></td>
-      <td align="center"><img src="https://github.com/user-attachments/assets/57b38a95-4dbf-4a95-89b5-8dea210157ac" width="100px;" alt="전의정"/></td>
-    <tr/>
-    <tr>
-        <td align="center">한지수</td><td align="center">전의정</td>
-    </tr>
-    <tr>
-        <td align="center"><a href="https://github.com/Jisu0528">Jisu0528</a></td>
-        <td align="center"><a href="https://github.com/juijeong8324">juijeong8324</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<br><br>
 
 ## 🛠️ Technology Stack
 ![기술스택_프론트](https://github.com/user-attachments/assets/fa2aaf97-e967-42ab-857d-867e5850a531)
 
-<br><br>
+<br>
+<br>
 
-## 📌 Pages and Their Features
-### 로그인 회원가입
+## 📌 Features
+### StudyRoom 
+
+### Calender
+
+### Finish Page
+
+### 
+### Login, SignUp
 - 이메일과 비밀번호를 입력하여 로그인이 가능합니다.
 - SNS(카카오톡, 구글) 로그인, 회원가입 기능을 제공하여 간편하게 서비스를 이용할 수 있습니다.
 - 회원가입 시 이메일과 비밀번호에 대한 유효성 검사가 진행되며 통과해야 가입이 가능합니다.
@@ -54,7 +36,7 @@ StudyBuddy는 가상의 캐릭터 `노티`가 학습 자세를 관찰하고 피�
   </tbody>
 </table>
 
-### 환경설정
+### Setting
 - 설정 페이지에서는 닉네임, 명언, 스터디메이트, 목표 시간을 설정할 수 있습니다.
 - 닉네임을 입력하고 중복 검사를 통과하면 변경이 가능하고, 통과하지 못하면 경고창을 띄우며 변경이 불가능하게 됩니다.
 - 명언은 랜덤 또는 직접 설정이 가능합니다.
@@ -70,9 +52,8 @@ StudyBuddy는 가상의 캐릭터 `노티`가 학습 자세를 관찰하고 피�
   </tbody>
 </table>
 
-| 프로젝트 완성 시 아래에 추가
-
-<br><br>
+<br>
+<br>
 
 ## 📂 Folder Archtecture
 <details>
@@ -148,3 +129,25 @@ StudyBuddy는 가상의 캐릭터 `노티`가 학습 자세를 관찰하고 피�
  ├─ 📜package.json
  ├─ 📜README.md
  └─ 📜tsconfig.json
+```
+
+<br>
+<br>
+
+
+## 😁 Contributors 
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><img src="https://github.com/user-attachments/assets/558fe1f1-15de-436b-971c-a0d8d44ee371"width="100px;" alt="한지수"/></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/57b38a95-4dbf-4a95-89b5-8dea210157ac" width="100px;" alt="전의정"/></td>
+    <tr/>
+    <tr>
+        <td align="center">한지수</td><td align="center">전의정</td>
+    </tr>
+    <tr>
+        <td align="center"><a href="https://github.com/Jisu0528">Jisu0528</a></td>
+        <td align="center"><a href="https://github.com/juijeong8324">juijeong8324</a></td>
+    </tr>
+  </tbody>
+</table>
