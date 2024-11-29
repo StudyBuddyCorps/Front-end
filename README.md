@@ -15,11 +15,12 @@ Vision을 활용한 실시간 학습 관리 웹어플리케이션, StudyBuddy의
 ## 📌 Features
 ### StudyRoom 
 
+### Finish
+
 ### Calender
 
-### Finish Page
+### Finish Group
 
-### 
 ### Login, SignUp
 - 이메일과 비밀번호를 입력하여 로그인이 가능합니다.
 - SNS(카카오톡, 구글) 로그인, 회원가입 기능을 제공하여 간편하게 서비스를 이용할 수 있습니다.
