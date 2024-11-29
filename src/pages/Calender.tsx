@@ -46,6 +46,7 @@ const Calendar = () => {
           });
         }
         const responseCalendar = await handleGetCalendar(calendar.yearMonth!);
+        console.log(responseCalendar);
         if (!responseCalendar?.ok) {
           console.log(calendar.yearMonth, " calendar is not existing");
           dispatch({ type: "SET_CALENDAR_INIT" });

@@ -16,6 +16,7 @@ const initialState: DateRecord = {
   sleepCount: 0,
   phoneCount: 0,
   postureCount: 0,
+  totalAdvice: "",
 };
 
 const CalendarSidebar = () => {
@@ -34,6 +35,8 @@ const CalendarSidebar = () => {
           (record) => record.date === calendarState.selectedDay
         );
 
+        console.log(record);
+
         if (!record) {
           console.log("record is not existing");
           return;
@@ -47,6 +50,7 @@ const CalendarSidebar = () => {
             sleepCount: record?.sleepCount,
             phoneCount: record?.phoneCount,
             postureCount: record?.postureCount,
+            totalAdvice: record?.totalAdvice,
           };
         });
       } catch (error) {
@@ -83,7 +87,7 @@ const CalendarSidebar = () => {
           phone={dateRecord.phoneCount}
           posture={dateRecord.postureCount}
         ></DonutChart>
-        <CommentsCard advice="asdfjasdkfj;adkfj;aldkfj;adkfj;adkfj;adkfjafj;akdfj;adkfj;adkfjafj;adkfj;afdkj;afdkj;adkfj;asdkfj;afdkjd"></CommentsCard>
+        <CommentsCard advice={dateRecord.totalAdvice}></CommentsCard>
       </Content>
     </SidebarContainer>
   );

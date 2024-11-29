@@ -16,6 +16,7 @@ export interface DateRecord {
   sleepCount: number;
   phoneCount: number;
   postureCount: number;
+  totalAdvice: string;
 }
 
 export interface PrevRecord {
