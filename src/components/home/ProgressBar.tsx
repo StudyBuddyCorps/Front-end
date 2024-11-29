@@ -22,7 +22,9 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
   return (
     <Wrapper>
       <ProgressIndicator width={`${width}%`}>
-        <ProgressLabel showLabel={showLabel}>{progress}%</ProgressLabel>
+        <ProgressLabel showLabel={showLabel}>
+          {progress.toFixed(1)}%
+        </ProgressLabel>
       </ProgressIndicator>
     </Wrapper>
   );

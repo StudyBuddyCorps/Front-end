@@ -15,6 +15,8 @@ import { handleLogout, checkAccessToken } from "services/authServices";
 import { handleUser } from "services/userServices";
 import { getToken } from "../utils/localStroage";
 import { useCalendarState } from "state/CalendarContext";
+import { handleTodayTime } from "services/calendarServices";
+import { getYearMonth } from "utils/timeLine";
 
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -23,6 +25,7 @@ const Home: React.FC = () => {
     "운을 믿지 말고 요행을 기대 말고 나의 철저한 준비와 노력만을 믿어라"
   );
   const [goal, setGoal] = useState<number>(360);
+  const [time, setTime] = useState<number>(0);
   const wsRef = useRef<WebSocket | null>(null);
   const calendar = useCalendarState();
 
@@ -68,8 +71,21 @@ const Home: React.FC = () => {
         console.error("An error occurred during login:", error);
       }
     };
+    const fetchTIme = async () => {
+      try {
+        const yearMonth = getYearMonth(new Date());
+        const response = await handleTodayTime(yearMonth);
+        if (response?.ok) {
+          // true인 경우
+          setTime(response.data);
+        }
+      } catch (error) {
+        console.error("An error occurred during login:", error);
+      }
+    };
 
     fetchUserData();
+    fetchTIme();
   }, []);
 
   const handleButtonClick = async () => {
@@ -185,7 +201,7 @@ const Home: React.FC = () => {
           <Footer>
             <Time
               title="오늘의 총 공부 시간"
-              totalTime={calendar.dailyTime}
+              totalTime={time}
               goalTime={goal}
             ></Time>
           </Footer>
