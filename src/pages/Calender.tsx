@@ -6,17 +6,14 @@ import Time from "components/common/Time";
 import MyHistoryCalendar from "components/calendar/MyHistoryCalendar";
 import MyHistoryTime from "components/calendar/MyHistroyTime";
 import Footer from "components/common/Layout/Footer";
-import { useCalendarDispatch, useCalendarState } from "state/CalendarContext";
+import { useCalendarState } from "state/CalendarContext";
 import CalendarSidebar from "components/calendar/CalendarSidebar";
 import { handleUser } from "services/userServices";
-import { handleGetCalendar } from "services/calendarServices";
-import { getYearMonth } from "utils/timeLine";
 
 const Calendar = () => {
   const [phrase, setPhrase] = useState<string>("");
   const [goal, setGoal] = useState<number>(0);
   const calendar = useCalendarState();
-  const dispatch = useCalendarDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,43 +31,6 @@ const Calendar = () => {
 
     fetchData();
   }, []); // 초기 유저 setting
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (calendar.yearMonth === "") {
-          const today = getYearMonth(new Date());
-          dispatch({
-            type: "SET_YEAR_MONTH",
-            yearMonth: today,
-          });
-        }
-        const responseCalendar = await handleGetCalendar(calendar.yearMonth!);
-        console.log(responseCalendar);
-        if (!responseCalendar?.ok) {
-          console.log(calendar.yearMonth, " calendar is not existing");
-          dispatch({ type: "SET_CALENDAR_INIT" });
-          return;
-        }
-        const result = responseCalendar.data.data;
-        dispatch({
-          type: "SET_CALENDAR",
-          data: {
-            dateRecord: result.dateRecord,
-            monthlyTime: result.monthlyTime,
-            weeklyTime: result.weeklyTime,
-            dailyTime: result.dailyTime,
-            selectedDay: 0,
-            isSidebarVisible: false,
-          },
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
-  }, [calendar.yearMonth]); // 달력 Setting
 
   return (
     <MainLayout>

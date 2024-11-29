@@ -1,14 +1,19 @@
 import { DateRecord } from "DTO/calendar/DateRecord.dto";
-import React, { createContext, useReducer, useContext, ReactNode } from "react";
+import React, {
+  useEffect,
+  createContext,
+  useReducer,
+  useContext,
+  ReactNode,
+} from "react";
+import {
+  handleGetCalendar,
+  handlePostCalendar,
+} from "services/calendarServices";
+import { getYearMonth } from "utils/timeLine";
 
-// 상태의 타입 정의
-// type StateType = {
-//   yearMonth: string;
-//   selectedDay: number | 0;
-//   isSidebarVisible: boolean;
-// };
 type StateType = {
-  yearMonth?: string;
+  yearMonth?: string | null;
   dateRecord: DateRecord[];
   monthlyTime: number;
   weeklyTime: number;
@@ -25,14 +30,8 @@ type ActionType =
   | { type: "SET_SELECTED_DAY"; date: number }
   | { type: "CLOSE_SIDEBAR" };
 
-// 초기 상태
-// const initialState: StateType = {
-//   yearMonth: "",
-//   selectedDay: 0,
-//   isSidebarVisible: false,
-// };
 const initialState: StateType = {
-  yearMonth: "",
+  yearMonth: null,
   dateRecord: [],
   monthlyTime: 0,
   weeklyTime: 0,
@@ -48,6 +47,46 @@ const CalendarDispatchContext = createContext<React.Dispatch<ActionType>>(
 
 const CalendarProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(calendarReducer, initialState);
+
+  useEffect(() => {
+    // 달력 초기화
+    if (!state.yearMonth) {
+      const yearMonth = getYearMonth(new Date());
+      dispatch({
+        type: "SET_YEAR_MONTH",
+        yearMonth: yearMonth,
+      });
+
+      handleGetCalendar(yearMonth)
+        .then((response) => {
+          if (response?.ok) {
+            const result = response.data.data;
+            dispatch({
+              type: "SET_CALENDAR",
+              data: {
+                dateRecord: result.dateRecord,
+                monthlyTime: result.monthlyTime,
+                weeklyTime: result.weeklyTime,
+                dailyTime: result.dailyTime,
+                selectedDay: 0,
+                isSidebarVisible: false,
+              },
+            });
+          } else {
+            // 없다면
+            return handlePostCalendar();
+          }
+        })
+        .then((newCalendarResponse) => {
+          if (newCalendarResponse?.ok) {
+            dispatch({
+              type: "SET_CALENDAR_INIT",
+            });
+          }
+        })
+        .catch((error) => {});
+    }
+  }, [state.yearMonth]); // 달력이 없을 때만 호출
 
   return (
     <CalendarContext.Provider value={state}>

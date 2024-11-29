@@ -1,9 +1,32 @@
 import {
+  createCalendar,
   getCalendar,
   getDateRecord,
   getTodayTime,
   updateStudyRecord,
 } from "api/calendar";
+
+export const handlePostCalendar = async () => {
+  // 초기값만 설정
+  try {
+    const response = await createCalendar();
+    if (response.status == 200) {
+      if (response.data.success) {
+        // 달력 생성 성공
+        return {
+          ok: true,
+        };
+      } else {
+        // 달력 생성 실패
+        return {
+          ok: false,
+        };
+      }
+    }
+  } catch (error) {
+    return { ok: false, error: error as string };
+  }
+};
 
 export const handleGetCalendar = async (yearMonth: string) => {
   try {
