@@ -22,3 +22,20 @@ export const removeToken = (): void => {
     console.error("Unable to remove access token:", error);
   }
 };
+
+export const getRefreshToken = (): string | null => {
+  try {
+    return localStorage.getItem("refreshToken");
+  } catch (error) {
+    console.error("Unable to get refresh token:", error);
+    return null;
+  }
+};
+
+export const saveRefreshToken = (token: string): void => {
+  try {
+    localStorage.setItem("refreshToken", token);
+  } catch (error) {
+    console.error("Unable to save refresh token:", error);
+  }
+};

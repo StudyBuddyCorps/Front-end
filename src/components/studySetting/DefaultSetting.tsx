@@ -170,7 +170,11 @@ const DefaultSetting: React.FC<DefaultSettingProps> = ({ setSelectedTab, setShow
 
       setTimeout(() => {
         setShowGuideline(false);
-        navigate(`/studyroom/${roomId}`);
+        if (roomType === "normal") {
+          navigate(`/studyroom/${roomId}`);
+        } else if (roomType === "pomodoro") {
+          navigate(`/studyroom/pomodoro/${roomId}`);
+        }
       }, 5000);
     } catch (error) {
       console.error("Error creating study room: ", error);
