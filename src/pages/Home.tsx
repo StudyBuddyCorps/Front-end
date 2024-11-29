@@ -122,6 +122,9 @@ const Home: React.FC = () => {
         return;
       }
 
+      const roomType = data.room?.roomType || "normal";
+      console.log(roomType);
+
       // WebSocket 연결
       wsRef.current = new WebSocket("ws://localhost:8080");
       wsRef.current.onopen = () => {
@@ -147,7 +150,11 @@ const Home: React.FC = () => {
       // 5초 후 스터디룸으로 이동
       setTimeout(() => {
         setShowGuideline(false);
-        navigate(`/studyroom/${studyRoomId}`);
+        if (roomType === "pomodoro") {
+          navigate(`/studyroom/pomodoro/${studyRoomId}`);
+        } else {
+          navigate(`/studyroom/${studyRoomId}`);
+        }
       }, 5000);
     } catch (error) {
       console.error("스터디룸 생성 요청 오류:", error);
