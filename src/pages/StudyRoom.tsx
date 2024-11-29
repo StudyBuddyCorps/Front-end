@@ -422,7 +422,7 @@ const VideoContainer = styled.div`
 const BuddyContainer = styled.div`
   position: relative;
   width: 49%;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: #A9A9A9;
   border: none;
   border-radius: 5px;
   overflow: hidden;
@@ -433,7 +433,7 @@ const BuddyVideo = styled.video`
   bottom: 0;
   left: 50%;
   transform: translate(-50%);
-  width: 100%;
+  width: 78%;
 `;
 
 const StyledVideoPlayer = styled.div`
