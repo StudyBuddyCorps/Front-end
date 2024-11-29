@@ -1,4 +1,9 @@
-import { getCalendar, getDateRecord, updateStudyRecord } from "api/calendar";
+import {
+  getCalendar,
+  getDateRecord,
+  getTodayTime,
+  updateStudyRecord,
+} from "api/calendar";
 
 export const handleGetCalendar = async (yearMonth: string) => {
   try {
@@ -26,16 +31,37 @@ export const handlePrevRecord = async (yearMonth: string, date: number) => {
     const response = await getDateRecord({ yearMonth, date });
     if (response.status == 200) {
       if (response.data.success) {
-        // 성공적으로 정보를 가져옴
-        console.log(response, "이건 이전 정보");
         return {
           ok: true,
-          data: response.data,
+          data: response.data.data,
         };
       } else {
         // 정보가 없음
         return {
           ok: false,
+          data: null,
+        };
+      }
+    }
+  } catch (error) {
+    return { ok: false, error: error as string };
+  }
+};
+
+export const handleTodayTime = async (yearMonth: string) => {
+  try {
+    const response = await getTodayTime(yearMonth);
+    if (response.status == 200) {
+      if (response.data.success) {
+        return {
+          ok: true,
+          data: response.data.data,
+        };
+      } else {
+        // 정보가 없음
+        return {
+          ok: false,
+          data: 0,
         };
       }
     }
